@@ -1573,7 +1573,9 @@ function Contact() {
       `Name: ${name}\nEmail: ${email}\nCompany: ${company}\nRole: ${role}\nIndustry: ${industry}\n\nHow can we help?\n${message}`
     );
 
-    window.location.href = `mailto:info@namolabs.in?subject=${subject}&body=${body}`;
+    // Open Gmail compose window in a new tab
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@namolabs.in&su=${subject}&body=${body}`;
+    window.open(gmailUrl, "_blank");
   };
 
   return (
@@ -1602,7 +1604,7 @@ function Contact() {
                 </div>
                 <div className="mt-4">
                   <label className="text-[12.5px] font-medium text-ink">Industry</label>
-                  <select name="industry" className="mt-1.5 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary">
+                  <select name="industry" className="mt-1.5 w-full appearance-none rounded-xl border border-black/10 bg-white px-4 py-3 text-[16px] sm:text-[14px] text-ink outline-none transition focus:border-primary">
                     {["Steel & Aluminium", "Textiles", "Furniture", "Tires", "Chemicals", "Paints & Lubricants", "ICT", "Electronics", "Government / Regulator", "Other"].map((o) => (
                       <option key={o}>{o}</option>
                     ))}
@@ -1614,7 +1616,7 @@ function Contact() {
                     name="message"
                     rows={4}
                     placeholder="Product lines, regions, timelines…"
-                    className="mt-1.5 w-full resize-none rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary"
+                    className="mt-1.5 w-full appearance-none resize-none rounded-xl border border-black/10 bg-white px-4 py-3 text-[16px] sm:text-[14px] text-ink outline-none transition focus:border-primary"
                   />
                 </div>
                 <button
@@ -1653,7 +1655,7 @@ function Field({
         name={name}
         type={type}
         placeholder={placeholder}
-        className="mt-1.5 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary"
+        className="mt-1.5 w-full appearance-none rounded-xl border border-black/10 bg-white px-4 py-3 text-[16px] sm:text-[14px] text-ink outline-none transition focus:border-primary"
       />
     </div>
   );
