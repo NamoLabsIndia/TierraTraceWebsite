@@ -79,7 +79,7 @@ export function DigitalProductPassport() {
             </div>
 
             {/* Heading */}
-            <h2 className="text-[52px] xl:text-[64px] 2xl:text-[72px] font-bold text-black leading-[1.05] tracking-tight mb-8">
+            <h2 className="text-[42px] sm:text-[52px] xl:text-[64px] 2xl:text-[72px] font-bold text-black leading-[1.05] tracking-tight mb-8">
               Every Product.<br />
               One <span className="text-[#16C15F]">Trusted Identity.</span>
             </h2>

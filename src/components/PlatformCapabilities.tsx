@@ -34,36 +34,24 @@ const FeatureCard = ({
   return (
     <motion.div
       whileHover={{ y: -6, scale: 1.01 }}
-      className="group relative flex h-[150px] w-full sm:w-[430px] cursor-pointer bg-white transition-all duration-300"
+      className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 p-5 sm:p-6 w-full sm:w-[430px] cursor-pointer bg-white hover:bg-[#fbfbfb] transition-all duration-300 rounded-2xl border border-black/5 lg:border-none lg:rounded-none lg:[clip-path:var(--clip-desktop)]"
       style={{
-        clipPath,
+        "--clip-desktop": clipPath,
         filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.04))",
-      }}
+      } as React.CSSProperties}
     >
-      <div
-        className="absolute inset-0 z-0 bg-white"
-        style={{ clipPath }}
-      />
-      
-      {/* Border approximation using a pseudo-element behind a slightly smaller white div, or just soft shadows.
-          Since clip-path cuts off borders, we use an inner container. */}
-      <div
-        className="absolute inset-px z-10 flex items-center gap-5 bg-white p-6 transition-colors duration-300 group-hover:bg-[#fbfbfb]"
-        style={{ clipPath }}
-      >
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-          <Icon className="h-6 w-6" strokeWidth={1.5} />
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <h3 className="text-[20px] font-bold text-ink">{title}</h3>
-          </div>
-          <p className="text-[13px] leading-[1.6] text-ink-muted">
-            {desc}
-          </p>
-        </div>
-        <ArrowRight className="absolute right-6 h-5 w-5 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-100 hidden" />
+      <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
       </div>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2">
+          <h3 className="text-[18px] sm:text-[20px] font-bold text-ink">{title}</h3>
+        </div>
+        <p className="text-[13px] leading-[1.6] text-ink-muted">
+          {desc}
+        </p>
+      </div>
+      <ArrowRight className="absolute right-6 h-5 w-5 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-100 hidden sm:block" />
     </motion.div>
   );
 };
@@ -172,7 +160,7 @@ export function PlatformCapabilities() {
           </div>
 
           {/* LEFT COLUMN */}
-          <div className="z-10 flex flex-col gap-10">
+          <div className="z-10 flex w-full lg:w-auto flex-col gap-4 sm:gap-10">
             <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }} viewport={{ once: true }}>
               <FeatureCard
                 direction="left"
@@ -231,7 +219,7 @@ export function PlatformCapabilities() {
           </motion.div>
 
           {/* RIGHT COLUMN */}
-          <div className="z-10 flex flex-col gap-10">
+          <div className="z-10 flex w-full lg:w-auto flex-col gap-4 sm:gap-10">
             <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }} viewport={{ once: true }}>
               <FeatureCard
                 direction="right"
@@ -277,7 +265,7 @@ export function PlatformCapabilities() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row lg:h-12 items-center gap-4 sm:gap-8 border-t lg:border-t-0 lg:border-l border-[#ECECEC] pt-6 lg:pt-0 lg:pl-8 w-full lg:w-auto">
+          <div className="flex flex-wrap lg:flex-nowrap lg:h-12 items-center gap-y-3 gap-x-4 sm:gap-x-6 lg:gap-8 border-t lg:border-t-0 lg:border-l border-[#ECECEC] pt-6 lg:pt-0 lg:pl-8 w-full lg:w-auto">
             {[
               "End-to-end Traceability",
               "Enterprise Security",

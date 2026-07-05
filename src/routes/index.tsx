@@ -341,14 +341,14 @@ function Hero() {
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-6">
         
         {/* STRICT 50/50 LAYOUT GRID */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-start min-h-[calc(100vh-10rem)] pt-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-start pt-8 lg:min-h-[calc(100vh-10rem)]">
           
           {/* LEFT COLUMN: HERO CONTENT (50%) */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left pt-16 lg:pt-20 pl-4 lg:pl-16">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left pt-10 sm:pt-16 lg:pt-20 px-2 sm:px-4 lg:pl-16 lg:pr-0">
 
 
             <Reveal delay={0.15}>
-              <h1 className="mt-8 whitespace-nowrap text-[40px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[52px] lg:text-[60px]">
+              <h1 className="mt-6 sm:mt-8 text-[32px] font-semibold leading-[1.15] tracking-tight text-ink sm:text-[48px] lg:text-[60px]">
                 Every product.<br/>
                 Every journey.<br/>
                 <span className="text-primary drop-shadow-sm">We trace it.</span>
@@ -356,23 +356,23 @@ function Hero() {
             </Reveal>
 
             <Reveal delay={0.25}>
-              <p className="mt-8 max-w-xl text-balance text-[18px] leading-relaxed text-ink-muted">
+              <p className="mt-5 sm:mt-8 max-w-xl text-balance text-[15px] sm:text-[17px] lg:text-[18px] leading-relaxed text-ink-muted">
                 TierraTrace enables manufacturers to issue secure Digital Product Passports and achieve end-to-end traceability across the complete product lifecycle—from raw materials to recycling.
               </p>
             </Reveal>
 
             <Reveal delay={0.35}>
-              <div className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
                 <a
                   href="#pilot"
-                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-[16px] font-medium text-white shadow-[0_8px_25px_-8px_rgba(16,195,90,0.5)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-8px_rgba(16,195,90,0.7)]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[16px] font-medium text-white shadow-[0_8px_25px_-8px_rgba(16,195,90,0.5)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-8px_rgba(16,195,90,0.7)]"
                 >
                   Request Pilot
-                  <ArrowRight className="h-4.5 w-4.5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
                 <a
                   href="#platform"
-                  className="group inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-8 py-4 text-[16px] font-medium text-ink shadow-sm transition-all hover:bg-surface hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-6 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[16px] font-medium text-ink shadow-sm transition-all hover:bg-surface hover:-translate-y-0.5"
                 >
                   Explore Platform
                 </a>
@@ -380,11 +380,11 @@ function Hero() {
             </Reveal>
           </div>
 
-          {/* RIGHT COLUMN: 3D GLOBE (50%) */}
-          <div className="relative flex items-center justify-center w-full h-[500px] sm:h-[600px] lg:h-full -mt-12 lg:mt-0">
+          {/* RIGHT COLUMN: 3D GLOBE (50%) — hidden on mobile */}
+          <div className="relative hidden lg:flex items-center justify-center w-full lg:h-full">
             
             {/* The Globe Map */}
-            <Reveal delay={0.2} className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none opacity-50 lg:opacity-100">
+            <Reveal delay={0.2} className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
               <Globe />
             </Reveal>
 
@@ -392,8 +392,8 @@ function Hero() {
 
         </div>
         {/* BOTTOM FEATURE PANEL (OUTSIDE THE 50/50 GRID) */}
-        <Reveal delay={0.45} className="mt-16 lg:mt-12 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 rounded-[24px] bg-white p-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] border border-black/5">
+        <Reveal delay={0.45} className="mt-10 sm:mt-16 lg:mt-12 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 rounded-[20px] sm:rounded-[24px] bg-white p-3 sm:p-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] border border-black/5">
             
             <div className="flex items-start gap-3.5 p-4 rounded-[16px] transition-colors hover:bg-surface/60">
               <div className="flex shrink-0 items-center justify-center h-10 w-10 rounded-full bg-primary/10 text-primary">
@@ -441,8 +441,8 @@ function Hero() {
       </motion.div>
 
       {/* Trusted-by strip */}
-      <div className="relative mx-auto mt-8 max-w-[1240px] px-6">
-        <p className="text-center text-[12px] font-medium uppercase tracking-[0.18em] text-ink-muted">
+      <div className="relative mx-auto mt-8 sm:mt-10 max-w-[1240px] px-4 sm:px-6">
+        <p className="text-center text-[11px] sm:text-[12px] font-medium uppercase tracking-[0.18em] text-ink-muted">
           Designed for the world's most demanding supply chains
         </p>
         <div className="mt-6 overflow-hidden mask-[linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]">
@@ -727,7 +727,7 @@ function WhyTierraTrace() {
             {/* Animated green wave bg can be a faint gradient */}
             <div className="absolute -inset-full bg-[radial-gradient(ellipse_at_bottom,#10C35A15_0%,transparent_50%)] opacity-60 mix-blend-screen pointer-events-none" />
             
-            <div className="relative z-10 grid gap-12 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+            <div className="relative z-10 grid gap-y-10 gap-x-4 sm:gap-12 grid-cols-2 lg:grid-cols-4 lg:divide-x divide-white/10">
               <MetricItem icon={<Package className="w-6 h-6"/>} val={42} suffix=" Bn" title="Products tracked" desc="/ yr capacity" />
               <MetricItem icon={<Globe2 className="w-6 h-6"/>} val={180} suffix="+" title="Countries" desc="in coverage graph" />
               <MetricItem icon={<ShieldCheck className="w-6 h-6"/>} val={99.99} suffix="%" title="Platform SLA" desc="for enterprise" />
@@ -843,8 +843,8 @@ function MetricItem({ icon, val, suffix, title, desc }: any) {
   }, [val]);
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 px-0 sm:px-6 lg:px-8 first:pl-0 last:pr-0">
-      <div className="shrink-0 flex h-14 w-14 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5 px-0 sm:px-6 lg:px-8 py-0 sm:first:pl-0 sm:last:pr-0">
+      <div className="shrink-0 flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
         {icon}
       </div>
       <div className="flex flex-col">
@@ -1049,18 +1049,20 @@ function TraceabilitySection() {
             />
           </svg>
 
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
             {LIFECYCLE.map((s, i) => (
               <Reveal key={s.t} delay={i * 0.05}>
-                <div className="group relative flex h-full flex-col items-center rounded-2xl border border-black/5 bg-white p-5 text-center transition-all duration-300 hover:scale-[1.4] hover:z-10 hover:border-primary/50 hover:shadow-[0_20px_60px_-15px_rgba(16,195,90,0.4)] cursor-pointer">
-                  <div className="relative grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
-                    <s.icon className="relative z-10 h-5.5 w-5.5" />
+                <div className="group relative flex h-full flex-row sm:flex-col items-center rounded-xl sm:rounded-2xl border border-black/5 bg-white p-3 sm:p-5 text-left sm:text-center transition-all duration-300 sm:hover:scale-[1.4] hover:z-10 hover:border-primary/50 hover:shadow-[0_20px_60px_-15px_rgba(16,195,90,0.4)] cursor-pointer">
+                  <div className="shrink-0 relative grid h-12 w-12 sm:h-12 sm:w-12 place-items-center rounded-xl sm:rounded-2xl bg-primary-soft text-primary">
+                    <s.icon className="relative z-10 h-5 sm:h-5.5 w-5 sm:w-5.5" />
                   </div>
-                  <div className="mt-4 text-[11px] font-medium uppercase tracking-widest text-ink-muted">
-                    Stage {String(i + 1).padStart(2, "0")}
+                  <div className="flex flex-col justify-center ml-3 sm:ml-0 sm:mt-4 sm:items-center">
+                    <div className="text-[10px] sm:text-[11px] font-bold sm:font-medium uppercase tracking-widest text-ink-muted">
+                      Stage {String(i + 1).padStart(2, "0")}
+                    </div>
+                    <div className="mt-0.5 sm:mt-1 text-[14px] sm:text-[15px] font-semibold text-ink leading-tight">{s.t}</div>
+                    <div className="mt-1 sm:mt-2 text-[12px] sm:text-[12.5px] leading-snug text-ink-muted line-clamp-1 sm:line-clamp-none">{s.d}</div>
                   </div>
-                  <div className="mt-1 text-[15px] font-semibold text-ink">{s.t}</div>
-                  <div className="mt-2 text-[12.5px] leading-snug text-ink-muted">{s.d}</div>
                 </div>
               </Reveal>
             ))}
@@ -1556,6 +1558,24 @@ function Pilot() {
 
 /* ---------- CONTACT ---------- */
 function Contact() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") || "";
+    const email = formData.get("email") || "";
+    const company = formData.get("company") || "";
+    const role = formData.get("role") || "";
+    const industry = formData.get("industry") || "";
+    const message = formData.get("message") || "";
+
+    const subject = encodeURIComponent(`New Briefing Request from ${name} (${company})`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nCompany: ${company}\nRole: ${role}\nIndustry: ${industry}\n\nHow can we help?\n${message}`
+    );
+
+    window.location.href = `mailto:info@namolabs.in?subject=${subject}&body=${body}`;
+  };
+
   return (
     <section id="contact" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-[1240px] px-6">
@@ -1572,19 +1592,17 @@ function Contact() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="mx-auto max-w-4xl rounded-2xl border border-black/6 bg-white px-8 py-10 shadow-sm md:px-12 md:py-16">
-              <form
-                onSubmit={(e) => e.preventDefault()}
-              >
+            <div className="mx-auto max-w-4xl rounded-2xl border border-black/6 bg-white px-5 py-8 shadow-sm md:px-12 md:py-16">
+              <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Full name" placeholder="Your name" />
-                  <Field label="Work email" type="email" placeholder="you@company.com" />
-                  <Field label="Company" placeholder="Company name" />
-                  <Field label="Role" placeholder="e.g. Head of Sustainability" />
+                  <Field name="name" label="Full name" placeholder="Your name" />
+                  <Field name="email" label="Work email" type="email" placeholder="you@company.com" />
+                  <Field name="company" label="Company" placeholder="Company name" />
+                  <Field name="role" label="Role" placeholder="e.g. Head of Sustainability" />
                 </div>
                 <div className="mt-4">
                   <label className="text-[12.5px] font-medium text-ink">Industry</label>
-                  <select className="mt-1.5 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary">
+                  <select name="industry" className="mt-1.5 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary">
                     {["Steel & Aluminium", "Textiles", "Furniture", "Tires", "Chemicals", "Paints & Lubricants", "ICT", "Electronics", "Government / Regulator", "Other"].map((o) => (
                       <option key={o}>{o}</option>
                     ))}
@@ -1593,6 +1611,7 @@ function Contact() {
                 <div className="mt-4">
                   <label className="text-[12.5px] font-medium text-ink">How can we help?</label>
                   <textarea
+                    name="message"
                     rows={4}
                     placeholder="Product lines, regions, timelines…"
                     className="mt-1.5 w-full resize-none rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary"
@@ -1617,10 +1636,12 @@ function Contact() {
 }
 
 function Field({
+  name,
   label,
   type = "text",
   placeholder,
 }: {
+  name: string;
   label: string;
   type?: string;
   placeholder?: string;
@@ -1629,6 +1650,7 @@ function Field({
     <div>
       <label className="text-[12.5px] font-medium text-ink">{label}</label>
       <input
+        name={name}
         type={type}
         placeholder={placeholder}
         className="mt-1.5 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition focus:border-primary"

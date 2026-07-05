@@ -46,7 +46,7 @@ const capabilityRows = [
 
 export function ComplianceSection() {
   return (
-    <section id="compliance" className="relative overflow-hidden bg-white px-[80px] py-[120px]">
+    <section id="compliance" className="relative overflow-hidden bg-white px-6 py-20 lg:px-[80px] lg:py-[120px]">
       
       {/* SECTION HEADER */}
       <div className="mx-auto flex max-w-[900px] flex-col items-center text-center mb-24">
