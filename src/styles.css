@@ -1,0 +1,188 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  --ink: oklch(0.15 0.01 250);
+  --ink-muted: oklch(0.45 0.01 250);
+
+  --surface: oklch(0.985 0.003 150);
+  --surface-2: oklch(0.965 0.008 150);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* Tierra Green #10C35A */
+  --primary: oklch(0.72 0.19 148);
+  --primary-foreground: oklch(1 0 0);
+  --primary-soft: oklch(0.96 0.04 148);
+
+  --secondary: oklch(0.97 0.005 150);
+  --secondary-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.97 0.005 150);
+  --muted-foreground: oklch(0.5 0.01 250);
+  --accent: oklch(0.95 0.03 148);
+  --accent-foreground: oklch(0.2 0.05 148);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0.005 150);
+  --input: oklch(0.92 0.005 150);
+  --ring: oklch(0.72 0.19 148);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.011em;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+}
+
+/* Subtle nature-inspired background utilities */
+@utility bg-topographic {
+  background-image:
+    radial-gradient(circle at 20% 10%, oklch(0.72 0.19 148 / 0.06), transparent 40%),
+    radial-gradient(circle at 90% 80%, oklch(0.72 0.19 148 / 0.05), transparent 45%);
+}
+
+@utility bg-contour {
+  background-image:
+    repeating-radial-gradient(
+      circle at 15% 50%,
+      transparent 0,
+      transparent 60px,
+      oklch(0.72 0.19 148 / 0.04) 61px,
+      transparent 62px,
+      transparent 120px
+    );
+}
+
+@utility bg-dot-grid {
+  background-image: radial-gradient(oklch(0.72 0.19 148 / 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility ring-tierra {
+  box-shadow: 0 1px 0 oklch(1 0 0 / 0.6) inset, 0 0 0 1px oklch(0.72 0.19 148 / 0.15), 0 20px 60px -20px oklch(0.72 0.19 148 / 0.25);
+}
+
+/* Marquee for logo strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+/* ── Dynamic Nature Background ── */
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(40px, -60px) scale(1.08); }
+  66%       { transform: translate(-30px, 30px) scale(0.95); }
+}
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-50px, 40px) scale(1.12); }
+  70%       { transform: translate(30px, -20px) scale(0.92); }
+}
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(20px, 50px) scale(1.06); }
+}
+@keyframes wave-drift {
+  0%   { transform: translateX(0) skewY(0deg); }
+  50%  { transform: translateX(-30px) skewY(0.5deg); }
+  100% { transform: translateX(0) skewY(0deg); }
+}
+@keyframes particle-rise {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 0.6; }
+  100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+}
+@keyframes shimmer-pulse {
+  0%, 100% { opacity: 0.04; }
+  50%       { opacity: 0.09; }
+}
+
+.nature-orb-1 { animation: orb-float-1 14s ease-in-out infinite; }
+.nature-orb-2 { animation: orb-float-2 18s ease-in-out infinite; }
+.nature-orb-3 { animation: orb-float-3 22s ease-in-out infinite; }
+.nature-wave   { animation: wave-drift 10s ease-in-out infinite; }
+.nature-shimmer { animation: shimmer-pulse 6s ease-in-out infinite; }
+.particle-1 { animation: particle-rise 8s ease-in-out infinite; }
+.particle-2 { animation: particle-rise 11s ease-in-out infinite 2s; }
+.particle-3 { animation: particle-rise 9s ease-in-out infinite 4s; }
+.particle-4 { animation: particle-rise 13s ease-in-out infinite 1s; }
+.particle-5 { animation: particle-rise 7s ease-in-out infinite 3s; }
+.particle-6 { animation: particle-rise 15s ease-in-out infinite 5s; }
