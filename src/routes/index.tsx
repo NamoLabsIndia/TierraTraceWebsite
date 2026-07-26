@@ -61,7 +61,7 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         property: "og:image",
-        content: `https://id-preview--36bc310a-88b6-42a5-b5fc-9b3fa03f1f2d.lovable.app${logoUrl}`,
+        content: `https://www.tierratrace.in${logoUrl}`,
       },
     ],
   }),
@@ -270,8 +270,29 @@ function Reveal({
   );
 }
 
-import { Globe } from "@/components/ui/globe";
 import { JOURNEYS, Journey, JourneyStep } from "@/data/journeys";
+
+// react-globe.gl (via the globe.gl package it wraps) touches `window` at module
+// load time, which crashes TanStack Start's SSR render (ReferenceError: window is
+// not defined) if imported statically anywhere in the route tree. Deferring the
+// import into an effect guarantees it never loads on the server.
+function GlobeClientOnly() {
+  const [GlobeComp, setGlobeComp] = React.useState<React.ComponentType | null>(null);
+
+  React.useEffect(() => {
+    let active = true;
+    import("@/components/ui/globe").then((mod) => {
+      if (active) setGlobeComp(() => mod.Globe);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (!GlobeComp) return null;
+  const LoadedGlobe = GlobeComp;
+  return <LoadedGlobe />;
+}
 
 /* ---------- HERO ---------- */
 function Hero() {
@@ -385,7 +406,7 @@ function Hero() {
             
             {/* The Globe Map */}
             <Reveal delay={0.2} className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
-              <Globe />
+              <GlobeClientOnly />
             </Reveal>
 
           </div>
