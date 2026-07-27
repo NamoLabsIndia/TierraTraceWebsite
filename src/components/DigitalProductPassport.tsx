@@ -113,7 +113,7 @@ export function DigitalProductPassport() {
           {/* RIGHT COLUMN: iPhone UI */}
           <Reveal delay={0.2} className="relative w-full h-[600px] lg:h-[750px] flex justify-center items-center rounded-[40px] overflow-hidden">
             {/* Background Image of Dress */}
-            <img src="/dress_with_qr.png" alt="Organic Dress with QR" className="absolute inset-0 w-full h-full object-cover object-[35%_65%] scale-[1.25]" />
+            <img src="/dress_with_qr.png" alt="Organic Dress with QR" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover object-[35%_65%] scale-[1.25]" />
             <div className="absolute inset-0 bg-black/20" />
 
             {/* iPhone Frame */}
@@ -214,7 +214,7 @@ export function DigitalProductPassport() {
                             <div className="text-black font-bold text-[13px]">TT-DPP-009382</div>
                           </div>
                           <div className="w-10 h-10 bg-white border border-gray-100 rounded-lg p-1">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tierratrace.com/p/TT-DPP-009382" alt="QR" className="w-full h-full opacity-90" />
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.tierratrace.in/p/TT-DPP-009382" alt="QR" className="w-full h-full opacity-90" />
                           </div>
                         </div>
 

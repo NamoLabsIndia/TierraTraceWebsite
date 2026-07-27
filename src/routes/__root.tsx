@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "TierraTrace by Namo Labs is the enterprise platform for Digital Product Passports and full lifecycle traceability — from raw material to reuse and recycling.",
+          "TierraTrace is the enterprise platform for Digital Product Passports and full lifecycle traceability — from raw material to reuse and recycling.",
       },
       { name: "author", content: "Namo Labs" },
       { property: "og:title", content: "TierraTrace — Digital Product Passport Platform" },

@@ -56,6 +56,60 @@ import { CobeGlobe } from "../components/CobeGlobe";
 import { PlatformCapabilities } from "../components/PlatformCapabilities";
 import { ComplianceSection } from "../components/ComplianceSection";
 
+const homepageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.tierratrace.in/#organization",
+      name: "TierraTrace",
+      url: "https://www.tierratrace.in/",
+      logo: `https://www.tierratrace.in${logoUrl}`,
+      description:
+        "TierraTrace is the enterprise platform for Digital Product Passports and full lifecycle traceability — from raw material to reuse and recycling.",
+      parentOrganization: {
+        "@type": "Organization",
+        name: "Namo Labs",
+        url: "https://www.namolabs.in/",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: "info@namolabs.in",
+        contactType: "sales",
+      },
+      knowsAbout: ["EU Digital Product Passport (ESPR)", "CBAM", "EU Battery Regulation"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.tierratrace.in/#website",
+      url: "https://www.tierratrace.in/",
+      name: "TierraTrace",
+      inLanguage: "en",
+      publisher: { "@id": "https://www.tierratrace.in/#organization" },
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.tierratrace.in/#webpage",
+      url: "https://www.tierratrace.in/",
+      name: "TierraTrace — Global Digital Product Passport & End-to-End Traceability",
+      inLanguage: "en",
+      isPartOf: { "@id": "https://www.tierratrace.in/#website" },
+      about: { "@id": "https://www.tierratrace.in/#software" },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://www.tierratrace.in/#software",
+      name: "TierraTrace",
+      description:
+        "TierraTrace enables manufacturers to issue secure Digital Product Passports and achieve end-to-end traceability across the complete product lifecycle—from raw materials to recycling.",
+      url: "https://www.tierratrace.in/",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      author: { "@id": "https://www.tierratrace.in/#organization" },
+    },
+  ],
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -63,6 +117,10 @@ export const Route = createFileRoute("/")({
         property: "og:image",
         content: `https://www.tierratrace.in${logoUrl}`,
       },
+    ],
+    links: [{ rel: "canonical", href: "https://www.tierratrace.in/" }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(homepageJsonLd) },
     ],
   }),
   component: HomePage,
@@ -107,18 +165,6 @@ function Nav() {
                     <ListItem href="#traceability" title="TierraTrace Trace" icon={RouteIcon}>
                       End-to-End Traceability tracking.
                     </ListItem>
-                    <ListItem href="#carbon" title="TierraTrace Carbon" icon={Leaf}>
-                      Carbon Footprint & Sustainability.
-                    </ListItem>
-                    <ListItem href="#verify" title="TierraTrace Verify" icon={ShieldCheck}>
-                      Supplier & Product Verification.
-                    </ListItem>
-                    <ListItem href="#insights" title="TierraTrace Insights" icon={Eye}>
-                      Analytics & Supply Chain Intelligence.
-                    </ListItem>
-                    <ListItem href="#connect" title="TierraTrace Connect" icon={CircuitBoard}>
-                      APIs & ERP Integrations.
-                    </ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -142,9 +188,6 @@ function Nav() {
                   <ul className="grid w-[300px] gap-3 p-4">
                     <ListItem href="https://www.namolabs.in/" target="_blank" rel="noopener noreferrer" title="Company" icon={Building2}>
                       Learn about our mission and team.
-                    </ListItem>
-                    <ListItem href="#resources" title="Resources" icon={BookOpen}>
-                      Case studies, whitepapers, and guides.
                     </ListItem>
                     <ListItem href="https://www.namolabs.in/careers" target="_blank" rel="noopener noreferrer" title="Careers" icon={Briefcase}>
                       Join us in building product truth.
@@ -192,13 +235,12 @@ function Nav() {
         >
           <div className="flex flex-col">
             <a href="#why" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] font-medium text-ink hover:bg-primary-soft">Why TierraTrace</a>
-            <a href="#services" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] font-medium text-ink hover:bg-primary-soft">Services</a>
+            <a href="#platform" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] font-medium text-ink hover:bg-primary-soft">Services</a>
             <a href="#industries" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] font-medium text-ink hover:bg-primary-soft">Industries</a>
             <a href="#compliance" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] font-medium text-ink hover:bg-primary-soft">Compliance</a>
             <div className="flex flex-col border-t border-black/5 pt-2 mt-2">
               <span className="px-3 py-2 text-[12px] font-bold uppercase tracking-wider text-ink-muted">About</span>
-              <a href="https://www.namolabs.in/" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Company</a>
-              <a href="#resources" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Resources</a>
+              <a href="https://www.namolabs.in/about" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Company</a>
               <a href="https://www.namolabs.in/careers" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Careers</a>
             </div>
             <a
@@ -251,15 +293,17 @@ function Reveal({
   delay = 0,
   y = 24,
   className = "",
+  immediate = false,
 }: {
   children: React.ReactNode;
   delay?: number;
   y?: number;
   className?: string;
+  immediate?: boolean;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y }}
+      initial={immediate ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
@@ -368,7 +412,7 @@ function Hero() {
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left pt-10 sm:pt-16 lg:pt-20 px-2 sm:px-4 lg:pl-16 lg:pr-0">
 
 
-            <Reveal delay={0.15}>
+            <Reveal immediate>
               <h1 className="mt-6 sm:mt-8 text-[32px] font-semibold leading-[1.15] tracking-tight text-ink sm:text-[48px] lg:text-[60px]">
                 Every product.<br/>
                 Every journey.<br/>
@@ -376,13 +420,13 @@ function Hero() {
               </h1>
             </Reveal>
 
-            <Reveal delay={0.25}>
+            <Reveal immediate>
               <p className="mt-5 sm:mt-8 max-w-xl text-balance text-[15px] sm:text-[17px] lg:text-[18px] leading-relaxed text-ink-muted">
                 TierraTrace enables manufacturers to issue secure Digital Product Passports and achieve end-to-end traceability across the complete product lifecycle—from raw materials to recycling.
               </p>
             </Reveal>
 
-            <Reveal delay={0.35}>
+            <Reveal immediate>
               <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
                 <a
                   href="#pilot"
@@ -954,11 +998,20 @@ function NetworkCanvas({ opacity = 1 }: { opacity?: number }) {
       }
       animationFrameId = requestAnimationFrame(draw);
     };
-    draw();
-    
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        draw();
+      } else {
+        cancelAnimationFrame(animationFrameId);
+      }
+    });
+    observer.observe(canvas);
+
     return () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
     };
   }, []);
 
@@ -1033,7 +1086,7 @@ function TraceabilitySection() {
         <Reveal delay={0.1}>
           <div className="mt-8 flex flex-row items-center justify-center gap-4">
             <span className="text-[14px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Powered by</span>
-            <img src="/hyperledger.jpg" alt="Hyperledger Fabric" className="h-24 md:h-36 object-contain mix-blend-multiply" />
+            <img src="/hyperledger.jpg" alt="Hyperledger Fabric" loading="lazy" decoding="async" className="h-24 md:h-36 object-contain mix-blend-multiply" />
           </div>
         </Reveal>
 
@@ -1366,6 +1419,8 @@ function Industries() {
                     <img
                       src={card.img}
                       alt={card.title}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                     />
                   </div>
@@ -1691,7 +1746,7 @@ function Footer() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[600px] w-[600px] opacity-[0.1]" style={{ background: "radial-gradient(circle at bottom right, #16C15F 0%, transparent 60%)" }} />
 
       <div className="relative z-10 mx-auto max-w-[1240px] px-6">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <img src={logoUrl} alt="TierraTrace" className="h-16 w-auto brightness-0 invert drop-shadow-sm" />
             <p className="mt-6 max-w-sm text-[14px] leading-relaxed text-white/70">
@@ -1701,23 +1756,35 @@ function Footer() {
           {[
             {
               t: "Platform",
-              l: ["Product Passport", "Traceability", "Integrations", "Compliance"],
+              l: [
+                { label: "Product Passport", href: "#passport" },
+                { label: "Traceability", href: "#traceability" },
+                { label: "Integrations", href: "#integrations" },
+                { label: "Compliance", href: "#compliance" },
+              ],
             },
             {
               t: "Company",
-              l: ["About Namo Labs", "Careers", "Newsroom", "Contact"],
-            },
-            {
-              t: "Resources",
-              l: ["EU DPP guide", "CBAM playbook", "Trust center", "Security"],
+              l: [
+                { label: "About Namo Labs", href: "https://www.namolabs.in/about" },
+                { label: "Careers", href: "https://www.namolabs.in/careers" },
+                { label: "Contact", href: "https://www.namolabs.in/contact" },
+              ],
             },
           ].map((c) => (
             <div key={c.t}>
               <div className="text-[12px] font-bold uppercase tracking-widest text-white/90">{c.t}</div>
               <ul className="mt-5 space-y-3 text-[14.5px] text-white/60">
-                {c.l.map((li) => (
-                  <li key={li}>
-                    <a href="#" className="transition-colors duration-300 hover:text-white">{li}</a>
+                {c.l.map((item) => (
+                  <li key={item.label}>
+                    <a
+                      href={item.href}
+                      target={item.href.startsWith("http") ? "_blank" : undefined}
+                      rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      className="transition-colors duration-300 hover:text-white"
+                    >
+                      {item.label}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -1727,9 +1794,8 @@ function Footer() {
         <div className="mt-20 flex flex-col items-start justify-between gap-6 border-t border-white/10 pt-8 text-[13px] text-white/50 sm:flex-row sm:items-center">
           <div>© {new Date().getFullYear()} Namo Labs. All rights reserved. TierraTrace™</div>
           <div className="flex gap-8">
-            <a href="#" className="transition-colors hover:text-white">Privacy</a>
-            <a href="#" className="transition-colors hover:text-white">Terms</a>
-            <a href="#" className="transition-colors hover:text-white">Security</a>
+            <a href="https://www.namolabs.in/privacy" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Privacy</a>
+            <a href="https://www.namolabs.in/terms" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Terms</a>
           </div>
         </div>
       </div>
