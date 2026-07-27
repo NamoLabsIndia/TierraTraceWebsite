@@ -165,6 +165,18 @@ function Nav() {
                     <ListItem href="#traceability" title="TierraTrace Trace" icon={RouteIcon}>
                       End-to-End Traceability tracking.
                     </ListItem>
+                    <ListItem href="#carbon" title="TierraTrace Carbon" icon={Leaf}>
+                      Carbon Footprint & Sustainability.
+                    </ListItem>
+                    <ListItem href="#verify" title="TierraTrace Verify" icon={ShieldCheck}>
+                      Supplier & Product Verification.
+                    </ListItem>
+                    <ListItem href="#insights" title="TierraTrace Insights" icon={Eye}>
+                      Analytics & Supply Chain Intelligence.
+                    </ListItem>
+                    <ListItem href="#connect" title="TierraTrace Connect" icon={CircuitBoard}>
+                      APIs & ERP Integrations.
+                    </ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -188,6 +200,9 @@ function Nav() {
                   <ul className="grid w-[300px] gap-3 p-4">
                     <ListItem href="https://www.namolabs.in/" target="_blank" rel="noopener noreferrer" title="Company" icon={Building2}>
                       Learn about our mission and team.
+                    </ListItem>
+                    <ListItem href="#resources" title="Resources" icon={BookOpen}>
+                      Case studies, whitepapers, and guides.
                     </ListItem>
                     <ListItem href="https://www.namolabs.in/careers" target="_blank" rel="noopener noreferrer" title="Careers" icon={Briefcase}>
                       Join us in building product truth.
@@ -241,6 +256,7 @@ function Nav() {
             <div className="flex flex-col border-t border-black/5 pt-2 mt-2">
               <span className="px-3 py-2 text-[12px] font-bold uppercase tracking-wider text-ink-muted">About</span>
               <a href="https://www.namolabs.in/about" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Company</a>
+              <a href="#resources" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Resources</a>
               <a href="https://www.namolabs.in/careers" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 text-[15px] font-medium text-ink hover:bg-primary-soft">Careers</a>
             </div>
             <a
@@ -1746,7 +1762,7 @@ function Footer() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[600px] w-[600px] opacity-[0.1]" style={{ background: "radial-gradient(circle at bottom right, #16C15F 0%, transparent 60%)" }} />
 
       <div className="relative z-10 mx-auto max-w-[1240px] px-6">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <img src={logoUrl} alt="TierraTrace" className="h-16 w-auto brightness-0 invert drop-shadow-sm" />
             <p className="mt-6 max-w-sm text-[14px] leading-relaxed text-white/70">
@@ -1769,6 +1785,15 @@ function Footer() {
                 { label: "About Namo Labs", href: "https://www.namolabs.in/about" },
                 { label: "Careers", href: "https://www.namolabs.in/careers" },
                 { label: "Contact", href: "https://www.namolabs.in/contact" },
+              ],
+            },
+            {
+              t: "Resources",
+              l: [
+                { label: "EU DPP guide", href: "#" },
+                { label: "CBAM playbook", href: "#" },
+                { label: "Trust center", href: "#" },
+                { label: "Security", href: "#" },
               ],
             },
           ].map((c) => (
@@ -1796,6 +1821,7 @@ function Footer() {
           <div className="flex gap-8">
             <a href="https://www.namolabs.in/privacy" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Privacy</a>
             <a href="https://www.namolabs.in/terms" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Terms</a>
+            <a href="#" className="transition-colors hover:text-white">Security</a>
           </div>
         </div>
       </div>
