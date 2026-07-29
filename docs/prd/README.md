@@ -4,7 +4,7 @@ Four PRDs, one per developer, matching the task tracker (TASK-1 → TASK-4). Eac
 
 | File | Task | Owner |
 |---|---|---|
-| [`TASK-1-platform-section.md`](./TASK-1-platform-section.md) | Platform Section | Ayush |
+| [`TASK-1-platform-section.md`](./TASK-1-platform-section.md) | Platform Section — index, links to 9 per-page PRDs | Ayush |
 | [`TASK-2-industries-section.md`](./TASK-2-industries-section.md) | Industries Section | Jebaz |
 | [`TASK-3-compliance-section.md`](./TASK-3-compliance-section.md) | Compliance Section | Rishabh |
 | [`TASK-4-resources-section.md`](./TASK-4-resources-section.md) | Resources Section | Sansitha |
