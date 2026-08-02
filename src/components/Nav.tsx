@@ -50,9 +50,9 @@ export default function Nav() {
           <img src={logoUrl} alt="TierraTrace" className="h-10 w-auto sm:h-12" />
         </a>
 
-        <div className="absolute left-[46%] top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:flex lg:items-center lg:gap-4">
+        <div className="hidden lg:flex lg:items-center lg:gap-1">
           <NavigationMenu>
-            <NavigationMenuList className="space-x-4">
+            <NavigationMenuList className="space-x-1">
               <NavigationMenuItem>
                 <NavigationMenuLink href="/#why" className={navigationMenuTriggerStyle()}>
                   Why TierraTrace
@@ -104,10 +104,11 @@ export default function Nav() {
                   Compliance
                 </NavigationMenuLink>
               </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <NavigationMenu>
-            <NavigationMenuList className="space-x-4">
+              <NavigationMenuItem>
+                <NavigationMenuLink href="/resources" className={navigationMenuTriggerStyle()}>
+                  Resources
+                </NavigationMenuLink>
+              </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent hover:bg-black/5">About</NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -115,8 +116,8 @@ export default function Nav() {
                     <ListItem href="https://www.namolabs.in/" target="_blank" rel="noopener noreferrer" title="Company" icon={Building2}>
                       Learn about our mission and team.
                     </ListItem>
-                    <ListItem href="/#resources" title="Resources" icon={BookOpen}>
-                      Case studies, whitepapers, and guides.
+                    <ListItem href="/resources" title="Resources" icon={BookOpen}>
+                      Documentation, whitepapers, and guides.
                     </ListItem>
                     <ListItem href="https://www.namolabs.in/careers" target="_blank" rel="noopener noreferrer" title="Careers" icon={Briefcase}>
                       Join us in building product truth.
