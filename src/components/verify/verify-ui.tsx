@@ -13,7 +13,7 @@
  *   - card     : rounded-[24px], border-black/5, shadow-[0_8px_30px_rgba(0,0,0,0.04)]
  */
 import * as React from "react";
-import { motion, type Variants } from "motion/react";
+import { motion, useInView, type Variants } from "motion/react";
 import { cn } from "@/lib/utils";
 
 /* ─────────────────────────────────────────────────────────
@@ -236,11 +236,6 @@ export const buttonStyles = {
     BUTTON_BASE,
     "border border-black/10 bg-white text-ink hover:border-primary/30 hover:bg-[#FAFDFB]",
   ),
-  ghostOnDark: cn(
-    BUTTON_BASE,
-    "border border-white/15 bg-white/5 text-white hover:border-white/30 hover:bg-white/10",
-    "focus-visible:ring-offset-transparent",
-  ),
 };
 
 /* ─────────────────────────────────────────────────────────
@@ -275,4 +270,140 @@ export function FieldLabel({ children }: { children: React.ReactNode }) {
       {children}
     </span>
   );
+}
+
+/* ─────────────────────────────────────────────────────────
+   Depth
+   Three layers, applied consistently across the page:
+     0 — ambient mesh (section backdrop, primary at 4–8%)
+     1 — panel        (white, hairline border, wide soft shadow)
+     2 — floating     (glass, used only for elements that overlap layer 1)
+   ───────────────────────────────────────────────────────── */
+
+/** Shared panel shadow so every card on the page sits at the same elevation. */
+export const PANEL =
+  "rounded-[24px] border border-black/[0.06] bg-white " +
+  "shadow-[0_1px_2px_rgba(16,24,40,0.04),0_12px_28px_-8px_rgba(16,24,40,0.10),0_32px_64px_-24px_rgba(16,24,40,0.10)]";
+
+/** Layer 2. Frosted, for badges that overlap a panel or illustration. */
+export const GLASS =
+  "border border-white/60 bg-white/70 backdrop-blur-xl " +
+  "shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_24px_-6px_rgba(16,24,40,0.12)]";
+
+/**
+ * Ambient mesh backdrop. Two slow-drifting primary orbs plus a hairline grid,
+ * all under 8% opacity — depth without a "flashy gradient".
+ */
+export function AmbientMesh({
+  className,
+  grid = true,
+}: {
+  className?: string;
+  grid?: boolean;
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
+    >
+      {grid ? (
+        <div
+          className="absolute inset-0 opacity-[0.55]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(16,24,40,0.035) 1px, transparent 1px)," +
+              "linear-gradient(to bottom, rgba(16,24,40,0.035) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+            maskImage:
+              "radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%)",
+          }}
+        />
+      ) : null}
+      <div className="nature-orb-1 absolute -left-32 -top-24 size-[520px] rounded-full bg-primary/[0.10] blur-[100px]" />
+      <div className="nature-orb-2 absolute -right-24 top-32 size-[440px] rounded-full bg-primary/[0.07] blur-[100px]" />
+    </div>
+  );
+}
+
+/**
+ * Card that lights up under the pointer. The highlight follows the cursor via
+ * CSS custom properties, so hovering never triggers a React re-render.
+ */
+export function SpotlightCard({
+  children,
+  className,
+  ...rest
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const onPointerMove = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const el = event.currentTarget;
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
+      el.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+    },
+    [],
+  );
+
+  return (
+    <div
+      onPointerMove={onPointerMove}
+      className={cn("group/spot relative isolate overflow-hidden", className)}
+      {...rest}
+    >
+      <span
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute -inset-px z-0 opacity-0 transition-opacity duration-300",
+          "group-hover/spot:opacity-100 motion-reduce:transition-none",
+        )}
+        style={{
+          background:
+            "radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%), " +
+            "oklch(0.72 0.19 148 / 0.10), transparent 70%)",
+        }}
+      />
+      <div className="relative z-10 h-full">{children}</div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────
+   Animated values
+   ───────────────────────────────────────────────────────── */
+
+/**
+ * Counts from 0 to `target` once the element is scrolled into view.
+ * Returns the value plus the ref to attach. Honours reduced motion by
+ * jumping straight to the target.
+ */
+export function useCountUp(target: number, durationMs = 1000) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.4 });
+  const reduced = usePrefersReducedMotion();
+  const [value, setValue] = React.useState(0);
+
+  React.useEffect(() => {
+    if (reduced) {
+      setValue(target);
+      return;
+    }
+    if (!inView) return;
+
+    let frame = 0;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / durationMs, 1);
+      const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      setValue(Math.round(eased * target));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [inView, reduced, target, durationMs]);
+
+  return { ref, value };
 }
