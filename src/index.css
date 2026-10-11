@@ -1,0 +1,169 @@
+@import 'tailwindcss';
+
+/*
+ * TierraTrace brand tokens — taken from the live tierratrace.in site.
+ * Primary green #31C35A, ink #080C0F, slate #708090, muted #6A7282, border #E6E6E6.
+ * Font: Be Vietnam Pro. Type scale: H1 60px · H2 26px (card titles) · body 18px.
+ *
+ * --tt-green-ink is a darker step of the brand green used ONLY for small green
+ * text (eyebrows, links). #31C35A on white is 2.4:1, below WCAG AA for text.
+ */
+@theme {
+  --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+
+  --color-tt-green: #31c35a;
+  --color-tt-green-600: #28a94c;
+  --color-tt-green-ink: #17803a;
+  --color-tt-green-50: #effaf2;
+  --color-tt-green-100: #e1f6e7;
+  --color-tt-ink: #080c0f;
+  --color-tt-slate: #708090;
+  --color-tt-muted: #6a7282;
+  --color-tt-border: #e6e6e6;
+  --color-tt-amber: #b45309;
+  --color-tt-amber-50: #fff7ed;
+
+  --text-display: 60px;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-tt-ink);
+  background: #fff;
+}
+
+::selection {
+  background: var(--color-tt-green-100);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-tt-green-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Page wash — same soft green gradient as the tierratrace.in hero. */
+.tt-wash {
+  background:
+    radial-gradient(60% 50% at 85% 10%, rgba(49, 195, 90, 0.12), transparent 70%),
+    radial-gradient(50% 40% at 0% 30%, rgba(49, 195, 90, 0.08), transparent 70%),
+    linear-gradient(180deg, #f6fcf8 0%, #ffffff 70%);
+}
+
+
+/* Press feedback for every pressable element (Emil: scale 0.97 on :active). */
+.tt-press {
+  transition:
+    transform 160ms var(--ease-out-strong),
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    color 200ms ease;
+}
+.tt-press:active {
+  transform: scale(0.97);
+}
+
+/* Scroll reveal. Starts slightly lowered, never from nothing. */
+.tt-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 600ms var(--ease-out-strong),
+    transform 600ms var(--ease-out-strong);
+  transition-delay: var(--tt-delay, 0ms);
+}
+.tt-reveal[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Crossfade with a hint of blur so two states read as one transformation. */
+.tt-swap-enter {
+  animation: tt-swap 260ms var(--ease-out-strong) both;
+}
+@keyframes tt-swap {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+.tt-meter-fill {
+  transition: width 700ms var(--ease-in-out-strong);
+}
+
+.tt-pulse {
+  animation: tt-pulse 2.4s ease-in-out infinite;
+}
+@keyframes tt-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(49, 195, 90, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(49, 195, 90, 0);
+  }
+}
+
+
+.tt-marquee {
+  animation: tt-marquee 40s linear infinite;
+}
+@keyframes tt-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.tt-route {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: tt-route 3.6s var(--ease-in-out-strong) infinite;
+}
+@keyframes tt-route {
+  0% { stroke-dashoffset: 260; opacity: 1; }
+  55% { stroke-dashoffset: 0; opacity: 1; }
+  85%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .tt-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .tt-swap-enter,
+  .tt-pulse,
+  .tt-marquee {
+    animation: none;
+  }
+  .tt-route {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .tt-meter-fill {
+    transition: none;
+  }
+}
