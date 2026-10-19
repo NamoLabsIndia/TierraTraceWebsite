@@ -69,10 +69,23 @@ export function Nav() {
     return () => io.disconnect();
   }, [onHome]);
 
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    setOpen(false);
+    if (onHome) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (location.search || location.hash) {
+        window.history.pushState(null, '', '/');
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className={`hd ${onHome ? 'hd--overlay' : ''} ${overHero ? `is-glass${deep ? ' is-deep' : ''}` : 'is-solid'}`}>
       <nav aria-label="Main" className="hd-nav">
-        <Link to="/" className="hd-logo" aria-label="TierraTrace home">
+        <Link to="/" className="hd-logo" aria-label="TierraTrace home" onClick={handleLogoClick}>
           <img src={logo} alt="TierraTrace" width={360} height={163} />
         </Link>
 

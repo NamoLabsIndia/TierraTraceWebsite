@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import { ArrowRight, Mail, Phone } from 'lucide-react';
 import logoLight from '../../assets/tierratrace-logo-light.png';
-import { CLOSING_CTA, FOOTER } from '../../data/siteContent';
+import { CLOSING_CTA, FOOTER, PHOTO_CREDITS } from '../../data/siteContent';
 import { HERO } from '../../data/heroContent';
 import { InView, Words } from '../../lib/motion';
 import { SmartLink } from '../ui';
@@ -13,10 +14,15 @@ export function Footer() {
       <footer className="ft" aria-labelledby="ft-title">
         <div className="ft-inner">
           <div className="ft-brand">
-            <div className="ft-logo">
+            <Link
+              to="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="ft-logo"
+              aria-label="TierraTrace home"
+            >
               <img src={logoLight} alt="TierraTrace" width={360} height={163} loading="lazy" />
               <span>{FOOTER.parent}</span>
-            </div>
+            </Link>
             <Words as="p" text={FOOTER.headline} className="ft-title" />
             <InView as="ul" className="ft-contact m-stagger" delay={200}>
               <li>
@@ -62,6 +68,14 @@ export function Footer() {
 
         <p className="ft-legal">
           © {new Date().getFullYear()} Namo Labs India. All rights reserved.
+          {PHOTO_CREDITS.map((c) => (
+            <span key={c.href}>
+              {' · '}
+              <a href={c.href} target="_blank" rel="noreferrer">
+                {c.text}
+              </a>
+            </span>
+          ))}
           {HERO.background.credit && (
             <>
               {' · '}

@@ -6,12 +6,16 @@ import missionLandscape from '../assets/sections/mission-landscape.webp';
 import solutionPassport from '../assets/sections/solution-passport.webp';
 import insightLogistics from '../assets/sections/insight-logistics.webp';
 import studioFactory from '../assets/sections/studio-factory.webp';
-import trustThumb from '../assets/sections/trust-thumb.webp';
-import trustTextile from '../assets/sections/trust-textile.webp';
 import trustPort from '../assets/sections/trust-port.webp';
 import insightTextile from '../assets/sections/insight-textile.webp';
 import insightSeedling from '../assets/sections/insight-seedling.webp';
 import insightAgriculture from '../assets/sections/insight-agriculture.webp';
+import indTextiles from '../assets/industries/textiles-apparel.webp';
+import indAutomotive from '../assets/industries/automotive-supply-chain.webp';
+import indBattery from '../assets/industries/battery-manufacturing.webp';
+import indElectronics from '../assets/industries/electronics-semiconductors.webp';
+import indCoffee from '../assets/industries/coffee-provenance.webp';
+import indConsumer from '../assets/industries/consumer-goods.webp';
 import ctaEarth from '../assets/sections/cta-earth.webp';
 import footerWordmark from '../assets/sections/footer-wordmark.webp';
 
@@ -86,26 +90,107 @@ export const SOLUTIONS = {
   ] satisfies Solution[],
 };
 
+export type Industry = {
+  id: string;
+  number: string;
+  /** Short uppercase category, shown with the index. */
+  capabilityLabel: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: Img;
+  /** object-position for the photo crop. */
+  focus?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+};
+
 /**
- * The reference shows a customer testimonial. There is no approved one yet, so this rotates our own
- * statements, clearly labelled as ours. Replace `items` with approved testimonials when they exist.
+ * "Our Approach" — the industries TierraTrace is built for, shown as a three-position showcase.
+ * Order here is display order; add an industry by adding an entry. Descriptions are intended use
+ * cases, not claims about existing deployments.
  */
 export const APPROACH = {
   id: 'industries',
   label: 'Our Approach',
   headline: 'We’re passionate about enabling transparent and sustainable supply chains across industries.',
-  attribution: { name: 'TierraTrace', role: 'Our approach, by Namo Labs' },
-  items: [
-    'Building transparent and sustainable supply chains takes collaboration across every stage of the product journey.',
-    'Trusted product data starts at the source — with the suppliers, materials and processes behind every product.',
-    'Traceability should make compliance readiness simpler, not add another layer of complexity to operations.',
-  ],
-  images: {
-    thumb: { src: trustThumb, alt: 'A worker monitoring spinning machines in a textile mill' },
-    main: { src: trustTextile, alt: 'Rolls of fabric on a textile production line' },
-    side: { src: trustPort, alt: 'A port worker with a tablet beside stacked shipping containers' },
-  },
+  industries: [
+    {
+      id: 'textiles',
+      number: '01',
+      capabilityLabel: 'Textiles & Apparel',
+      title: 'Textiles & Apparel',
+      subtitle: 'From fibre to finished garment.',
+      description:
+        'Connect material origins, manufacturing stages, supplier records, and product-level information to improve supply-chain visibility across textile and apparel operations.',
+      image: { src: indTextiles, alt: 'Fabric being woven on an industrial loom' },
+      focus: '50% 55%',
+    },
+    {
+      id: 'automotive',
+      number: '02',
+      capabilityLabel: 'Automotive OEMs & Tier 1 / Tier 2 Suppliers',
+      title: 'Automotive Supply Chains',
+      subtitle: 'From component suppliers to OEMs.',
+      description:
+        'Connect component identity, material provenance, manufacturing events, and quality evidence across automotive suppliers and original equipment manufacturers.',
+      image: { src: indAutomotive, alt: 'Cars moving along a vehicle assembly line' },
+      focus: '50% 60%',
+    },
+    {
+      id: 'battery',
+      number: '03',
+      capabilityLabel: 'Battery Manufacturers',
+      title: 'Battery Manufacturing',
+      subtitle: 'Trace materials through the battery lifecycle.',
+      description:
+        'Structure product and material information across battery manufacturing, supplier relationships, production records, and lifecycle documentation.',
+      image: { src: indBattery, alt: 'Pouch-cell forming and electrode punching machines on a battery production line' },
+      focus: '40% 60%',
+    },
+    {
+      id: 'electronics',
+      number: '04',
+      capabilityLabel: 'Electronics & Semiconductors',
+      title: 'Electronics & Semiconductors',
+      subtitle: 'Product identity for complex supply chains.',
+      description:
+        'Connect component information, manufacturing records, supplier data, and product documentation across electronics and semiconductor supply chains.',
+      image: { src: indElectronics, alt: 'Close-up of a processor on a populated circuit board' },
+      focus: '50% 50%',
+    },
+    {
+      id: 'coffee',
+      number: '05',
+      capabilityLabel: 'Coffee & Indigenous Species',
+      title: 'Coffee & Indigenous Species',
+      subtitle: 'From origin to market.',
+      description:
+        'Connect geographic origin, producer information, sourcing records, processing events, and product identity to make provenance information more accessible across agricultural supply chains.',
+      image: { src: indCoffee, alt: 'Hands harvesting ripe coffee cherries' },
+      focus: '50% 45%',
+    },
+    {
+      id: 'consumer-goods',
+      number: '06',
+      capabilityLabel: 'Consumer Goods',
+      title: 'Consumer Goods',
+      subtitle: 'Product information across every journey.',
+      description:
+        'Bring product identity, sourcing information, manufacturing records, and relevant sustainability data together across consumer-goods supply chains.',
+      image: { src: indConsumer, alt: 'Quality checks on bottles at the end of a bottling line' },
+      focus: '50% 60%',
+    },
+  ] satisfies Industry[],
+  cta: { label: 'Discuss your supply chain', href: '/contact' },
 };
+
+/** Third-party photos that require attribution (rendered in the footer). */
+export const PHOTO_CREDITS = [
+  { text: 'Automotive line: Tupungato, CC BY 3.0', href: 'https://commons.wikimedia.org/w/index.php?curid=116381370' },
+  { text: 'Battery lab: Oak Ridge National Laboratory, CC BY 2.0', href: 'https://commons.wikimedia.org/w/index.php?curid=125279741' },
+  { text: 'Bottling line: Allagash Brewing, CC BY 2.0', href: 'https://www.flickr.com/photos/89562459@N03/28540500774' },
+];
 
 export type Insight = {
   slug: string;
