@@ -107,19 +107,79 @@ export const APPROACH = {
   },
 };
 
-export type Insight = { title: string; to: string; image: Img };
+export type Insight = {
+  slug: string;
+  title: string;
+  to: string;
+  category: string;
+  readTime: string;
+  date: string;
+  summary: string;
+  author: string;
+  image: Img;
+  body?: {
+    lead?: string;
+    sections?: {
+      heading: string;
+      content: string;
+    }[];
+  };
+};
 
 export const INSIGHTS = {
   label: 'Insights',
   headline: 'Building a More Transparent and Sustainable World',
   intro:
     'In today’s rapidly changing world, product traceability and sustainability data are becoming more critical than ever. As industries seek to reduce environmental impact and meet global compliance requirements, digital product passports, end-to-end traceability and trusted product data are at the forefront of change.',
-  // No articles are published yet — each card opens the matching live page or section instead.
   items: [
-    { title: 'Digital Product Passports for Global Supply Chains', to: '/platform/passport', image: { src: insightTextile, alt: 'Fabric being woven on a loom' } },
-    { title: 'End-to-End Traceability from Source to Shelf', to: '/platform/trace', image: { src: trustPort, alt: 'A port worker tracing containers on a tablet' } },
-    { title: 'TierraTrace Studio for Sustainability Intelligence', to: '/platform/studio', image: { src: insightSeedling, alt: 'A green seedling growing from dark soil at sunset' } },
-    { title: 'Building Compliance Readiness Across Industries', to: '/?s=compliance', image: { src: insightAgriculture, alt: 'Hands harvesting coffee cherries on a hillside plantation' } },
+    {
+      slug: 'digital-product-passports-for-global-supply-chains',
+      title: 'Digital Product Passports for Global Supply Chains',
+      to: '/insights/digital-product-passports-for-global-supply-chains',
+      category: 'Digital Product Passport',
+      readTime: '5 min read',
+      date: 'Coming Soon',
+      author: 'TierraTrace Editorial Team',
+      summary:
+        'How global manufacturers and exporters are adopting ESPR-ready digital product passports to unify bill-of-materials, carbon telemetry, and verified provenance into one scannable identity.',
+      image: { src: insightTextile, alt: 'Fabric being woven on a loom' },
+    },
+    {
+      slug: 'end-to-end-traceability-from-source-to-shelf',
+      title: 'End-to-End Traceability from Source to Shelf',
+      to: '/insights/end-to-end-traceability-from-source-to-shelf',
+      category: 'Supply Chain Traceability',
+      readTime: '6 min read',
+      date: 'Coming Soon',
+      author: 'TierraTrace Editorial Team',
+      summary:
+        'Moving past disconnected spreadsheets and siloed supplier declarations to cryptographic, audit-ready chain-of-custody logging from raw material origin to final retail shelf.',
+      image: { src: trustPort, alt: 'A port worker tracing containers on a tablet' },
+    },
+    {
+      slug: 'tierratrace-studio-for-sustainability-intelligence',
+      title: 'TierraTrace Studio for Sustainability Intelligence',
+      to: '/insights/tierratrace-studio-for-sustainability-intelligence',
+      category: 'ESG Compliance & AI',
+      readTime: '4 min read',
+      date: 'Coming Soon',
+      author: 'TierraTrace Editorial Team',
+      summary:
+        'Streamlining ESG disclosures across CSRD, GRI, ISSB, and BRSR with continuous live telemetry, AI narrative drafting, and automated gap detection without spreadsheets.',
+      image: { src: insightSeedling, alt: 'A green seedling growing from dark soil at sunset' },
+    },
+    {
+      slug: 'building-compliance-readiness-across-industries',
+      title: 'Building Compliance Readiness Across Industries',
+      to: '/insights/building-compliance-readiness-across-industries',
+      category: 'Regulatory Standards',
+      readTime: '5 min read',
+      date: 'Coming Soon',
+      author: 'TierraTrace Editorial Team',
+      summary:
+        'Navigating the wave of EUDR deforestation diligence, ESPR mandates, and SEBI BRSR Core with automated data pipelines and tamper-proof verification frameworks.',
+      image: { src: insightAgriculture, alt: 'Hands harvesting coffee cherries on a hillside plantation' },
+    },
   ] satisfies Insight[],
 };
 

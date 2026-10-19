@@ -12,6 +12,8 @@ import InsightsPage from './pages/platform/insights/InsightsPage';
 import ConnectPage from './pages/platform/connect/ConnectPage';
 import ComingSoon from './pages/platform/ComingSoon';
 import ContactPage from './pages/contact/ContactPage';
+import InsightPostPage from './pages/insights/InsightPostPage';
+import InsightsIndexPage from './pages/insights/InsightsIndexPage';
 
 export default function App() {
   return (
@@ -39,6 +41,8 @@ export default function App() {
           <Route path="/platform/verify" element={<VerifyPage />} />
           <Route path="/platform/insights" element={<InsightsPage />} />
           <Route path="/platform/connect" element={<ConnectPage />} />
+          <Route path="/insights" element={<InsightsIndexPage />} />
+          <Route path="/insights/:slug" element={<InsightPostPage />} />
           {/* Any future product not yet built falls back to a placeholder; unknown slugs go home. */}
           <Route path="/platform/:slug" element={<ComingSoon />} />
           <Route path="*" element={<Navigate to="/" replace />} />
