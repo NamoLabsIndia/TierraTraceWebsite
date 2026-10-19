@@ -6,6 +6,8 @@ node_modules/
 # Production build outputs
 dist/
 dist-ssr/
+.output/
+.wrangler/
 
 # Local env files
 .env

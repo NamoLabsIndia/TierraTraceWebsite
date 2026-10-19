@@ -1,63 +1,118 @@
-import { Link } from 'react-router-dom';
-import logo from '../../assets/tierratrace-logo.png';
-import { PRODUCTS } from '../../data/products';
-import { Container, SmartLink } from '../ui';
+import { ArrowRight, Mail, Phone } from 'lucide-react';
+import logoLight from '../../assets/tierratrace-logo-light.png';
+import { CLOSING_CTA, FOOTER } from '../../data/siteContent';
+import { HERO } from '../../data/heroContent';
+import { InView, Words } from '../../lib/motion';
+import { SmartLink } from '../ui';
+import './site-footer.css';
 
-const COMPANY = [
-  { label: 'Why TierraTrace', to: 'why' },
-  { label: 'Industries', to: 'industries' },
-  { label: 'Compliance', to: 'compliance' },
-  { label: 'Pilot program', to: 'pilot' },
-  { label: 'Contact', to: 'contact' },
-];
-
+/** Frame 7 — dark footer with the oversized forest wordmark, followed by the collaboration CTA panel. */
 export function Footer() {
   return (
-    <footer className="border-t border-tt-border bg-white">
-      <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
-          <img src={logo} alt="TierraTrace" className="h-10 w-auto" />
-          <p className="mt-4 max-w-[340px] text-[15px] leading-relaxed text-tt-muted">
-            Digital Product Passports and end-to-end traceability — from raw material to reuse and recycling.
-          </p>
-          <p className="mt-4 text-[14px] text-tt-muted">
-            info@namolabs.in ·{' '}
-            <a href="https://www.namolabs.in/" className="font-medium text-tt-green-ink hover:underline">
-              namolabs.in
-            </a>
-          </p>
+    <>
+      <footer className="ft" aria-labelledby="ft-title">
+        <div className="ft-inner">
+          <div className="ft-brand">
+            <div className="ft-logo">
+              <img src={logoLight} alt="TierraTrace" width={360} height={163} loading="lazy" />
+              <span>{FOOTER.parent}</span>
+            </div>
+            <Words as="p" text={FOOTER.headline} className="ft-title" />
+            <InView as="ul" className="ft-contact m-stagger" delay={200}>
+              <li>
+                <a href={`mailto:${FOOTER.contact.email}`}>
+                  <Mail className="h-5 w-5" aria-hidden /> {FOOTER.contact.email}
+                </a>
+              </li>
+              {FOOTER.contact.phone && (
+                <li>
+                  <a href={`tel:${FOOTER.contact.phone.replace(/\s/g, '')}`}>
+                    <Phone className="h-5 w-5" aria-hidden /> {FOOTER.contact.phone}
+                  </a>
+                </li>
+              )}
+            </InView>
+          </div>
+
+          <nav className="ft-cols" aria-label="Footer">
+            {FOOTER.columns.map((col, ci) => (
+              <InView key={col.title} className="ft-col m-stagger" delay={ci * 90}>
+                <p className="ft-col-title" id={`ft-${col.title}`}>
+                  {col.title}
+                </p>
+                <ul aria-labelledby={`ft-${col.title}`}>
+                  {col.links.map((l) => (
+                    <li key={l.label}>
+                      {l.to ? (
+                        <SmartLink target={l.to} className="ft-link">
+                          {l.label}
+                        </SmartLink>
+                      ) : (
+                        <span className="ft-link is-soon">
+                          {l.label} <em>Soon</em>
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </InView>
+            ))}
+          </nav>
         </div>
-        <nav aria-label="Platform">
-          <p className="text-[13px] font-semibold uppercase tracking-wider text-tt-muted">Platform</p>
-          <ul className="mt-4 space-y-2.5">
-            {PRODUCTS.map((p) => (
-              <li key={p.slug}>
-                <Link to={`/platform/${p.slug}`} className="text-[15px] text-tt-ink hover:text-tt-green-ink">
-                  TierraTrace {p.name}
-                </Link>
-              </li>
+
+        <p className="ft-legal">
+          © {new Date().getFullYear()} Namo Labs India. All rights reserved.
+          {HERO.background.credit && (
+            <>
+              {' · '}
+              <a href={HERO.background.credit.href} target="_blank" rel="noreferrer">
+                {HERO.background.credit.text}
+              </a>
+            </>
+          )}
+        </p>
+
+        <h2 id="ft-title" className="sr-only">
+          TierraTrace
+        </h2>
+        <FooterWordmark />
+      </footer>
+
+      <ClosingCta />
+    </>
+  );
+}
+
+/** Oversized forest "TierraTrace" + pin artwork, cut off by the footer's bottom edge. Decorative. */
+function FooterWordmark() {
+  const w = FOOTER.wordmark;
+  return (
+    <div className="ft-mark" aria-hidden>
+      <img className="ft-mark-img m-parallax" src={w.src} width={w.width} height={w.height} alt="" loading="lazy" decoding="async" />
+    </div>
+  );
+}
+
+function ClosingCta() {
+  return (
+    <section className="cta" aria-labelledby="cta-title">
+      <div className="cta-panel">
+        <div className="cta-earth" aria-hidden>
+          <img className="m-parallax" src={CLOSING_CTA.image.src} alt="" loading="lazy" decoding="async" />
+        </div>
+        <div className="cta-copy">
+          <h2 id="cta-title" className="cta-title">
+            {CLOSING_CTA.headline.map((line, i) => (
+              <Words key={line} as="span" text={line} className="cta-line" delay={i * 120} />
             ))}
-          </ul>
-        </nav>
-        <nav aria-label="Company">
-          <p className="text-[13px] font-semibold uppercase tracking-wider text-tt-muted">Company</p>
-          <ul className="mt-4 space-y-2.5">
-            {COMPANY.map((c) => (
-              <li key={c.label}>
-                <SmartLink target={c.to} className="text-[15px] text-tt-ink hover:text-tt-green-ink">
-                  {c.label}
-                </SmartLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </Container>
-      <div className="border-t border-tt-border">
-        <Container className="flex flex-col items-center justify-between gap-2 py-6 text-[13px] text-tt-muted sm:flex-row">
-          <span>© {new Date().getFullYear()} Namo Labs India. All rights reserved.</span>
-          <span>SOC 2 Type II · ISO 27001 · GDPR</span>
-        </Container>
+          </h2>
+          <InView className="m-rise" delay={420}>
+            <SmartLink target={CLOSING_CTA.cta.to} className="cta-btn">
+              {CLOSING_CTA.cta.label} <ArrowRight className="cta-arrow h-6 w-6" aria-hidden />
+            </SmartLink>
+          </InView>
+        </div>
       </div>
-    </footer>
+    </section>
   );
 }

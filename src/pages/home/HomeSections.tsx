@@ -115,9 +115,9 @@ export function PlatformGrid() {
       <Container>
         <SectionHeading
           eyebrow="The platform"
-          title="Six products."
+          title="The platform products."
           accent="One source of truth."
-          lead="Start with the passport, add traceability, carbon, verification, insights and integrations as you scale — every product shares the same event graph."
+          lead="Design in the studio, issue passports, and add traceability, carbon, verification, insights and integrations as you scale — every product shares the same event graph."
           align="center"
         />
         <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

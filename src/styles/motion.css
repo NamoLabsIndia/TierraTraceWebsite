@@ -1,0 +1,139 @@
+/*
+ * Editorial motion system. Elements start "pre-enter" and settle once [data-visible='true'] is set by
+ * InView / Words (src/lib/motion.tsx). One easing family, long durations, small distances.
+ */
+
+:root {
+  --m-ease: cubic-bezier(0.19, 1, 0.22, 1); /* expo-out: fast start, long settle */
+  --m-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --m-dur: 1100ms;
+}
+
+/* ---- word mask rise ---- */
+.m-words .m-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* inline-blocks inherit text-indent (hanging quotes) — reset it inside each mask */
+  text-indent: 0;
+  /* room for descenders inside the mask */
+  padding-bottom: 0.09em;
+  margin-bottom: -0.09em;
+}
+.m-words .m-w > span {
+  display: inline-block;
+  transform: translateY(108%) rotate(3deg);
+  transform-origin: 0 100%;
+  transition: transform var(--m-dur) var(--m-ease);
+  transition-delay: var(--m-delay, 0ms);
+}
+.m-words[data-visible='true'] .m-w > span {
+  transform: none;
+}
+
+/* ---- generic rise ---- */
+.m-rise {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 900ms var(--m-ease),
+    transform var(--m-dur) var(--m-ease);
+  transition-delay: var(--m-delay, 0ms);
+}
+.m-rise[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* children stagger: put .m-stagger on an InView; direct children animate in sequence */
+.m-stagger > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 800ms var(--m-ease),
+    transform 1000ms var(--m-ease);
+}
+.m-stagger[data-visible='true'] > * {
+  opacity: 1;
+  transform: none;
+}
+.m-stagger > *:nth-child(1) { transition-delay: calc(var(--m-delay, 0ms) + 0ms); }
+.m-stagger > *:nth-child(2) { transition-delay: calc(var(--m-delay, 0ms) + 80ms); }
+.m-stagger > *:nth-child(3) { transition-delay: calc(var(--m-delay, 0ms) + 160ms); }
+.m-stagger > *:nth-child(4) { transition-delay: calc(var(--m-delay, 0ms) + 240ms); }
+.m-stagger > *:nth-child(5) { transition-delay: calc(var(--m-delay, 0ms) + 320ms); }
+.m-stagger > *:nth-child(6) { transition-delay: calc(var(--m-delay, 0ms) + 400ms); }
+
+/* ---- image wipe: frame opens upward while the photo settles from a slight zoom ---- */
+.m-img {
+  clip-path: inset(18% 0 0 0 round var(--m-radius, 0px));
+  transition: clip-path 1400ms var(--m-ease);
+  transition-delay: var(--m-delay, 0ms);
+}
+.m-img img {
+  transform: scale(1.18);
+  transition: transform 1800ms var(--m-ease);
+  transition-delay: var(--m-delay, 0ms);
+}
+.m-img[data-visible='true'] {
+  clip-path: inset(0 0 0 0 round var(--m-radius, 0px));
+}
+.m-img[data-visible='true'] img {
+  transform: scale(1);
+}
+
+/* ---- hairline draw ---- */
+.m-line {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 1400ms var(--m-ease);
+  transition-delay: var(--m-delay, 0ms);
+}
+.m-line[data-visible='true'] {
+  transform: none;
+}
+
+/* ---- pop (pills, chips) ---- */
+.m-pop {
+  opacity: 0;
+  transform: scale(0.86);
+  transition:
+    opacity 600ms var(--m-ease),
+    transform 900ms var(--m-ease);
+  transition-delay: var(--m-delay, 0ms);
+}
+.m-pop[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- scroll-linked parallax (progressive enhancement: static where unsupported) ---- */
+@supports (animation-timeline: view()) {
+  .m-parallax {
+    animation: m-parallax linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  @keyframes m-parallax {
+    from { transform: translateY(var(--m-par-from, -7%)) scale(var(--m-par-scale, 1.16)); }
+    to { transform: translateY(var(--m-par-to, 7%)) scale(var(--m-par-scale, 1.16)); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-words .m-w > span,
+  .m-rise,
+  .m-stagger > *,
+  .m-img,
+  .m-img img,
+  .m-line,
+  .m-pop {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    clip-path: none !important;
+  }
+  .m-parallax {
+    animation: none !important;
+  }
+}

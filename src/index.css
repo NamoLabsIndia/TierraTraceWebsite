@@ -42,6 +42,8 @@ body {
   font-family: var(--font-sans);
   color: var(--color-tt-ink);
   background: #fff;
+  /* viewport-fit=cover: keep content clear of notches; full-bleed sections opt out (see .lh). */
+  padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
 }
 
 ::selection {

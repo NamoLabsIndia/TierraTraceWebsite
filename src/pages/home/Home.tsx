@@ -1,25 +1,27 @@
 import { useEffect } from 'react';
-import { HomeHero } from './HomeHero';
-import { Capabilities, Compliance, Industries, Lifecycle, LogoStrip, PlatformGrid, Why } from './HomeSections';
-import { Contact, Pilot } from './PilotContact';
+import { LandingHero } from './LandingHero';
+import { AboutSection } from './sections/AboutSection';
+import { MissionSection } from './sections/MissionSection';
+import { SolutionsSection } from './sections/SolutionsSection';
+import { ApproachSection } from './sections/ApproachSection';
+import { InsightsSection } from './sections/InsightsSection';
+import { ComplianceSection } from './sections/ComplianceSection';
+import './sections/sections.css';
 
-/** Homepage — rebuilt from tierratrace.in; "Platform" now lists the six products, each with its own page. */
+/** Homepage: hero, then the editorial sections (header, footer + closing CTA come from the app shell). */
 export default function Home() {
   useEffect(() => {
-    document.title = 'TierraTrace — Global Digital Product Passport & End-to-End Traceability';
+    document.title = 'TierraTrace — Digital Product Passports, Traceability & Sustainability Intelligence';
   }, []);
   return (
     <>
-      <HomeHero />
-      <LogoStrip />
-      <Why />
-      <PlatformGrid />
-      <Lifecycle />
-      <Industries />
-      <Capabilities />
-      <Compliance />
-      <Pilot />
-      <Contact />
+      <LandingHero />
+      <AboutSection />
+      <MissionSection />
+      <SolutionsSection />
+      <ApproachSection />
+      <ComplianceSection />
+      <InsightsSection />
     </>
   );
 }

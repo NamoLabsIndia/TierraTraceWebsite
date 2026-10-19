@@ -3,6 +3,7 @@ import { Nav } from './components/layout/Nav';
 import { Footer } from './components/layout/Footer';
 import { ScrollManager } from './components/layout/ScrollManager';
 import Home from './pages/home/Home';
+import StudioPage from './pages/platform/studio/StudioPage';
 import PassportPage from './pages/platform/passport/PassportPage';
 import TracePage from './pages/platform/trace/TracePage';
 import CarbonPage from './pages/platform/carbon/CarbonPage';
@@ -10,6 +11,7 @@ import VerifyPage from './pages/platform/verify/VerifyPage';
 import InsightsPage from './pages/platform/insights/InsightsPage';
 import ConnectPage from './pages/platform/connect/ConnectPage';
 import ComingSoon from './pages/platform/ComingSoon';
+import ContactPage from './pages/contact/ContactPage';
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
       <main id="main" tabIndex={-1} className="outline-none">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/platform/studio" element={<StudioPage />} />
           <Route path="/platform/passport" element={<PassportPage />} />
           <Route path="/platform/trace" element={<TracePage />} />
           <Route path="/platform/carbon" element={<CarbonPage />} />

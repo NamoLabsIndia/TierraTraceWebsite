@@ -1,0 +1,231 @@
+/*
+ * Landing hero — full-bleed cinematic landscape (edge to edge, one viewport tall).
+ * Stack inside the frame (bottom → top):
+ *   photo → TIERRATRACE wordmark → foreground cut-out → legibility scrim → nav → content
+ * The cut-out is the same photo masked to the hills, turbines and cooling tower, so they stand in
+ * front of the letters. The wordmark's baseline is pinned to the photo's horizon: with
+ * object-fit: cover the rendered photo is max(frame height, frame width / aspect) tall and is cropped
+ * by --lh-py, so the horizon's offset from the frame bottom is computable in CSS (see .lh-wordmark).
+ */
+
+.lh {
+  --lh-lime: #c8f45a;
+  --lh-lime-hover: #d4f877;
+  --lh-ink: #07140e;
+  /* Fallbacks; real values come from heroContent via inline style. */
+  --lh-px: 0.5;
+  --lh-py: 0.6;
+  --lh-hz: 0.456;
+  --lh-ar: 1.582;
+  --lh-safe-t: env(safe-area-inset-top, 0px);
+  --lh-safe-r: env(safe-area-inset-right, 0px);
+  --lh-safe-b: env(safe-area-inset-bottom, 0px);
+  --lh-safe-l: env(safe-area-inset-left, 0px);
+  --lh-inset-x: clamp(16px, 6.5vw, 104px);
+  --lh-nav-top: clamp(12px, 2.6vh, 26px);
+  --lh-nav-h: clamp(54px, 4.9vw, 68px);
+  /* Cancel the body's notch padding so the landscape reaches the physical edges. */
+  margin-inline: calc(-1 * var(--lh-safe-l)) calc(-1 * var(--lh-safe-r));
+}
+
+.lh-frame {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* Exactly one viewport; grows (page scrolls) only if the content genuinely needs more room. */
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: calc(var(--lh-safe-t) + var(--lh-nav-top) + var(--lh-nav-h) + 24px);
+  overflow: hidden;
+  background: #18251d;
+}
+
+/* ---------- image layers ---------- */
+
+.lh-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: calc(var(--lh-px) * 100%) calc(var(--lh-py) * 100%);
+  pointer-events: none;
+  user-select: none;
+}
+.lh-photo { z-index: 0; }
+.lh-fore { z-index: 2; }
+
+.lh-scrim {
+  z-index: 4;
+  background:
+    linear-gradient(to top, rgba(6, 14, 9, 0.5) 0%, rgba(6, 14, 9, 0.26) 24%, rgba(6, 14, 9, 0.06) 42%, transparent 52%),
+    radial-gradient(55% 40% at 0% 100%, rgba(6, 14, 9, 0.32), transparent 78%);
+}
+
+/* ---------- wordmark ---------- */
+
+.lh-wordmark {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  /* ~91% of the width, but capped by height so short, wide windows never push it under the nav. */
+  width: min(91%, 145svh);
+  /* Horizon offset from the frame bottom, minus ~1.2% of the photo so the hills hide the letters' feet. */
+  bottom: calc((1 - var(--lh-py)) * 100% + (var(--lh-py) - var(--lh-hz) - 0.012) * max(100%, 100cqw / var(--lh-ar)));
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+.lh-wordmark text {
+  font-family: 'Anton', 'Be Vietnam Pro', Impact, sans-serif;
+  font-weight: 400;
+}
+
+/* Header: the site-wide Nav floats over the hero; --lh-nav-* mirror its size (site-header.css). */
+
+/* ---------- foreground content ---------- */
+
+.lh-bottom {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 64px);
+  padding: 0 calc(var(--lh-safe-r) + var(--lh-inset-x)) calc(var(--lh-safe-b) + clamp(22px, 6vh, 64px)) calc(var(--lh-safe-l) + var(--lh-inset-x));
+}
+.lh-copy { flex: 1 1 auto; min-width: 0; color: #fff; }
+.lh-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.55vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
+}
+.lh-title span { display: block; }
+.lh-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 32px);
+  margin-top: clamp(18px, 3vh, 32px);
+}
+.lh-body {
+  margin: 0;
+  max-width: 37rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(16px, 1.32vw, 19px);
+  line-height: 1.6;
+  text-wrap: pretty;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
+}
+
+.lh-cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: clamp(52px, 4.1vw, 58px);
+  padding: 0 clamp(22px, 2vw, 30px);
+  border-radius: 999px;
+  background: var(--lh-lime);
+  color: var(--lh-ink);
+  font-size: clamp(16px, 1.25vw, 18px);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 30px -12px rgba(200, 244, 90, 0.55);
+  transition:
+    transform 220ms var(--ease-out-strong),
+    background-color 200ms ease,
+    box-shadow 220ms ease;
+}
+.lh-cta:hover {
+  transform: translateY(-2px);
+  background: var(--lh-lime-hover);
+  box-shadow: 0 16px 34px -14px rgba(200, 244, 90, 0.7);
+}
+.lh-cta:active { transform: translateY(0) scale(0.98); }
+
+
+/* ---------- focus ---------- */
+
+.lh :focus-visible {
+  outline: 2px solid var(--lh-lime);
+  outline-offset: 3px;
+}
+
+/* ---------- entrance ---------- */
+
+.lh-rise { animation: lh-rise 800ms var(--ease-out-strong) both; animation-delay: var(--lh-d, 0ms); }
+.lh-fade { animation: lh-fade 1200ms ease-out both; }
+@keyframes lh-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes lh-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- responsive ---------- */
+
+@media (min-width: 1200px) {
+  .lh-title span { white-space: nowrap; }
+}
+
+/* Tablet: CTA drops under the copy. */
+@media (max-width: 1199px) {
+  .lh-row { flex-direction: column; align-items: flex-start; }
+  .lh-body { max-width: 34rem; }
+}
+
+/* Portrait: the photo is height-fitted, so steer the horizontal crop to keep turbine + tower in view. */
+@media (orientation: portrait) {
+  .lh { --lh-px: var(--lh-px-portrait, 0.52); }
+}
+
+/* Mobile portrait: content stacks over a darkened foreground. */
+@media (max-width: 767px) and (orientation: portrait) {
+  .lh { --lh-inset-x: 22px; }
+  /* Not enough height to sit on the horizon above the stacked copy: hang it under the nav instead. */
+  .lh-wordmark { width: calc(100% - 40px); bottom: auto; top: calc(var(--lh-safe-t) + var(--lh-nav-top) + var(--lh-nav-h) + 18px); }
+  .lh-bottom { flex-direction: column; align-items: stretch; gap: 18px; padding-bottom: calc(var(--lh-safe-b) + 22px); }
+  .lh-title { font-size: clamp(1.85rem, 8.4vw, 2.4rem); }
+  .lh-title span { display: inline; }
+  .lh-row { gap: 22px; margin-top: 16px; }
+  .lh-scrim {
+    background:
+      linear-gradient(to top, rgba(4, 12, 8, 0.9) 0%, rgba(4, 12, 8, 0.72) 32%, rgba(4, 12, 8, 0.3) 52%, transparent 64%),
+      linear-gradient(to bottom, rgba(4, 12, 8, 0.2) 0%, transparent 16%);
+  }
+}
+
+/* Short landscape (phones on their side, short windows): compact everything, keep copy above the fold. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .lh { --lh-nav-top: 10px; --lh-nav-h: 52px; --lh-inset-x: clamp(16px, 5vw, 48px); }
+  .lh-frame { padding-top: calc(var(--lh-safe-t) + 10px + 52px + 12px); }
+  .lh-wordmark { width: min(64%, 150svh); bottom: auto; top: calc(var(--lh-safe-t) + 10px + 52px + 10px); }
+  .lh-bottom { align-items: flex-end; gap: 20px; padding-bottom: calc(var(--lh-safe-b) + 14px); }
+  .lh-title { font-size: clamp(1.3rem, 3.3vw, 1.85rem); }
+  .lh-title span { display: block; white-space: normal; }
+  .lh-row { flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 10px; }
+  .lh-body { max-width: 30rem; font-size: 14px; line-height: 1.5; }
+  .lh-cta { height: 42px; font-size: 15px; padding: 0 20px; }
+  .lh-scrim {
+    background:
+      linear-gradient(to top, rgba(4, 12, 8, 0.78) 0%, rgba(4, 12, 8, 0.45) 40%, transparent 70%),
+      linear-gradient(to bottom, rgba(4, 12, 8, 0.2) 0%, transparent 22%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lh-rise,
+  .lh-fade { animation: none; }
+  .lh-cta,
+  .lh-cta:hover { transition: none; transform: none; }
+}

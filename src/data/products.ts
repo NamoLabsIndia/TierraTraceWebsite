@@ -1,4 +1,4 @@
-import { ChartNoAxesCombined, CircleCheck, Eye, Leaf, PlugZap, Route, ShieldCheck } from 'lucide-react';
+import { ChartNoAxesCombined, CircleCheck, Eye, Leaf, PlugZap, Route, ShieldCheck, Sparkles } from 'lucide-react';
 
 export type Product = {
   slug: string;
@@ -12,6 +12,14 @@ export type Product = {
 };
 
 export const PRODUCTS: Product[] = [
+  {
+    slug: 'studio',
+    name: 'Studio',
+    tagline: 'Visual configuration studio for Digital Product Passports and schemas.',
+    icon: Sparkles,
+    menuIcon: Sparkles,
+    ready: true,
+  },
   {
     slug: 'passport',
     name: 'Passport',

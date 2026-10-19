@@ -1,0 +1,239 @@
+/*
+ * Site header — the translucent pill from the homepage hero, used everywhere.
+ * --hd-top / --hd-h are mirrored by the hero (landing-hero.css) so its content clears the bar.
+ */
+
+.hd {
+  --hd-top: clamp(12px, 2.6vh, 26px);
+  --hd-h: clamp(54px, 4.9vw, 68px);
+  --hd-x: clamp(12px, 3.6vw, 56px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: calc(env(safe-area-inset-top, 0px) + var(--hd-top)) calc(env(safe-area-inset-right, 0px) + var(--hd-x)) 0
+    calc(env(safe-area-inset-left, 0px) + var(--hd-x));
+  pointer-events: none;
+}
+/* Homepage: float over the full-bleed hero. */
+.hd--overlay {
+  position: fixed;
+  inset-inline: 0;
+}
+
+.hd-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--hd-h);
+  padding: 0 clamp(8px, 0.7vw, 11px) 0 clamp(18px, 2.2vw, 32px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: rgba(240, 246, 250, 0.62);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  pointer-events: auto;
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+/* Over the hero photo: nearly clear — the faintest tint and outline, a touch of blur. */
+.hd.is-glass .hd-nav {
+  /* outline as faint as the fill */
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  box-shadow: none;
+  transition:
+    background-color 400ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+/* Deeper into the hero the photo behind the bar is darker: a little more tint keeps the text readable. */
+.hd.is-glass.is-deep .hd-nav {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.hd.is-glass .hd-link {
+  color: #08130e;
+}
+/* no white pill behind links over the photo; hover just dims the text slightly */
+.hd.is-glass .hd-link:hover,
+.hd.is-glass .hd-link.is-active {
+  background: none;
+}
+.hd.is-glass .hd-link:hover {
+  opacity: 0.7;
+}
+.hd.is-glass .hd-panel {
+  background: rgba(244, 249, 247, 0.92);
+}
+
+/* Over light page content the pill firms up so it stays legible. */
+.hd.is-solid .hd-nav {
+  border-color: rgba(10, 25, 15, 0.08);
+  background: rgba(247, 249, 248, 0.84);
+  box-shadow: 0 14px 36px -18px rgba(8, 12, 15, 0.28);
+}
+
+.hd-logo {
+  display: inline-flex;
+  justify-self: start;
+  border-radius: 10px;
+}
+.hd-logo img {
+  display: block;
+  width: auto;
+  height: clamp(38px, 3.7vw, 54px);
+  margin-top: 3px;
+}
+
+.hd-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 1vw, 16px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hd-link {
+  display: inline-flex;
+  padding: 10px clamp(8px, 0.9vw, 14px);
+  border-radius: 999px;
+  color: #0b1712;
+  font-size: clamp(14px, 1.05vw, 15.5px);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+.hd-link:hover {
+  background: rgba(7, 20, 14, 0.07);
+}
+.hd-link.is-active {
+  background: rgba(7, 20, 14, 0.09);
+}
+
+.hd-actions {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: clamp(4px, 0.8vw, 12px);
+}
+.hd-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: clamp(40px, 3.3vw, 48px);
+  padding: 0 clamp(18px, 1.7vw, 26px);
+  border-radius: 999px;
+  background: #07140e;
+  color: #fff;
+  font-size: clamp(14px, 1.05vw, 15.5px);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    transform 160ms var(--ease-out-strong);
+}
+.hd-cta:hover {
+  background: #12301f;
+}
+.hd-cta:active {
+  transform: scale(0.97);
+}
+
+.hd-menubtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: #07140e;
+  color: #fff;
+  cursor: pointer;
+}
+
+.hd-panel {
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  background: rgba(246, 250, 248, 0.96);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+.hd-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hd-panel .hd-link {
+  display: flex;
+  padding: 13px 16px;
+  border-radius: 16px;
+  font-size: 16px;
+}
+.hd-panel .hd-cta {
+  display: flex;
+  justify-content: center;
+  height: 52px;
+  margin-top: 6px;
+}
+
+.hd :focus-visible {
+  outline: 2px solid #07140e;
+  outline-offset: 3px;
+}
+
+/* Too narrow for five links + two actions: collapse into the menu. */
+@media (max-width: 1180px) {
+  .hd-nav {
+    grid-template-columns: 1fr auto;
+  }
+  .hd-links,
+  .hd-actions {
+    display: none;
+  }
+  .hd-menubtn {
+    display: inline-flex;
+  }
+}
+
+/* Short landscape: matches the hero's compact header. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .hd {
+    --hd-top: 10px;
+    --hd-h: 52px;
+  }
+  .hd-logo img {
+    height: 36px;
+    margin-top: 2px;
+  }
+  .hd-nav {
+    padding-left: 16px;
+  }
+  .hd-menubtn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hd-nav,
+  .hd-link,
+  .hd-cta {
+    transition: none;
+  }
+}
