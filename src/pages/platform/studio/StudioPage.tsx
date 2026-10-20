@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import {
   BrainCircuit,
+  Check,
   ChevronRight,
   FileText,
   Globe,
@@ -11,10 +12,10 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import { Breadcrumb, Container, PrimaryButton, Reveal, SecondaryButton, SectionHeading } from '../../../components/ui';
-import { CTA, MorePlatform } from '../../../components/Closing';
+import { Container, PrimaryButton, Reveal, SectionHeading } from '../../../components/ui';
+import { CTA } from '../../../components/Closing';
 import { StudioCanvas } from './StudioCanvas';
-import { StepWorkflowCanvas } from './StepWorkflowCanvas';
+import { StudioHero } from './StudioHero';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                  */
@@ -104,34 +105,34 @@ export default function StudioPage() {
 
   return (
     <>
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden pb-20 pt-10 sm:pb-28 sm:pt-16">
+      <StudioHero />
+
+      {/* ── Interactive canvas (previously the hero) ── */}
+      <section id="studio-canvas" aria-labelledby="studio-canvas-title" className="relative scroll-mt-28 overflow-hidden py-20 sm:py-28">
         <Container className="relative grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
           <div>
-            <Breadcrumb current="Studio" />
-            <h1 className="tt-swap-enter mt-6 text-[44px] font-bold leading-[1.05] tracking-[-0.03em] text-balance sm:text-display">
+            <h2 id="studio-canvas-title" className="text-[36px] font-bold leading-[1.08] tracking-[-0.03em] text-balance sm:text-[48px]">
               The AI Compliance
               <span className="mt-1 block text-tt-green">&amp; Reporting Canvas.</span>
-            </h1>
-            <p className="tt-swap-enter mt-7 max-w-[560px] text-[18px] leading-[1.65] text-tt-muted text-pretty [animation-delay:80ms]">
+            </h2>
+            <p className="mt-7 max-w-[560px] text-[18px] leading-[1.65] text-tt-muted text-pretty">
               TierraTrace Studio™ is the visual 6-step workspace where sustainability teams build, AI-draft,
               audit-check, and publish framework-compliant reports — CSRD, GRI, ISSB, BRSR and 15 more —
               without touching a single static spreadsheet.
             </p>
-            <div className="tt-swap-enter mt-9 flex flex-wrap gap-3 [animation-delay:140ms]">
-              <PrimaryButton to="pilot">Request Pilot</PrimaryButton>
-              <SecondaryButton to="how-it-works">See the 6 steps</SecondaryButton>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <PrimaryButton to="/contact?s=pilot">Request Pilot</PrimaryButton>
             </div>
-            <ul className="tt-swap-enter mt-9 flex flex-wrap gap-x-6 gap-y-2 [animation-delay:200ms]">
+            <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-2">
               {PROOF_POINTS.map((p) => (
                 <li key={p} className="inline-flex items-center gap-2 text-[15px] font-medium text-tt-ink/80">
-                  <span className="h-4 w-4 grid place-items-center rounded-full bg-tt-green-50 text-tt-green-ink">✓</span>
+                  <Check className="h-4 w-4 rounded-full bg-tt-green-50 p-0.5 text-tt-green-ink" aria-hidden />
                   {p}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="tt-swap-enter mx-auto w-full max-w-[520px] [animation-delay:120ms] lg:mr-0">
+          <div className="mx-auto w-full max-w-[520px] lg:mr-0">
             <StudioCanvas />
             <p className="mt-4 text-center text-[13px] text-tt-muted">
               Click through the <span className="font-semibold text-tt-ink">6 steps</span> to simulate a live CSRD reporting workflow.
@@ -158,23 +159,6 @@ export default function StudioPage() {
               </div>
             ))}
           </div>
-        </Container>
-      </section>
-
-      {/* ── 6-Step workflow section ── */}
-      <section id="how-it-works" className="scroll-mt-28 bg-[#fafbfa] py-24 sm:py-32">
-        <Container>
-          <SectionHeading
-            eyebrow="The 6-step canvas"
-            title="From raw telemetry"
-            accent="to regulator-ready report."
-            lead="Every step is live and connected — no handoffs between tools, no reconciliation, no version control. One canvas, from materiality to publication."
-            align="center"
-          />
-
-          <Reveal className="mt-14">
-            <StepWorkflowCanvas />
-          </Reveal>
         </Container>
       </section>
 
@@ -236,7 +220,6 @@ export default function StudioPage() {
         </Container>
       </section>
 
-      <MorePlatform current="studio" />
       <CTA />
     </>
   );

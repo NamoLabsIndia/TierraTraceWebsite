@@ -1,0 +1,327 @@
+/*
+ * TierraTrace Studio hero.
+ * Stack: collage (base) → drifting column layers cut from the same collage → dark grade → content.
+ */
+
+.sh {
+  --sh-green: #4fcb6b;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(96px, 13vh, 132px)) clamp(20px, 5vw, 64px) clamp(48px, 8vh, 96px);
+  overflow: hidden;
+  background: #07120d;
+  color: #fff;
+  text-align: center;
+}
+
+/* ---------- background ---------- */
+
+.sh-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  container-type: size;
+  pointer-events: none;
+}
+/* behaves like object-fit: cover, but keeps the base and the column layers in one coordinate box */
+.sh-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* +2px guards against sub-pixel slivers at the edges */
+  width: calc(max(100cqw, 100cqh * var(--sh-ar)) + 2px);
+  aspect-ratio: var(--sh-ar);
+  transform: translate(-50%, -50%);
+}
+.sh-base,
+.sh-col {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  max-width: none;
+  user-select: none;
+}
+.sh-base {
+  left: 0;
+  width: 100%;
+}
+.sh-col {
+  animation: sh-drift ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes sh-drift {
+  0%,
+  100% {
+    transform: translateY(calc(-1 * var(--sh-amp)));
+  }
+  50% {
+    transform: translateY(var(--sh-amp));
+  }
+}
+
+/* darker toward the centre where the copy sits; cards stay legible toward the edges */
+.sh-grade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 52% 50% at 50% 52%, rgba(3, 14, 9, 0.74) 0%, rgba(3, 14, 9, 0.5) 60%, transparent 100%),
+    linear-gradient(rgba(2, 16, 11, 0.42), rgba(2, 16, 11, 0.52));
+}
+
+/* ---------- content ---------- */
+
+.sh-content {
+  max-width: 980px;
+}
+.sh-eyebrow {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(11px, 1vw, 14px);
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.sh-title {
+  margin: clamp(16px, 2.2vh, 26px) 0 0;
+  font-size: clamp(2.4rem, 6.4vw, 6rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.35);
+}
+.sh-title > span {
+  display: block;
+}
+.sh-title em {
+  color: var(--sh-green);
+  font-style: normal;
+}
+.sh-body {
+  max-width: 34em;
+  margin: clamp(18px, 2.4vh, 28px) auto 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.55;
+  text-wrap: balance;
+}
+.sh-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px clamp(24px, 3vw, 44px);
+  margin-top: clamp(26px, 4.5vh, 52px);
+}
+.sh-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: clamp(54px, 4.4vw, 64px);
+  padding: 0 clamp(26px, 2.6vw, 40px);
+  border-radius: 999px;
+  background: #fff;
+  color: #0b1510;
+  font-size: clamp(16px, 1.3vw, 19px);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 220ms ease,
+    box-shadow 300ms ease;
+}
+.sh-primary:hover {
+  background: #eef6f0;
+  box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.6);
+}
+.sh-arrow {
+  transition: transform 300ms var(--m-ease, ease);
+}
+.sh-primary:hover .sh-arrow {
+  transform: translateX(4px);
+}
+.sh-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-size: clamp(16px, 1.3vw, 19px);
+  font-weight: 500;
+  cursor: pointer;
+}
+.sh-play {
+  display: grid;
+  place-items: center;
+  width: clamp(52px, 4.2vw, 62px);
+  height: clamp(52px, 4.2vw, 62px);
+  padding-left: 3px;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+.sh-video:hover .sh-play {
+  background: #fff;
+  color: #0b1510;
+}
+.sh :focus-visible {
+  outline: 2px solid var(--sh-green);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+/* entrance */
+.sh-in {
+  animation: sh-in 900ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: var(--sh-d, 0ms);
+}
+@keyframes sh-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- video dialog ---------- */
+
+.sh-dialog {
+  width: min(560px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: #fff;
+  color: #121413;
+  text-align: left;
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.6);
+}
+.sh-dialog:has(video) {
+  width: min(1000px, calc(100vw - 32px));
+  background: #000;
+}
+.sh-dialog::backdrop {
+  background: rgba(3, 10, 7, 0.7);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.sh-dialog-inner {
+  position: relative;
+  padding: clamp(28px, 4vw, 40px);
+}
+.sh-dialog:has(video) .sh-dialog-inner {
+  padding: 0;
+}
+.sh-video-el {
+  display: block;
+  width: 100%;
+}
+.sh-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: #f1f3f2;
+  color: #121413;
+  cursor: pointer;
+}
+.sh-dialog-title {
+  margin: 0;
+  padding-right: 40px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.sh-dialog-body {
+  margin: 12px 0 0;
+  color: #555b58;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.sh-dialog-actions {
+  margin-top: 24px;
+}
+.sh-primary--dark {
+  height: 50px;
+  padding: 0 24px;
+  background: #07140e;
+  color: #fff;
+  font-size: 15.5px;
+}
+.sh-primary--dark:hover {
+  background: #12301f;
+}
+.sh-dialog :focus-visible {
+  outline-color: #17803a;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 560px) {
+  .sh-eyebrow {
+    letter-spacing: 0.22em;
+  }
+  .sh-ctas {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .sh-primary {
+    width: 100%;
+    max-width: 340px;
+    justify-content: center;
+  }
+}
+
+/* short landscape: keep the CTAs on screen */
+@media (orientation: landscape) and (max-height: 540px) {
+  .sh {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 78px);
+    padding-bottom: 20px;
+  }
+  .sh-title {
+    margin-top: 10px;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+  }
+  .sh-body {
+    margin-top: 10px;
+    font-size: 14.5px;
+  }
+  .sh-ctas {
+    margin-top: 16px;
+  }
+  .sh-primary {
+    height: 46px;
+    font-size: 15px;
+  }
+  .sh-play {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-col {
+    animation: none;
+    transform: none;
+  }
+  .sh-in {
+    animation: none;
+  }
+}

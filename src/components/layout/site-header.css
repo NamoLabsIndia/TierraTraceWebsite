@@ -21,6 +21,7 @@
 }
 
 .hd-nav {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -29,21 +30,32 @@
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
   background: rgba(240, 246, 250, 0.62);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
+  --hd-blur: blur(16px) saturate(140%);
   pointer-events: auto;
   transition:
     background-color 300ms ease,
     border-color 300ms ease,
     box-shadow 300ms ease;
 }
+/* The blur lives on a pseudo-element: a backdrop-filter on the bar itself would make children that
+   extend outside it (the Solutions dropdown) render translucent in Chromium. */
+.hd-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  -webkit-backdrop-filter: var(--hd-blur, none);
+  backdrop-filter: var(--hd-blur, none);
+  pointer-events: none;
+}
+
 /* Over the hero photo: nearly clear — the faintest tint and outline, a touch of blur. */
 .hd.is-glass .hd-nav {
   /* outline as faint as the fill */
   border-color: rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  --hd-blur: blur(2px);
   box-shadow: none;
   transition:
     background-color 400ms ease,
@@ -54,8 +66,7 @@
 .hd.is-glass.is-deep .hd-nav {
   border-color: rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.18);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  --hd-blur: blur(4px);
 }
 .hd.is-glass .hd-link {
   color: #08130e;
@@ -70,6 +81,44 @@
 }
 .hd.is-glass .hd-panel {
   background: rgba(244, 249, 247, 0.92);
+}
+
+/* Over a dark hero: light text and logo on the same near-clear glass. */
+.hd-logo-light {
+  display: none !important;
+}
+.hd.is-on-dark .hd-logo-default {
+  display: none !important;
+}
+.hd.is-on-dark .hd-logo-light {
+  display: block !important;
+}
+.hd.is-glass.is-on-dark .hd-nav,
+.hd.is-glass.is-deep.is-on-dark .hd-nav {
+  border-color: rgba(255, 255, 255, 0.14);
+  /* a dark tint keeps white links readable over a busy image */
+  background: rgba(5, 16, 11, 0.5);
+  --hd-blur: blur(10px);
+}
+.hd.is-glass.is-on-dark .hd-link {
+  color: #fff;
+}
+.hd.is-glass.is-on-dark .hd-cta {
+  background: #fff;
+  color: #07140e;
+}
+.hd.is-glass.is-on-dark .hd-cta:hover {
+  background: #e7f2ea;
+}
+.hd.is-glass.is-on-dark .hd-menubtn {
+  background: #fff;
+  color: #07140e;
+}
+.hd.is-on-dark .hd-panel .hd-link {
+  color: #0b1712;
+}
+.hd.is-on-dark :focus-visible {
+  outline-color: #fff;
 }
 
 /* Over light page content the pill firms up so it stays legible. */
@@ -197,6 +246,125 @@
   outline-offset: 3px;
 }
 
+/* ---------- Solutions dropdown ---------- */
+
+.hd-menu {
+  position: relative;
+}
+.hd-trigger {
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: clamp(14px, 1.05vw, 15.5px);
+  font-weight: 500;
+  cursor: pointer;
+}
+.hd-chev {
+  opacity: 0.7;
+  transition: transform 200ms ease;
+}
+[aria-expanded='true'] > .hd-chev {
+  transform: rotate(180deg);
+}
+.hd-drop {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: -10px;
+  z-index: 60;
+  min-width: 248px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+  background: rgba(250, 252, 251, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 18px 40px -24px rgba(8, 20, 14, 0.4);
+  color: #1a1f1c;
+  text-align: left;
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 220ms;
+}
+.hd-drop[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s;
+}
+/* hover bridge across the gap under the trigger */
+.hd-drop::before {
+  content: '';
+  position: absolute;
+  inset: -16px 0 auto 0;
+  height: 16px;
+}
+.hd-drop ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hd-sol {
+  display: block;
+  padding: 11px 14px;
+  border-radius: 9px;
+  color: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.003em;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.hd-sol:hover {
+  background: rgba(23, 128, 58, 0.08);
+  color: var(--color-tt-green-ink);
+}
+.hd .hd-sol:focus-visible {
+  outline: 2px solid var(--color-tt-green-ink);
+  outline-offset: -2px;
+  border-radius: 9px;
+}
+
+/* mobile panel: solutions disclosure */
+.hd-disclose {
+  justify-content: space-between;
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+.hd-subs {
+  margin: 2px 0 6px !important;
+  padding: 0 0 0 8px !important;
+}
+.hd-sub {
+  display: block;
+  padding: 11px 16px;
+  border-radius: 12px;
+  color: #1a1f1c;
+  font-size: 15.5px;
+  text-decoration: none;
+}
+.hd-sub:hover {
+  background: rgba(23, 128, 58, 0.07);
+  color: var(--color-tt-green-ink);
+}
+
 /* Too narrow for five links + two actions: collapse into the menu. */
 @media (max-width: 1180px) {
   .hd-nav {
@@ -233,7 +401,10 @@
 @media (prefers-reduced-motion: reduce) {
   .hd-nav,
   .hd-link,
-  .hd-cta {
+  .hd-cta,
+  .hd-sol,
+  .hd-drop,
+  .hd-chev {
     transition: none;
   }
 }

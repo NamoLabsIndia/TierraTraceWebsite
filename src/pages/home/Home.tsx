@@ -5,6 +5,7 @@ import { MissionSection } from './sections/MissionSection';
 import { SolutionsSection } from './sections/SolutionsSection';
 import { ApproachSection } from './sections/ApproachSection';
 import { InsightsSection } from './sections/InsightsSection';
+import { StandardsSection } from './sections/StandardsSection';
 import { ComplianceSection } from './sections/ComplianceSection';
 import './sections/sections.css';
 
@@ -22,6 +23,7 @@ export default function Home() {
       <ApproachSection />
       <ComplianceSection />
       <InsightsSection />
+      <StandardsSection />
     </>
   );
 }
