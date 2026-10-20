@@ -1133,6 +1133,20 @@
   z-index: -1;
   line-height: 0;
   pointer-events: none;
+  /*
+   * Under the copy column the landscape fades out just above the horizon, so the turbine reads as a
+   * faint background behind the text; right of the copy it stays fully visible.
+   * Layer 1: everything right of ~56%. Layer 2: only the ground band (bottom up) across the full width.
+   */
+  --cp-fade-to: calc(var(--cp-land) + 44px);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, transparent 55%, #000 66%),
+    linear-gradient(to top, #000 0, #000 var(--cp-land), rgba(0, 0, 0, 0.05) var(--cp-fade-to), rgba(0, 0, 0, 0.06) 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, transparent 55%, #000 66%),
+    linear-gradient(to top, #000 0, #000 var(--cp-land), rgba(0, 0, 0, 0.05) var(--cp-fade-to), rgba(0, 0, 0, 0.06) 100%);
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
 }
 .cp-scene img {
   display: block;
@@ -1305,6 +1319,11 @@
 }
 
 @media (max-width: 1080px) {
+  /* stacked layout: copy spans the full width, so fade above the ground everywhere */
+  .cp-scene {
+    -webkit-mask-image: linear-gradient(to top, #000 0, #000 var(--cp-land), rgba(0, 0, 0, 0.05) var(--cp-fade-to), rgba(0, 0, 0, 0.06) 100%);
+    mask-image: linear-gradient(to top, #000 0, #000 var(--cp-land), rgba(0, 0, 0, 0.05) var(--cp-fade-to), rgba(0, 0, 0, 0.06) 100%);
+  }
   .cp-scene img {
     width: max(100%, 900px);
     max-width: none;
