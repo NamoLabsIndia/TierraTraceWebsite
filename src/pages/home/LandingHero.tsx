@@ -23,7 +23,6 @@ export function LandingHero({ content = HERO }: { content?: HeroContent }) {
     <section id="top" data-hero className="lh scroll-mt-0" aria-labelledby="lh-title" style={style}>
       <div className="lh-frame">
         <picture>
-          <source media="(max-width: 767px)" srcSet={bg.srcSmall} />
           <img
             className="lh-layer lh-photo"
             src={bg.src}

@@ -1,0 +1,183 @@
+/*
+ * Standards ticker: an endless, linear right-to-left stream of editorial cards.
+ * The track = two identical groups; each group carries its own trailing gap (padding-right), so
+ * translateX(-50%) moves exactly one sequence and the loop has no seam at any width.
+ */
+
+.stt {
+  --stt-card-w: clamp(220px, 19vw, 280px);
+  --stt-gap: clamp(12px, 1.2vw, 18px);
+  /* about 4.5 s per card: slow enough to read while it moves */
+  --stt-duration: calc(var(--stt-count, 19) * 4.5s);
+  /* full-bleed: break out of the section's side padding without widening the page */
+  margin: clamp(36px, 3.6vw, 52px) calc(50% - 50vw) 0;
+  overflow: hidden;
+  padding: 6px 0 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+.stt-track {
+  display: flex;
+  width: max-content;
+  animation: stt-scroll var(--stt-duration) linear infinite;
+  will-change: transform;
+}
+@keyframes stt-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.stt-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--stt-gap);
+  margin: 0;
+  padding: 0 var(--stt-gap) 0 0;
+  list-style: none;
+}
+
+.stt-card {
+  position: relative;
+  display: flex;
+  flex: 0 0 var(--stt-card-w);
+  flex-direction: column;
+  height: calc(var(--stt-card-w) * 1.42);
+  overflow: hidden;
+  border: 1px solid #e4e9e5;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 36px -30px rgba(16, 21, 18, 0.3);
+}
+.stt-media {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #eef1ef;
+}
+.stt-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* photo dissolves into the white text area */
+.stt-media::after {
+  content: '';
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 96%);
+}
+.stt-body {
+  position: relative;
+  margin-top: -44px;
+  padding: 0 18px 18px;
+}
+.stt-abbr {
+  margin: 0;
+  color: #101512;
+  font-size: clamp(19px, 1.5vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.stt-name {
+  display: -webkit-box;
+  min-height: 2.8em;
+  margin: 4px 0 0;
+  overflow: hidden;
+  color: #5d635f;
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.stt-rule {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin: 12px 0 10px;
+  border-radius: 2px;
+  background: var(--color-tt-green);
+}
+.stt-region {
+  display: inline-block;
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #edf7f0;
+  color: var(--color-tt-green-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* editorial footer under the stream */
+.stt-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: clamp(36px, 4vw, 56px);
+  padding-top: clamp(28px, 3vw, 40px);
+  border-top: 1px solid #ebeeec;
+}
+.stt-kicker {
+  margin: 0;
+  color: #5d635f;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+.stt-kicker::after {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 2px;
+  margin-top: 12px;
+  background: var(--color-tt-green);
+}
+.stt-line {
+  margin: 0;
+  color: #6f7571;
+  font-size: clamp(14px, 1.1vw, 16px);
+}
+
+@media (max-width: 700px) {
+  .stt {
+    /* one card plus part of the next */
+    --stt-card-w: min(68vw, 260px);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .stt-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* reduced motion: no movement — a static row the visitor can scroll at their own pace */
+@media (prefers-reduced-motion: reduce) {
+  .stt {
+    margin-inline: 0;
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .stt-track {
+    animation: none;
+  }
+  .stt-group[aria-hidden] {
+    display: none;
+  }
+}
+
+/* faint off-white → pale-green wash toward the bottom edge, leading into the footer */
+.st {
+  background:
+    radial-gradient(70% 40% at 15% 100%, rgba(255, 236, 214, 0.45), transparent 70%),
+    radial-gradient(70% 45% at 90% 100%, rgba(49, 195, 90, 0.08), transparent 70%),
+    #fafafa;
+}

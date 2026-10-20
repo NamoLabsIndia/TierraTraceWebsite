@@ -137,3 +137,30 @@
     animation: none !important;
   }
 }
+
+/* ---- dissolve under the header (classes assigned by useScrollFade) ----
+ * The view timeline's top inset is the header's bottom edge, so the "exit" range is exactly the stretch
+ * where a block slides from just below the header to fully behind it. Outside that range the animation
+ * isn't applied (fill: none), so entrance reveals and transforms are untouched. Opacity/filter only. */
+@supports (animation-timeline: view()) {
+  .sf {
+    animation: sf-out linear none;
+    animation-timeline: view(block var(--sf-top, 88px) 0px);
+    animation-range: exit 0% exit 100%;
+  }
+  @keyframes sf-out {
+    0% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      filter: blur(3px);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf {
+    animation: none !important;
+  }
+}

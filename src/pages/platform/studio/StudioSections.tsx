@@ -246,7 +246,7 @@ function AudienceCard({ item: it, index }: { item: Audience; index: number }) {
   );
 }
 
-/** Platform capabilities: centred heading and a 3×3 grid of photo cards (explanatory, not links). */
+/** Platform capabilities: centred heading and a 3D orbit of the six capability cards. */
 export function StudioCapabilitiesSection() {
   const c = STUDIO_CAPABILITIES;
   return (
@@ -255,34 +255,173 @@ export function StudioCapabilitiesSection() {
         <Pill>{c.eyebrow}</Pill>
         <h2 id="ss-caps-title" className="ss-title">
           <Words text={c.headline[0]} className="ss-line" />
-          <span className="ss-line">
-            <Words text={c.headline[1]} delay={120} /> <Words text={c.headline[2]} className="ss-accent" delay={160} />
-          </span>
+          <Words text={c.headline[1]} className="ss-line ss-accent" delay={120} />
         </h2>
         <InView as="p" className="ss-body m-rise" delay={200}>
           {c.body}
         </InView>
       </div>
-      <ul className="ss-caps">
-        {c.items.map((it, i) => (
-          <CapabilityCard key={it.number} item={it} index={i} />
-        ))}
-      </ul>
+      <CapabilityOrbit items={c.items} />
     </section>
   );
 }
 
-function CapabilityCard({ item: it, index }: { item: Capability; index: number }) {
+/*
+ * Orbit geometry. `rot` is an unbounded step counter so the ring always turns the short way; each card's
+ * angle is (index - rot) × 360/n, normalised to (-180, 180]. Position, depth, turn and opacity are read
+ * from that angle by interpolating between the slot values below (0°, 60°, 120°, 180° for six cards).
+ * x is a fraction of the stage width (container query units), so the orbit scales with the viewport.
+ */
+const SLOTS = [
+  { a: 0, x: 0, z: 0, ry: 0, o: 1 },
+  { a: 60, x: 0.34, z: -240, ry: 32, o: 1 },
+  { a: 120, x: 0.55, z: -560, ry: 44, o: 0.7 },
+  { a: 180, x: 0.55, z: -820, ry: 50, o: 0 },
+];
+function slot(angle: number) {
+  const t = Math.abs(angle);
+  let i = 0;
+  while (i < SLOTS.length - 2 && t > SLOTS[i + 1].a) i++;
+  const A = SLOTS[i];
+  const B = SLOTS[i + 1];
+  const k = Math.min(1, (t - A.a) / (B.a - A.a));
+  const lerp = (p: number, q: number) => p + (q - p) * k;
+  const sign = angle < 0 ? -1 : 1;
+  // right-hand cards turn their outer edge away from the viewer (positive rotateY), left-hand the opposite
+  return { x: sign * lerp(A.x, B.x), z: lerp(A.z, B.z), ry: sign * lerp(A.ry, B.ry), o: lerp(A.o, B.o) };
+}
+const wrap = (deg: number) => {
+  const d = ((((deg + 180) % 360) + 360) % 360) - 180;
+  return d === -180 ? 180 : d;
+};
+
+function CapabilityOrbit({ items }: { items: readonly Capability[] }) {
+  const n = items.length;
+  const step = 360 / n;
+  const [rot, setRot] = useState(0);
+  const active = ((rot % n) + n) % n;
+  const drag = useRef<{ x: number; y: number } | null>(null);
+  const suppress = useRef(false);
+
+  const go = (to: number) => {
+    // shortest path to the target index from the current one
+    let d = (((to - active) % n) + n) % n;
+    if (d > n / 2) d -= n;
+    setRot((r) => r + d);
+  };
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setRot((r) => r + 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setRot((r) => r - 1);
+    }
+  };
+  const onDown = (e: React.PointerEvent) => {
+    if (!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    drag.current = { x: e.clientX, y: e.clientY };
+  };
+  const onUp = (e: React.PointerEvent) => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d) return;
+    const dx = e.clientX - d.x;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(e.clientY - d.y) * 1.2) {
+      suppress.current = true;
+      setRot((r) => r + (dx < 0 ? 1 : -1));
+    }
+  };
+
   return (
-    <InView as="li" className="ss-cap m-rise" delay={(index % 3) * 80}>
-      <div className="ss-cap-media">
-        <img src={it.image.src} alt={it.image.alt} style={{ objectPosition: it.focus }} loading="lazy" decoding="async" />
+    <InView className="ss-orbit-wrap m-rise" delay={150}>
+      <div
+        className="ss-orbit"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Platform capabilities"
+        tabIndex={0}
+        onKeyDown={onKey}
+        onPointerDown={onDown}
+        onPointerUp={onUp}
+        onPointerCancel={() => (drag.current = null)}
+      >
+        <span className="ss-orbit-floor" aria-hidden />
+        {items.map((it, i) => {
+          const angle = wrap((i - rot) * step);
+          const p = slot(angle);
+          const isActive = i === active;
+          const depth = Math.round(100 - Math.abs(angle));
+          return (
+            <article
+              key={it.number}
+              className={`ss-oc ${isActive ? 'is-active' : ''}`}
+              aria-hidden={!isActive}
+              aria-label={`${it.number}: ${it.title}`}
+              style={
+                {
+                  transform: `translateX(calc(${p.x} * 100cqw)) translateZ(${p.z}px) rotateY(${p.ry}deg)`,
+                  opacity: p.o,
+                  zIndex: depth,
+                  visibility: p.o < 0.02 ? 'hidden' : 'visible',
+                } as React.CSSProperties
+              }
+            >
+              <div className="ss-cap-media">
+                <img
+                  src={it.image.src}
+                  alt={isActive ? it.image.alt : ''}
+                  style={{ objectPosition: it.focus }}
+                  loading={Math.abs(angle) <= step ? 'eager' : 'lazy'}
+                  decoding="async"
+                  draggable={false}
+                />
+              </div>
+              <div className="ss-cap-body">
+                <p className="ss-cap-num">{it.number}</p>
+                <h3 className="ss-cap-title">{it.title}</h3>
+                <p className="ss-cap-text">{it.body}</p>
+              </div>
+              {!isActive && p.o > 0.5 && (
+                <button
+                  type="button"
+                  className="ss-oc-hit"
+                  aria-label={`Show ${it.title}`}
+                  tabIndex={-1}
+                  onClick={() => {
+                    if (suppress.current) return void (suppress.current = false);
+                    go(i);
+                  }}
+                />
+              )}
+            </article>
+          );
+        })}
       </div>
-      <div className="ss-cap-body">
-        <p className="ss-cap-num">{it.number}</p>
-        <h3 className="ss-cap-title">{it.title}</h3>
-        <p className="ss-cap-text">{it.body}</p>
+
+      <div className="ss-orbit-nav">
+        <button type="button" className="ss-arrow" onClick={() => setRot((r) => r - 1)} aria-label="Previous capability">
+          <ArrowLeft className="h-5 w-5" aria-hidden />
+        </button>
+        <div className="ss-orbit-dots" role="group" aria-label="Choose a capability">
+          {items.map((it, i) => (
+            <button
+              key={it.number}
+              type="button"
+              className={i === active ? 'is-on' : ''}
+              aria-label={`${it.number}: ${it.title}`}
+              aria-current={i === active ? 'true' : undefined}
+              onClick={() => go(i)}
+            />
+          ))}
+        </div>
+        <button type="button" className="ss-arrow" onClick={() => setRot((r) => r + 1)} aria-label="Next capability">
+          <ArrowRight className="h-5 w-5" aria-hidden />
+        </button>
       </div>
+      <p className="sr-only" aria-live="polite">
+        {items[active].number} of {String(n).padStart(2, '0')}: {items[active].title}
+      </p>
     </InView>
   );
 }

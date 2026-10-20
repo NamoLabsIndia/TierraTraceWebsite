@@ -332,6 +332,7 @@
 .ms-brand span {
   margin-top: 2px;
   padding-right: 14%;
+  white-space: nowrap;
   color: #222;
   font-size: clamp(14px, 1.118vw, 17.2px);
   font-weight: 500;

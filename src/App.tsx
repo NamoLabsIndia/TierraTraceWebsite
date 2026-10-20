@@ -1,7 +1,8 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Nav } from './components/layout/Nav';
 import { Footer } from './components/layout/Footer';
 import { ScrollManager } from './components/layout/ScrollManager';
+import { useScrollFade } from './lib/useScrollFade';
 import Home from './pages/home/Home';
 import StudioPage from './pages/platform/studio/StudioPage';
 import PassportPage from './pages/platform/passport/PassportPage';
@@ -16,6 +17,7 @@ import InsightPostPage from './pages/insights/InsightPostPage';
 import InsightsIndexPage from './pages/insights/InsightsIndexPage';
 
 export default function App() {
+  useScrollFade(useLocation().pathname);
   return (
     <div className="tt-wash min-h-screen">
       <a
