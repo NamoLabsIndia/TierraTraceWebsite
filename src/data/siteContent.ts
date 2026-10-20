@@ -194,6 +194,8 @@ export const PHOTO_CREDITS = [
   { text: 'Office building: Dietmar Rabich, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:M%C3%BCnster,_LVM_--_2017_--_6385.jpg' },
   { text: 'Berlaymont: Euro Pictures, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Berlaymont_building_2022.jpg' },
   { text: 'Morning mist: Western Arctic National Parklands, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Autumn_Morning_Mist_(8510188345).jpg' },
+  { text: 'European Parliament: Trougnouf (Benoit Brummer), CC BY 4.0', href: 'https://commons.wikimedia.org/wiki/File:European_Parliament_(DSC01793).jpg' },
+  { text: 'Data centre: Carl Lender, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Data_Center_(22370911658).jpg' },
 ];
 
 export type Insight = {

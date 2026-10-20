@@ -6,9 +6,11 @@ import {
   FRAMEWORK_IMAGES,
   FRAMEWORK_IMAGE_FALLBACK,
   STUDIO_AUDIENCES,
+  STUDIO_CAPABILITIES,
   STUDIO_FRAMEWORKS,
   STUDIO_METRICS,
   type Audience,
+  type Capability,
 } from '../../../data/studioContent';
 import { InView, Words } from '../../../lib/motion';
 import { useScrollTrack } from '../../../lib/useScrollTrack';
@@ -240,6 +242,47 @@ function AudienceCard({ item: it, index }: { item: Audience; index: number }) {
           </span>
         </span>
       </Link>
+    </InView>
+  );
+}
+
+/** Platform capabilities: centred heading and a 3×3 grid of photo cards (explanatory, not links). */
+export function StudioCapabilitiesSection() {
+  const c = STUDIO_CAPABILITIES;
+  return (
+    <section className="ss ss--caps" aria-labelledby="ss-caps-title">
+      <div className="ss-caps-head">
+        <Pill>{c.eyebrow}</Pill>
+        <h2 id="ss-caps-title" className="ss-title">
+          <Words text={c.headline[0]} className="ss-line" />
+          <span className="ss-line">
+            <Words text={c.headline[1]} delay={120} /> <Words text={c.headline[2]} className="ss-accent" delay={160} />
+          </span>
+        </h2>
+        <InView as="p" className="ss-body m-rise" delay={200}>
+          {c.body}
+        </InView>
+      </div>
+      <ul className="ss-caps">
+        {c.items.map((it, i) => (
+          <CapabilityCard key={it.number} item={it} index={i} />
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function CapabilityCard({ item: it, index }: { item: Capability; index: number }) {
+  return (
+    <InView as="li" className="ss-cap m-rise" delay={(index % 3) * 80}>
+      <div className="ss-cap-media">
+        <img src={it.image.src} alt={it.image.alt} style={{ objectPosition: it.focus }} loading="lazy" decoding="async" />
+      </div>
+      <div className="ss-cap-body">
+        <p className="ss-cap-num">{it.number}</p>
+        <h3 className="ss-cap-title">{it.title}</h3>
+        <p className="ss-cap-text">{it.body}</p>
+      </div>
     </InView>
   );
 }

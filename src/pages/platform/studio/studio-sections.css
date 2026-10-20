@@ -599,3 +599,105 @@
     transition: none;
   }
 }
+
+/* ---------- platform capabilities: centred head + 3×3 photo cards ---------- */
+
+.ss--caps {
+  padding-bottom: clamp(64px, 6.5vw, 112px);
+  border-top: 1px solid #ebeeec;
+}
+.ss-caps-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.ss-caps-head .ss-body {
+  max-width: 36em;
+  margin-top: clamp(16px, 1.6vw, 22px);
+}
+.ss-caps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.2vw, 16px);
+  /* narrower than the page so the cards stay compact */
+  max-width: 1080px;
+  margin: clamp(36px, 3.6vw, 52px) auto 0;
+  padding: 0;
+  list-style: none;
+}
+.ss-cap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e4e9e5;
+  border-radius: 14px;
+  background: #fff;
+  transition: border-color 250ms ease;
+}
+.ss-cap:hover {
+  border-color: #c9d6cd;
+}
+.ss-cap-media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #eef1ef;
+}
+.ss-cap-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ss-cap:hover .ss-cap-media img {
+  transform: scale(1.035);
+}
+.ss-cap-body {
+  flex: 1;
+  padding: 16px 18px 20px;
+}
+.ss-cap-num {
+  margin: 0;
+  color: #8a938e;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.ss-cap-title {
+  margin: 6px 0 0;
+  font-size: clamp(16px, 1.2vw, 17.5px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  transition: color 250ms ease;
+}
+.ss-cap:hover .ss-cap-title {
+  color: var(--color-tt-green-ink);
+}
+.ss-cap-text {
+  margin: 6px 0 0;
+  color: #5d635f;
+  font-size: 14px;
+  line-height: 1.5;
+}
+@media (max-width: 1023px) {
+  .ss-caps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .ss-caps {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ss-cap,
+  .ss-cap-media img,
+  .ss-cap-title {
+    transition: none;
+  }
+}
+.ss-caps-head .sx-pill {
+  align-self: center;
+}

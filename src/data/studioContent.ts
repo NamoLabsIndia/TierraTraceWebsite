@@ -21,6 +21,14 @@ import passportPhoto from '../assets/sections/solution-passport.webp';
 import portPhoto from '../assets/sections/trust-port.webp';
 import earthPhoto from '../assets/sections/cta-earth.webp';
 import seedlingPhoto from '../assets/sections/insight-seedling.webp';
+import capDrafting from '../assets/capabilities/ai-drafting.webp';
+import capFrameworks from '../assets/capabilities/framework-library.webp';
+import capCollab from '../assets/capabilities/collaboration.webp';
+import capAudit from '../assets/capabilities/audit-trail.webp';
+import capAccess from '../assets/capabilities/role-access.webp';
+import capExports from '../assets/capabilities/reporting-exports.webp';
+import capInsights from '../assets/capabilities/live-insights.webp';
+import capPrior from '../assets/capabilities/prior-reports.webp';
 
 /**
  * TierraTrace Studio hero. The card collage is one supplied image (1672×941); the five column layers
@@ -144,3 +152,23 @@ export const FRAMEWORK_IMAGES: Record<string, { src: string; focus?: string }> =
   'un-sdgs': { src: seedlingPhoto, focus: '50% 40%' },
 };
 export const FRAMEWORK_IMAGE_FALLBACK = { src: missionLandscape, focus: '50% 50%' };
+
+export type Capability = { number: string; title: string; body: string; image: { src: string; alt: string }; focus?: string };
+
+/** Platform capabilities (Studio). Explanatory only — the cards don't link anywhere. */
+export const STUDIO_CAPABILITIES = {
+  eyebrow: 'Platform capabilities',
+  headline: ['Everything your sustainability', 'team', 'was missing.'] as const,
+  body: 'A single workspace to move from data to disclosure — connecting frameworks, evidence, teams, and reporting.',
+  items: [
+    { number: '01', title: 'AI Drafting Engine', body: 'Turn sustainability data into structured draft disclosures with source-linked evidence and clear gaps.', image: { src: capDrafting, alt: 'A person taking notes beside a laptop on a white desk' }, focus: '50% 45%' },
+    { number: '02', title: '19+ Framework Library', body: 'Work with established reporting frameworks and structured disclosure requirements in one workspace.', image: { src: capFrameworks, alt: 'The European Parliament building in Brussels' }, focus: '50% 40%' },
+    { number: '03', title: 'Connected Data Collection', body: 'Bring operational data and supporting documents together without fragmented spreadsheet workflows.', image: { src: portPhoto, alt: 'A port worker checking a tablet beside stacked shipping containers' }, focus: '50% 35%' },
+    { number: '04', title: 'Stakeholder Collaboration', body: 'Coordinate materiality assessments, stakeholder input, and internal reporting responsibilities.', image: { src: capCollab, alt: 'Two colleagues reviewing work on a laptop at a table by the window' }, focus: '45% 60%' },
+    { number: '05', title: 'Cryptographic Audit Trail', body: 'Maintain traceable records of reporting evidence, revisions, and approval activity.', image: { src: capAudit, alt: 'Server racks in a data room' }, focus: '60% 50%' },
+    { number: '06', title: 'Role-Based Access', body: 'Organise responsibilities and control access to sensitive reporting information.', image: { src: capAccess, alt: 'An open-plan office with glass partitions and plants' }, focus: '55% 50%' },
+    { number: '07', title: 'Reporting Exports', body: 'Prepare structured reporting outputs for the formats and submission workflows your organisation requires.', image: { src: capExports, alt: 'Papers, a calculator and a laptop on a desk' }, focus: '50% 55%' },
+    { number: '08', title: 'Live Sustainability Insights', body: 'Monitor reporting progress, emissions indicators, and outstanding data gaps throughout the reporting cycle.', image: { src: capInsights, alt: 'An open laptop on a light wooden desk' }, focus: '50% 40%' },
+    { number: '09', title: 'Prior Report Intelligence', body: 'Reuse historical reporting information to identify changes, gaps, and relevant evidence for the next reporting cycle.', image: { src: capPrior, alt: 'A laptop and a stack of books on a desk' }, focus: '50% 55%' },
+  ] satisfies Capability[],
+};

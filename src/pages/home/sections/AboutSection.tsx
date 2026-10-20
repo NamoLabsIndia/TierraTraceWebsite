@@ -1,4 +1,5 @@
 import { MapPin } from 'lucide-react';
+import logo from '../../../assets/tierratrace-logo-large.png';
 import { ABOUT } from '../../../data/siteContent';
 import { CountUp, InView, Words } from '../../../lib/motion';
 import { Pill } from './shared';
@@ -9,7 +10,12 @@ export function AboutSection() {
   return (
     <section id="about" className="ab sx" aria-labelledby="about-title">
       <div className="ab-top">
-        <Pill className="ab-pill">{ABOUT.label}</Pill>
+        <div className="ab-left">
+          <Pill className="ab-pill">{ABOUT.label}</Pill>
+          <InView className="ab-logo m-rise" delay={120}>
+            <img src={logo} alt="TierraTrace" width={672} height={303} loading="lazy" decoding="async" />
+          </InView>
+        </div>
         <div className="ab-main">
           <Words as="h2" text={ABOUT.headline} id="about-title" className="ab-title" step={22} />
           <InView className="ab-support m-rise" delay={250}>
