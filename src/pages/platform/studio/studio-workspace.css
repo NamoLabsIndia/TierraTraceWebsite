@@ -1,0 +1,209 @@
+/*
+ * "Sustainability reporting. Reimagined with AI." — copy (≈40%) + a front-facing desktop display (≈60%)
+ * running the Studio app. The display is CSS: aluminium edge → thin black bezel → screen, on a slim stand.
+ */
+
+.sw {
+  --sw-ink: #101512;
+  --sw-text: #4f5451;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: center;
+  padding: clamp(72px, 7vw, 120px) max(calc(clamp(20px, 5vw, 80px) + env(safe-area-inset-left, 0px)), calc((100% - 1440px) / 2))
+    clamp(48px, 5vw, 80px);
+  overflow: hidden;
+  border-top: 1px solid #ebeeec;
+  background:
+    radial-gradient(55% 60% at 88% 18%, rgba(49, 195, 90, 0.07), transparent 70%),
+    radial-gradient(60% 50% at 0% 100%, rgba(240, 236, 228, 0.7), transparent 70%),
+    linear-gradient(180deg, #f8faf8 0%, #ffffff 60%, #f6f5f1 100%);
+  color: var(--sw-ink);
+}
+
+/* ---------- copy ---------- */
+
+.sw-eyebrow {
+  margin: 0;
+  color: #5d635f;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+/* same treatment as the main site's section headings */
+.sw-title {
+  margin: clamp(16px, 1.5vw, 24px) 0 0;
+  font-size: clamp(1.98rem, 3.4vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.036em;
+}
+.sw-title > span {
+  display: block;
+}
+@media (min-width: 1024px) {
+  .sw-title > span {
+    white-space: nowrap;
+  }
+}
+.sw-accent {
+  color: var(--color-tt-green);
+}
+.sw-body {
+  max-width: 31em;
+  margin: clamp(18px, 2vw, 26px) 0 0;
+  color: var(--sw-text);
+  font-size: clamp(15px, 1.12vw, 17.2px);
+  line-height: 1.55;
+}
+.sw-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(24px, 2.6vw, 36px);
+}
+.sw-points {
+  display: grid;
+  gap: 12px;
+  margin: clamp(24px, 2.6vw, 34px) 0 0;
+  padding: 0;
+  list-style: none;
+  color: #4f5451;
+  font-size: clamp(15px, 1.12vw, 17px);
+}
+.sw-points li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sw-tick {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--color-tt-green);
+  color: #fff;
+}
+
+/* ---------- display ---------- */
+
+.sw-stage {
+  position: relative;
+  padding-bottom: 7%;
+}
+.sw-monitor {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0;
+}
+.sw-display {
+  position: relative;
+  z-index: 2;
+  /* thin aluminium edge around the glass */
+  padding: 3px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #e7e9ec, #c5c9ce 55%, #b3b7bc);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 50px 80px -40px rgba(20, 26, 22, 0.42),
+    0 18px 30px -18px rgba(20, 26, 22, 0.25);
+}
+.sw-bezel {
+  padding: clamp(6px, 0.75%, 12px);
+  border-radius: 15px;
+  background: #0b0c0d;
+}
+.sw-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+}
+/* faint top-left sheen; never strong enough to hide the UI */
+.sw-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 32%);
+  pointer-events: none;
+}
+.sw-neck {
+  position: relative;
+  z-index: 1;
+  width: 15%;
+  height: clamp(48px, 7vw, 104px);
+  margin: -2px auto 0;
+  background: linear-gradient(90deg, #a9adb2 0%, #dfe2e5 22%, #f1f2f4 48%, #d3d6da 72%, #a4a8ad 100%);
+  clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+}
+.sw-foot {
+  position: relative;
+  z-index: 1;
+  width: 30%;
+  height: clamp(8px, 0.8vw, 12px);
+  margin: 0 auto;
+  border-radius: 3px 3px 8px 8px;
+  background: linear-gradient(180deg, #eef0f2 0%, #c4c8cd 60%, #9fa3a8 100%);
+  box-shadow: 0 14px 22px -8px rgba(20, 26, 22, 0.35);
+}
+/* desk surface the stand rests on */
+.sw-desk {
+  position: absolute;
+  right: -40vw;
+  bottom: 0;
+  left: -10%;
+  /* fade in from the left so the surface never ends on a hard edge */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+  height: 14%;
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(180deg, #f3f1ec 0%, #ebe8e1 100%);
+  box-shadow: 0 -1px 0 rgba(20, 26, 22, 0.06);
+}
+.sw-keyboard,
+.sw-trackpad {
+  position: absolute;
+  z-index: 1;
+  bottom: 3.2%;
+  height: 3.4%;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9px, rgba(20, 26, 22, 0.07) 9px 10px),
+    linear-gradient(180deg, #f7f7f6, #dcdcda);
+  box-shadow: 0 6px 12px -6px rgba(20, 26, 22, 0.3);
+}
+.sw-keyboard {
+  left: 20%;
+  width: 36%;
+}
+.sw-trackpad {
+  left: 62%;
+  width: 13%;
+  background: linear-gradient(180deg, #f2f2f1, #d9d9d7);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1023px) {
+  .sw {
+    grid-template-columns: 1fr;
+    gap: clamp(36px, 6vw, 56px);
+  }
+  .sw-copy {
+    max-width: 640px;
+  }
+}
+@media (max-width: 560px) {
+  .sw-ctas > * {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  .sw-keyboard,
+  .sw-trackpad {
+    display: none;
+  }
+}

@@ -39,7 +39,7 @@ export const STUDIO_HERO = {
   eyebrow: 'The AI Compliance & Reporting Canvas',
   headline: ['AI-powered Studio', 'for', 'ESG reporting.'] as const,
   body: 'A simple 6-step procedure for all companies to collect, analyse, report and comply with global sustainability standards.',
-  primary: { label: 'Explore TierraTrace Studio', to: 'studio-canvas' },
+  primary: { label: 'Explore TierraTrace Studio', to: 'studio-frameworks' },
   video: {
     label: 'Watch video',
     /** Set to a video file or embeddable URL when the overview video exists; null shows a "coming soon" dialog. */
@@ -59,6 +59,15 @@ export const STUDIO_HERO = {
       { src: col5, left: 77.033, width: 22.967, amp: 11, dur: 9, phase: 0.45 },
     ],
   },
+};
+
+/** "Sustainability reporting. Reimagined with AI." — the Studio app on a desktop display (after the audiences section). */
+export const STUDIO_WORKSPACE = {
+  eyebrow: 'TierraTrace Studio',
+  headline: ['Sustainability', 'reporting.'] as const,
+  accent: 'Reimagined with AI.',
+  body: 'A connected workspace to organise sustainability data, build evidence-linked disclosures, review reporting gaps, and prepare framework-aligned reports — in six simple steps.',
+  points: ['19+ global frameworks', 'AI gap detection & drafting', 'Zero-spreadsheet data collection'],
 };
 
 

@@ -80,7 +80,7 @@ export function StudioFrameworksSection() {
   const filled = Math.max(1, Math.round(progress * segments));
 
   return (
-    <section className="ss ss--frameworks" aria-labelledby="ss-frameworks-title">
+    <section id="studio-frameworks" className="ss ss--frameworks" aria-labelledby="ss-frameworks-title">
       <SectionHead
         id="ss-frameworks-title"
         eyebrow={f.eyebrow}
