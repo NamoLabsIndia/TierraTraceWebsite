@@ -22,8 +22,8 @@ export default function Home() {
       <SolutionsSection />
       <ApproachSection />
       <ComplianceSection />
-      <InsightsSection />
       <StandardsSection />
+      <InsightsSection />
     </>
   );
 }

@@ -190,6 +190,10 @@ export const PHOTO_CREDITS = [
   { text: 'Automotive line: Tupungato, CC BY 3.0', href: 'https://commons.wikimedia.org/w/index.php?curid=116381370' },
   { text: 'Battery lab: Oak Ridge National Laboratory, CC BY 2.0', href: 'https://commons.wikimedia.org/w/index.php?curid=125279741' },
   { text: 'Bottling line: Allagash Brewing, CC BY 2.0', href: 'https://www.flickr.com/photos/89562459@N03/28540500774' },
+  { text: 'Container terminal: Dirtsc, CC BY-SA 3.0', href: 'https://commons.wikimedia.org/wiki/File:Phb_dt_8109_CTA.jpg' },
+  { text: 'Office building: Dietmar Rabich, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:M%C3%BCnster,_LVM_--_2017_--_6385.jpg' },
+  { text: 'Berlaymont: Euro Pictures, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Berlaymont_building_2022.jpg' },
+  { text: 'Morning mist: Western Arctic National Parklands, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Autumn_Morning_Mist_(8510188345).jpg' },
 ];
 
 export type Insight = {
@@ -351,6 +355,7 @@ export type Standard = {
   description?: string;
   /** Optional internal route or section id for a related page. */
   destination?: string;
+  destinationLabel?: string;
 };
 
 /**
@@ -361,7 +366,8 @@ export type Standard = {
 export const STANDARDS = {
   id: 'standards',
   headline: '19+ global sustainability standards',
-  intro: 'Explore the reporting frameworks and regulatory requirements relevant to your products and supply chains.',
+  accent: 'pre-built and always up to date.',
+  intro: 'Explore the reporting frameworks and regulatory requirements pre-built into TierraTrace — mapped to live telemetry and always kept current with new amendments.',
   note: 'Shown for reference. Which frameworks apply depends on your company, products and markets.',
   items: [
     { id: 'csrd', abbreviation: 'CSRD', fullName: 'Corporate Sustainability Reporting Directive', region: 'European Union', description: 'EU directive setting sustainability reporting requirements for in-scope companies, using the European Sustainability Reporting Standards (ESRS).' },
@@ -369,12 +375,20 @@ export const STANDARDS = {
     { id: 'issb', abbreviation: 'ISSB', fullName: 'IFRS Sustainability Disclosure Standards', region: 'Global', description: 'Standards issued by the IFRS Foundation’s International Sustainability Standards Board: IFRS S1 (general requirements) and IFRS S2 (climate).' },
     { id: 'brsr', abbreviation: 'BRSR', fullName: 'Business Responsibility and Sustainability Reporting', region: 'India', description: 'SEBI’s sustainability disclosure format for the largest listed companies in India by market capitalisation.' },
     { id: 'eudr', abbreviation: 'EUDR', fullName: 'EU Deforestation Regulation', region: 'European Union', description: 'Requires operators to show that covered commodities such as cattle, cocoa, coffee, oil palm, rubber, soya and wood are deforestation-free and legally produced.' },
-    { id: 'espr', abbreviation: 'ESPR', fullName: 'Ecodesign for Sustainable Products Regulation', region: 'European Union', description: 'EU framework for product sustainability requirements, including the Digital Product Passport.', destination: '/platform/passport' },
+    { id: 'espr', abbreviation: 'ESPR', fullName: 'Ecodesign for Sustainable Products Regulation', region: 'European Union', description: 'EU framework for product sustainability requirements, including the Digital Product Passport.', destination: '/platform/passport', destinationLabel: 'Related: TierraTrace Passport' },
+    { id: 'cbam', abbreviation: 'CBAM', fullName: 'Carbon Border Adjustment Mechanism', region: 'European Union', description: 'EU tariff on carbon-intensive imports into the EU such as steel, cement, aluminium, fertilisers, electricity and hydrogen.' },
+    { id: 'csddd', abbreviation: 'CSDDD', fullName: 'Corporate Sustainability Due Diligence Directive', region: 'European Union', description: 'Mandates due diligence on environmental and human rights adverse impacts across upstream suppliers and downstream partners.' },
+    { id: 'ghg-protocol', abbreviation: 'GHG Protocol', fullName: 'Greenhouse Gas Protocol Corporate Standard', region: 'Global', description: 'The global accounting standard for measuring and managing emissions across Scope 1, 2, and all 15 categories of Scope 3.' },
     { id: 'tcfd', abbreviation: 'TCFD', fullName: 'Task Force on Climate-related Financial Disclosures', region: 'Global', description: 'Recommendations for climate-related financial disclosure; since 2023 monitoring has passed to the ISSB, whose IFRS S2 builds on them.' },
-    { id: 'cdp', abbreviation: 'CDP', fullName: 'Formerly the Carbon Disclosure Project', region: 'Global', description: 'A non-profit that runs a global disclosure system for environmental data on climate, water and forests.' },
-    { id: 'sasb', abbreviation: 'SASB', fullName: 'Sustainability Accounting Standards Board', region: 'Global', description: 'Industry-specific sustainability disclosure standards, now maintained by the ISSB.' },
-    { id: 'sfdr', abbreviation: 'SFDR', fullName: 'Sustainable Finance Disclosure Regulation', region: 'European Union', description: 'EU regulation on sustainability-related disclosures by financial market participants and advisers.' },
-    { id: 'tnfd', abbreviation: 'TNFD', fullName: 'Taskforce on Nature-related Financial Disclosures', region: 'Global', description: 'A framework for identifying and disclosing nature-related dependencies, impacts, risks and opportunities.' },
-    { id: 'un-sdgs', abbreviation: 'UN SDGs', fullName: 'United Nations Sustainable Development Goals', region: 'Global', description: 'The 17 goals adopted by UN member states in 2015 as part of the 2030 Agenda for Sustainable Development.' },
+    { id: 'cdp', abbreviation: 'CDP', fullName: 'Formerly the Carbon Disclosure Project', region: 'Global', description: 'A global disclosure system for companies, cities and states to manage and report environmental impacts.' },
+    { id: 'sasb', abbreviation: 'SASB', fullName: 'Sustainability Accounting Standards Board', region: 'Global', description: 'Industry-specific sustainability disclosure standards spanning 77 industries, now maintained under the ISSB.' },
+    { id: 'sfdr', abbreviation: 'SFDR', fullName: 'Sustainable Finance Disclosure Regulation', region: 'European Union', description: 'EU regulation on sustainability-related disclosures by financial market participants and financial advisers.' },
+    { id: 'tnfd', abbreviation: 'TNFD', fullName: 'Taskforce on Nature-related Financial Disclosures', region: 'Global', description: 'Risk management and disclosure framework for nature-related dependencies, impacts, risks and opportunities.' },
+    { id: 'sec-climate', abbreviation: 'SEC Climate', fullName: 'US SEC Climate Disclosure Rules', region: 'United States', description: 'Rules requiring public companies to disclose material climate-related risks, governance and greenhouse gas emissions.' },
+    { id: 'ca-sb253', abbreviation: 'CA SB 253', fullName: 'California Climate Corporate Data Accountability Act', region: 'United States', description: 'Requires US companies doing business in California with annual revenue over $1B to publicly report Scope 1, 2, and 3 emissions.' },
+    { id: 'iso-14064', abbreviation: 'ISO 14064', fullName: 'Greenhouse Gases Quantification & Reporting', region: 'Global', description: 'International specification with guidance at the organization level for quantification and reporting of GHG emissions.' },
+    { id: 'iso-14067', abbreviation: 'ISO 14067', fullName: 'Product Carbon Footprint Quantification', region: 'Global', description: 'International standard specifying principles, requirements and guidelines for the quantification of the carbon footprint of products (PCF).' },
+    { id: 'un-sdgs', abbreviation: 'UN SDGs', fullName: 'United Nations Sustainable Development Goals', region: 'Global', description: 'The 17 interconnected goals adopted by 193 UN member states to create a more sustainable, equitable world by 2030.' },
   ] satisfies Standard[],
 };
+

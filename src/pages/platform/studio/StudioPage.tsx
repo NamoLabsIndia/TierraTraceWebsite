@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import {
   BrainCircuit,
   Check,
-  ChevronRight,
   FileText,
   Globe,
   LayoutDashboard,
@@ -16,6 +15,7 @@ import { Container, PrimaryButton, Reveal, SectionHeading } from '../../../compo
 import { CTA } from '../../../components/Closing';
 import { StudioCanvas } from './StudioCanvas';
 import { StudioHero } from './StudioHero';
+import { StudioAudiencesSection, StudioFrameworksSection } from './StudioSections';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                  */
@@ -27,20 +27,6 @@ const PROOF_POINTS = [
   'Zero-spreadsheet data collection',
 ];
 
-const FRAMEWORKS_ALL = [
-  { code: 'CSRD',  desc: 'EU Corporate Sustainability Reporting Directive' },
-  { code: 'GRI',   desc: 'Global Reporting Initiative Standards' },
-  { code: 'ISSB',  desc: 'IFRS Sustainability Disclosure Standards' },
-  { code: 'BRSR',  desc: 'SEBI Business Responsibility & Sustainability Report' },
-  { code: 'EUDR',  desc: 'EU Deforestation Regulation Due Diligence' },
-  { code: 'ESPR',  desc: 'EU Ecodesign & Sustainable Products Regulation' },
-  { code: 'TCFD',  desc: 'Task Force on Climate-related Financial Disclosures' },
-  { code: 'CDP',   desc: 'Carbon Disclosure Project Questionnaire' },
-  { code: 'SASB',  desc: 'Sustainability Accounting Standards Board' },
-  { code: 'SFDR',  desc: 'EU Sustainable Finance Disclosure Regulation' },
-  { code: 'TNFD',  desc: 'Taskforce on Nature-related Financial Disclosures' },
-  { code: 'UN SDG',desc: 'United Nations Sustainable Development Goals' },
-];
 
 
 
@@ -106,6 +92,8 @@ export default function StudioPage() {
   return (
     <>
       <StudioHero />
+      <StudioFrameworksSection />
+      <StudioAudiencesSection />
 
       {/* ── Interactive canvas (previously the hero) ── */}
       <section id="studio-canvas" aria-labelledby="studio-canvas-title" className="relative scroll-mt-28 overflow-hidden py-20 sm:py-28">
@@ -137,57 +125,6 @@ export default function StudioPage() {
             <p className="mt-4 text-center text-[13px] text-tt-muted">
               Click through the <span className="font-semibold text-tt-ink">6 steps</span> to simulate a live CSRD reporting workflow.
             </p>
-          </div>
-        </Container>
-      </section>
-
-      {/* ── Framework strip ── */}
-      <section aria-label="Supported frameworks" className="border-y border-tt-border bg-white">
-        <Container className="py-8">
-          <p className="text-[15px] font-medium text-tt-muted">
-            19+ global sustainability standards, pre-built and always up to date
-          </p>
-          <div className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-            {FRAMEWORKS_ALL.map((f) => (
-              <div
-                key={f.code}
-                title={f.desc}
-                className="rounded-xl border border-tt-border bg-[#fafbfa] px-3 py-2.5 text-center hover:border-tt-green/30 transition-colors"
-              >
-                <span className="block text-[15px] font-bold tracking-tight text-tt-ink">{f.code}</span>
-                <span className="block mt-0.5 text-[11px] leading-tight text-tt-muted">{f.desc.split(' ').slice(0, 3).join(' ')}&hellip;</span>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* ── Who it's for ── */}
-      <section className="py-24 sm:py-32">
-        <Container>
-          <SectionHeading
-            eyebrow="Built for sustainability teams"
-            title="Every company that reports"
-            accent="sustainability, anywhere."
-            lead="TierraTrace Studio is framework-agnostic and industry-agnostic — any manufacturer, retailer, financial institution, or enterprise with a sustainability reporting obligation can use the same canvas."
-          />
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { title: 'Large Manufacturers', body: 'CSRD-mandatory scope, multi-plant Scope 1–3 reporting, ESPR digital product passports, and supply-chain EUDR due diligence — all in one workspace.' },
-              { title: 'Listed Companies', body: 'SEBI BRSR Core, ISSB/IFRS S1&S2, and TCFD in a single audit-trail dashboard. Finance teams, EHS, and legal collaborate without email chains.' },
-              { title: 'SME Exporters', body: 'EU buyers now require CSRD data from suppliers. Studio gives SMEs a guided, low-cost path to delivering compliant data without a dedicated ESG function.' },
-              { title: 'Consulting & Audit Firms', body: 'Run multi-client workspaces from a single Studio instance. White-label the stakeholder portal and deliver audit-ready iXBRL packages at half the manual effort.' },
-            ].map((c, i) => (
-              <Reveal key={c.title} delay={i * 60}>
-                <div className="h-full rounded-[24px] border border-tt-border bg-white p-7">
-                  <h3 className="text-[20px] font-semibold tracking-tight">{c.title}</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-tt-muted">{c.body}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-[14px] font-semibold text-tt-green-ink">
-                    Learn more <ChevronRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </Container>
       </section>

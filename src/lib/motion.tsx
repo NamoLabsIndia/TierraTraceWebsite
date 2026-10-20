@@ -6,7 +6,7 @@ import { useReveal } from './useReveal';
  * these only flip data-visible when an element scrolls into view, or split text into maskable words.
  */
 
-type Tag = 'div' | 'p' | 'span' | 'h2' | 'h3' | 'ul' | 'li' | 'article' | 'figure';
+type Tag = 'div' | 'p' | 'span' | 'h2' | 'h3' | 'ul' | 'li' | 'article' | 'figure' | 'dl';
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

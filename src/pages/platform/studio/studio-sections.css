@@ -1,0 +1,601 @@
+/*
+ * Studio page: frameworks grid + "Built for sustainability teams" (audience cards, metrics).
+ * White page, restrained green; spacing on an 8px rhythm.
+ */
+
+.ss {
+  --ss-ink: #101512;
+  --ss-text: #68736e;
+  --ss-muted: #8a938e;
+  --ss-border: #e3e9e5;
+  --ss-pad: max(calc(clamp(20px, 6vw, 96px) + env(safe-area-inset-left, 0px)), calc((100% - 1320px) / 2));
+  padding: clamp(64px, 6.5vw, 112px) var(--ss-pad) 0;
+  background: #fafafa;
+  color: var(--ss-ink);
+}
+.ss--frameworks {
+  overflow: hidden;
+  padding-bottom: clamp(48px, 5vw, 80px);
+}
+.ss--audiences {
+  overflow: hidden;
+  padding-bottom: clamp(56px, 6vw, 96px);
+  border-top: 1px solid #ebeeec;
+}
+
+/* ---------- section head ---------- */
+
+.ss-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 80px);
+  align-items: end;
+}
+/* (eyebrow replaced by the main site's outlined label pill) */
+.ss-eyebrow {
+  margin: 0;
+  color: var(--ss-text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.ss-title {
+  margin: clamp(16px, 1.5vw, 24px) 0 0;
+  font-size: clamp(1.98rem, 3.5vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.036em;
+}
+.ss-line {
+  display: block;
+}
+@media (min-width: 1100px) {
+  .ss-line {
+    white-space: nowrap;
+  }
+}
+.ss-accent {
+  color: var(--color-tt-green);
+}
+.ss-side {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+.ss-body {
+  max-width: 34em;
+  margin: 0;
+  color: #4f5451;
+  font-size: clamp(15px, 1.12vw, 17.2px);
+  line-height: 1.55;
+}
+
+
+/* ---------- audience carousel ---------- */
+
+.ss-arrows {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+}
+.ss-arrow {
+  display: grid;
+  place-items: center;
+  width: clamp(50px, 4vw, 58px);
+  height: clamp(50px, 4vw, 58px);
+  border: 1.5px solid #161816;
+  border-radius: 999px;
+  background: transparent;
+  color: #161816;
+  cursor: pointer;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
+    opacity 250ms ease;
+}
+.ss-arrow:hover:not(:disabled) {
+  background: #161816;
+  color: #fff;
+}
+.ss-arrow--dark {
+  background: #161816;
+  color: #fff;
+}
+.ss-arrow--dark:hover:not(:disabled) {
+  background: #2a2e2b;
+}
+.ss-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.ss-arrow:focus-visible {
+  outline: 2px solid var(--color-tt-green-ink);
+  outline-offset: 3px;
+}
+
+.ss-track {
+  display: flex;
+  gap: clamp(12px, 1.2vw, 16px);
+  margin: clamp(32px, 3.4vw, 48px) calc(-1 * var(--ss-pad)) 0 0;
+  padding: 0 0 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+  cursor: grab;
+  user-select: none;
+}
+/* trailing padding in a scroll container isn't scrollable in every browser; reserve it on the last card */
+.ss-card:last-child {
+  margin-right: var(--ss-pad);
+}
+.ss-track::-webkit-scrollbar {
+  display: none;
+}
+.ss-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+.ss-card {
+  position: relative;
+  flex: 0 0 clamp(272px, 26vw, 380px);
+  aspect-ratio: 380 / 300;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #13201a;
+  scroll-snap-align: start;
+}
+.ss-card-link {
+  position: absolute;
+  inset: 0;
+  color: #fff;
+  text-decoration: none;
+  -webkit-user-drag: none;
+}
+.ss-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+.ss-card-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(6, 14, 10, 0.84) 0%, rgba(6, 14, 10, 0.64) 45%, rgba(6, 14, 10, 0.2) 75%, rgba(6, 14, 10, 0.4) 100%);
+  transition: opacity 300ms ease;
+}
+.ss-card-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(18px, 1.6vw, 24px);
+}
+.ss-card-num {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.ss-card-title {
+  margin-top: 10px;
+  font-size: clamp(19px, 1.6vw, 23px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.ss-card-text {
+  max-width: 24em;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.ss-card-go {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-top: auto;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease;
+}
+.ss-card-go svg {
+  transition: transform 220ms ease;
+}
+.ss-card-link:hover .ss-card-img {
+  transform: scale(1.035);
+}
+.ss-card-link:hover .ss-card-shade {
+  opacity: 0.9;
+}
+.ss-card-link:hover .ss-card-go {
+  border-color: #fff;
+  background: #fff;
+  color: #073d2a;
+}
+.ss-card-link:hover .ss-card-go svg {
+  transform: translateX(2px);
+}
+.ss-card-link:focus-visible {
+  outline: 3px solid #27c466;
+  outline-offset: -6px;
+  border-radius: 16px;
+}
+
+/* ---------- framework carousel: two large photo cards per view ---------- */
+
+.ss-track--fw {
+  --ss-gap: clamp(12px, 1.2vw, 18px);
+  gap: var(--ss-gap);
+  margin-right: 0;
+}
+.ss-track--fw .ss-fw:last-child {
+  margin-right: 0;
+}
+.ss-fw {
+  position: relative;
+  flex: 0 0 calc((100% - var(--ss-gap)) / 2);
+  aspect-ratio: 3 / 2;
+  min-height: 380px;
+  max-height: 600px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #13201a;
+  color: #fff;
+  scroll-snap-align: start;
+}
+.ss-fw-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+.ss-fw:hover .ss-fw-img {
+  transform: scale(1.03);
+}
+.ss-fw-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(5, 12, 8, 0.9) 0%, rgba(5, 12, 8, 0.72) 38%, rgba(5, 12, 8, 0.32) 62%, rgba(5, 12, 8, 0.08) 85%),
+    linear-gradient(to right, rgba(5, 12, 8, 0.35), transparent 70%);
+}
+.ss-fw-icon {
+  position: absolute;
+  top: clamp(18px, 2vw, 28px);
+  left: clamp(18px, 2vw, 28px);
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #161816;
+}
+.ss-fw-body {
+  position: absolute;
+  right: clamp(20px, 2.6vw, 40px);
+  bottom: clamp(20px, 2.4vw, 36px);
+  left: clamp(20px, 2.6vw, 40px);
+}
+.ss-fw-abbr {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.ss-fw-name {
+  max-width: 14em;
+  margin: 6px 0 0;
+  font-size: clamp(1.5rem, 2.3vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+}
+.ss-fw-rule {
+  display: block;
+  width: 36px;
+  height: 1.5px;
+  margin: clamp(14px, 1.4vw, 20px) 0;
+  background: rgba(255, 255, 255, 0.85);
+}
+.ss-fw-desc {
+  display: -webkit-box;
+  max-width: 30em;
+  margin: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(14px, 1.08vw, 16px);
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.ss-fw-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: clamp(16px, 1.6vw, 22px);
+  padding: 5px 5px 5px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+.ss-fw-more-go {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+.ss-fw-more:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.ss-fw-more:hover .ss-fw-more-go {
+  background: #fff;
+  color: #161816;
+}
+.ss-fw-more:focus-visible {
+  outline: 2px solid #c8f45a;
+  outline-offset: 3px;
+}
+
+.ss-fw-foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+.ss-dashes {
+  display: flex;
+  gap: 8px;
+}
+.ss-dashes span {
+  width: 36px;
+  height: 4px;
+  border-radius: 4px;
+  background: #e1e5e2;
+  transition: background-color 300ms ease;
+}
+.ss-dashes span.is-on {
+  background: var(--color-tt-green);
+}
+.ss-swipe {
+  position: absolute;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #6f7571;
+  font-size: 13.5px;
+}
+.ss-note {
+  margin: 18px 0 0;
+  color: #7a807c;
+  font-size: 13px;
+}
+
+/* ---------- framework detail dialog ---------- */
+
+.ss-dialog {
+  width: min(560px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  color: #121413;
+  box-shadow: 0 40px 100px -40px rgba(0, 0, 0, 0.5);
+}
+.ss-dialog::backdrop {
+  background: rgba(8, 14, 10, 0.55);
+}
+.ss-dialog-inner {
+  position: relative;
+  padding: clamp(26px, 4vw, 38px);
+}
+.ss-dialog-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e3e6e4;
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+}
+.ss-dialog-meta {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  color: #6f7571;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ss-dialog-meta span {
+  color: var(--color-tt-green-ink);
+  font-weight: 700;
+}
+.ss-dialog-title {
+  margin: 10px 0 0;
+  padding-right: 32px;
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.ss-dialog-body {
+  margin: 12px 0 0;
+  color: #4f5451;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.ss-dialog-note {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid #eef1ef;
+  color: #7a807c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ss-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 22px;
+}
+.ss-dialog-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: #07140e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.ss-dialog-cta:hover {
+  background: #12301f;
+}
+.ss-dialog-link {
+  color: var(--color-tt-green-ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.ss-dialog-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ss-dialog :focus-visible {
+  outline: 2px solid var(--color-tt-green-ink);
+  outline-offset: 3px;
+}
+
+/* ---------- metrics ---------- */
+
+.ss-metrics {
+  display: flex;
+  justify-content: center;
+  margin: clamp(40px, 4vw, 56px) 0 0;
+}
+.ss-metric {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  padding: 4px clamp(24px, 4vw, 56px);
+  border-left: 1px solid var(--ss-border);
+}
+.ss-metric:first-child {
+  border-left: 0;
+}
+.ss-metric dd {
+  margin: 0;
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.ss-metric dt {
+  color: var(--ss-text);
+  font-size: 13.5px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 899px) {
+  .ss-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 16px;
+  }
+}
+@media (max-width: 899px) {
+  .ss-fw {
+    flex-basis: 86%;
+    min-height: 360px;
+    aspect-ratio: 4 / 3.4;
+  }
+  .ss-swipe {
+    position: static;
+  }
+  .ss-fw-foot {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .ss-fw {
+    flex-basis: 88%;
+    aspect-ratio: auto;
+    min-height: 440px;
+  }
+  .ss-side {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .ss-card {
+    flex-basis: min(82vw, 340px);
+    aspect-ratio: 4 / 4.2;
+  }
+  .ss-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 0;
+  }
+  .ss-metric {
+    padding: 0 16px;
+  }
+  .ss-metric:nth-child(odd) {
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-card-img,
+  .ss-fw-img,
+  .ss-dashes span,
+  .ss-card-shade,
+  .ss-card-go,
+  .ss-card-go svg,
+  .ss-arrow {
+    transition: none;
+  }
+}

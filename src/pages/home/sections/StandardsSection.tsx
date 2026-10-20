@@ -1,16 +1,10 @@
-import { useId, useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
-import { STANDARDS, type Standard } from '../../../data/siteContent';
+import { STANDARDS } from '../../../data/siteContent';
 import { InView, Words } from '../../../lib/motion';
-import { SmartLink } from '../../../components/ui';
+import { StandardsGrid } from '../../../components/standards/StandardsGrid';
 import { Pill } from './shared';
 
-/** Reporting frameworks grid; selecting a standard opens a short factual note beneath the grid. */
+/** Reporting frameworks on the landing page (last section before the footer). */
 export function StandardsSection() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const panelId = useId();
-  const current = STANDARDS.items.find((s) => s.id === selected);
-
   return (
     <section id={STANDARDS.id} className="st sx" aria-labelledby="standards-title">
       <div className="st-intro">
@@ -22,70 +16,7 @@ export function StandardsSection() {
           {STANDARDS.intro}
         </InView>
       </div>
-
-      <InView as="ul" className="st-grid m-rise" delay={100}>
-        {STANDARDS.items.map((s) => (
-          <StandardCard
-            key={s.id}
-            standard={s}
-            selected={s.id === selected}
-            panelId={panelId}
-            onToggle={() => setSelected((v) => (v === s.id ? null : s.id))}
-          />
-        ))}
-      </InView>
-
-      <div id={panelId} className="st-detail" aria-live="polite" hidden={!current}>
-        {current && (
-          <div className="st-detail-inner">
-            <div>
-              <p className="st-detail-meta">
-                <span>{current.abbreviation}</span>
-                {current.region}
-              </p>
-              <p className="st-detail-name">{current.fullName}</p>
-              {current.description && <p className="st-detail-body">{current.description}</p>}
-              {current.destination && (
-                <SmartLink target={current.destination} className="st-detail-link">
-                  Related: TierraTrace Passport <ArrowRight className="h-4 w-4" aria-hidden />
-                </SmartLink>
-              )}
-            </div>
-            <button type="button" className="st-close" onClick={() => setSelected(null)} aria-label="Close details">
-              <X className="h-4 w-4" aria-hidden />
-            </button>
-          </div>
-        )}
-      </div>
-
-      <p className="st-note">{STANDARDS.note}</p>
+      <StandardsGrid items={STANDARDS.items} note={STANDARDS.note} />
     </section>
-  );
-}
-
-function StandardCard({
-  standard: s,
-  selected,
-  panelId,
-  onToggle,
-}: {
-  standard: Standard;
-  selected: boolean;
-  panelId: string;
-  onToggle: () => void;
-}) {
-  return (
-    <li>
-      <button
-        type="button"
-        className={`st-card ${selected ? 'is-selected' : ''}`}
-        aria-expanded={selected}
-        aria-controls={panelId}
-        onClick={onToggle}
-      >
-        <span className="st-abbr">{s.abbreviation}</span>
-        <span className="st-name">{s.fullName}</span>
-      </button>
-    </li>
   );
 }
