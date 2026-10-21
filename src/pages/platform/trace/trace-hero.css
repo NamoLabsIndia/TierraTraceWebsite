@@ -372,38 +372,46 @@
     max-width: 780px;
     margin-inline: auto;
   }
+  .th-layer > span {
+    font-size: max(0.72em, 10px);
+  }
 }
 
 /* phones: tee large on the left, the card overlapping its right side; the receding layers are decorative
    depth only and drop out here — every section they name is still listed in the card */
 @media (max-width: 700px) {
+  .th-title {
+    font-size: clamp(2.1rem, 10.6vw, 2.7rem);
+  }
   .th-cta a {
     width: 100%;
     justify-content: center;
   }
+  /* tee and card in normal flow: the card starts below the hangtag, overlaps only the hem, and keeps
+     readable type instead of scaling down with the composition */
   .th-stage {
-    aspect-ratio: 1 / 1.32;
-    font-size: 2.6cqw;
+    aspect-ratio: auto;
+    padding-top: 2%;
   }
   .th-path path {
     d: path('M8 74 C 0 52, 4 20, 34 7 S 94 5, 99 30');
   }
   .th-product {
-    top: 3%;
+    position: relative;
+    top: auto;
     left: -4%;
     width: 74%;
   }
-  /* keep the taller phone composition from growing on large phones and small tablets */
   .th-visual {
     max-width: 460px;
   }
-  /* anchored to the bottom so it always starts below the hangtag */
   .th-card {
+    position: relative;
     top: auto;
-    right: 0;
-    bottom: 0;
     left: auto;
-    width: 64%;
+    width: min(88%, 340px);
+    margin: -22% 0 0 auto;
+    font-size: 13px;
   }
   .th-layers {
     display: none;

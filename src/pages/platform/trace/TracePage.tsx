@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Hero } from './Hero';
-import { ImpactExplorer } from './ImpactExplorer';
+import { RecallSection } from './RecallSection';
 import { EvidencePanel } from './EvidencePanel';
 import { Features } from './Features';
-import { CTA, MorePlatform } from '../../../components/Closing';
+import { CTA } from '../../../components/Closing';
 
 export default function TracePage() {
   useEffect(() => {
@@ -12,10 +12,9 @@ export default function TracePage() {
   return (
     <>
       <Hero />
-      <ImpactExplorer />
+      <RecallSection />
       <EvidencePanel />
       <Features />
-      <MorePlatform current="trace" />
       <CTA />
     </>
   );

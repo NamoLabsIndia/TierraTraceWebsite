@@ -1,62 +1,216 @@
-import { FileDown, GitFork, Layers3, PackageCheck, Scale, ScanEye } from 'lucide-react';
-import { Container, Reveal, SectionHeading } from '../../../components/ui';
+import type { CSSProperties, ReactNode } from "react";
+import { Braces, Check, FileSpreadsheet, FileText } from "lucide-react";
+import { TRACE_FEATURES } from "../../../data/traceContent";
+import { InView, Words } from "../../../lib/motion";
+import "./features.css";
 
-// Each card maps to web-core PRD §48.4 (Genealogy), §52 (Shipments) and §53 (Traceability).
-const FEATURES = [
-  {
-    icon: Layers3,
-    title: 'Stages that match your industry',
-    body: 'Farm to garment for textiles, ore to coil for steel. The chain follows your workspace blueprint — nothing is hardcoded.',
-  },
-  {
-    icon: ScanEye,
-    title: 'Gaps you can see',
-    body: 'A stage with no data shows up as a gap. Hiding it would overstate your traceability, so TierraTrace never does.',
-  },
-  {
-    icon: GitFork,
-    title: 'Splits and merges, done right',
-    body: 'Sublots and merged lots keep their quantity attribution, so every kilogram is accounted for up to 50 levels deep.',
-  },
-  {
-    icon: Scale,
-    title: 'Mass balance at every node',
-    body: 'Inputs reconcile against outputs at each step. Variance beyond tolerance is flagged for review, with a reason.',
-  },
-  {
-    icon: PackageCheck,
-    title: 'Custody past the factory gate',
-    body: 'Shipments record lots, not just products. Only released batches can ship, so recalls stay scoped and precise.',
-  },
-  {
-    icon: FileDown,
-    title: 'Regulator-ready exports',
-    body: 'Export any genealogy as CSV, JSON or a PDF dossier — with the evidence attached, ready for an auditor.',
-  },
-];
+const VISUALS: Record<string, () => ReactNode> = {
+  stages: StagesVisual,
+  gaps: GapsVisual,
+  splits: SplitsVisual,
+  mass: MassVisual,
+  custody: CustodyVisual,
+  exports: ExportsVisual,
+};
 
+/** "Built for real supply chains": six capability cards, each with a small illustrative interface. */
 export function Features() {
+  const f = TRACE_FEATURES;
   return (
-    <section className="py-24 sm:py-32">
-      <Container>
-        <SectionHeading eyebrow="Built for real supply chains" title="Traceability that holds up" accent="under an audit." align="center" />
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <Reveal as="li" key={f.title} delay={(i % 3) * 70}>
-                <article className="group h-full rounded-[24px] border border-tt-border bg-white p-7 transition-[box-shadow,border-color] duration-300 hover:border-tt-green/30 hover:shadow-[0_20px_50px_-28px_rgba(8,12,15,0.3)]">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-tt-green-50 text-tt-green-ink transition-colors duration-300 group-hover:bg-tt-green group-hover:text-white">
-                    <Icon className="h-[22px] w-[22px]" aria-hidden />
+    <section className="ft6" aria-labelledby="ft6-title">
+      <div className="ft6-head">
+        <InView as="p" className="ft6-eyebrow m-rise">
+          {f.eyebrow}
+        </InView>
+        <h2 id="ft6-title" className="ft6-title">
+          <Words as="span" text={f.headline} />{" "}
+          <Words as="span" text={f.accent} className="ft6-accent" delay={140} />
+        </h2>
+      </div>
+
+      <ul className="ft6-grid">
+        {f.cards.map((c, i) => {
+          const Visual = VISUALS[c.id];
+          return (
+            <InView
+              as="li"
+              key={c.id}
+              className="ft6-cell m-rise"
+              delay={(i % 3) * 80 + Math.floor(i / 3) * 60}
+            >
+              <article className="ft6-card">
+                <div className="ft6-text">
+                  <span className="ft6-num">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-6 text-[22px] font-semibold leading-snug tracking-tight">{f.title}</h3>
-                  <p className="mt-2.5 text-[16px] leading-[1.65] text-tt-muted">{f.body}</p>
-                </article>
-              </Reveal>
-            );
-          })}
-        </ul>
-      </Container>
+                  <h3>{c.title}</h3>
+                  <p>{c.body}</p>
+                </div>
+                <div
+                  className={`ft6-vis ${c.image ? "has-photo" : ""}`}
+                  aria-hidden
+                >
+                  {c.image && (
+                    <img
+                      className="ft6-photo"
+                      src={c.image.src}
+                      alt={c.image.alt}
+                      loading="lazy"
+                      decoding="async"
+                      style={
+                        { objectPosition: c.image.position } as CSSProperties
+                      }
+                    />
+                  )}
+                  <div className="ft6-ui">
+                    <Visual />
+                  </div>
+                </div>
+              </article>
+            </InView>
+          );
+        })}
+      </ul>
+      <p className="ft6-note">{f.note}</p>
     </section>
+  );
+}
+
+/* ---------- card visuals ---------- */
+
+function StagesVisual() {
+  return (
+    <ol className="ft6-panel ft6-stages">
+      {TRACE_FEATURES.stages.map((s, i) => (
+        <li key={s} className={i === 0 ? "is-on" : ""}>
+          <i />
+          <span>{s}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function GapsVisual() {
+  return (
+    <ul className="ft6-panel ft6-gaps">
+      {TRACE_FEATURES.gaps.map((g) => (
+        <li key={g.stage} className={`is-${g.state}`}>
+          <i>{g.state === "ok" && <Check strokeWidth={3} />}</i>
+          <span>
+            {g.stage}
+            <small>{g.label}</small>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SplitsVisual() {
+  const s = TRACE_FEATURES.split;
+  return (
+    <div className="ft6-split">
+      <svg
+        className="ft6-split-lines"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path d="M50 30 V 46 H 26 V 62" />
+        <path d="M50 46 H 74 V 62" />
+      </svg>
+      <span className="ft6-lot is-parent">
+        <b>{s.parent.id}</b>
+        {s.parent.qty}
+      </span>
+      {s.children.map((c, i) => (
+        <span key={c.id} className={`ft6-lot is-child is-${i}`}>
+          <b>{c.id}</b>
+          {c.qty}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function MassVisual() {
+  const m = TRACE_FEATURES.mass;
+  return (
+    <div className="ft6-panel ft6-mass">
+      <p className="ft6-mass-head">
+        <b>Mass balance</b>
+        <span>Within tolerance</span>
+      </p>
+      <dl>
+        <div>
+          <dt>Input</dt>
+          <dd>{m.input}</dd>
+        </div>
+        <div>
+          <dt>Output</dt>
+          <dd>{m.output}</dd>
+        </div>
+        <div>
+          <dt>Variance</dt>
+          <dd>
+            {m.variance}
+            <small>max {m.tolerance}</small>
+          </dd>
+        </div>
+      </dl>
+      <span
+        className="ft6-bar"
+        style={{ "--fill": `${m.fill}%` } as CSSProperties}
+      >
+        <i />
+      </span>
+    </div>
+  );
+}
+
+function CustodyVisual() {
+  return (
+    <ol className="ft6-panel ft6-custody">
+      {TRACE_FEATURES.custody.map((c) => (
+        <li key={c.label} className={c.done ? "is-done" : ""}>
+          <i />
+          <span>{c.label}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+const EXPORT_ICONS = [FileSpreadsheet, Braces, FileText];
+
+function ExportsVisual() {
+  const f = TRACE_FEATURES;
+  return (
+    <div className="ft6-exports">
+      <ul className="ft6-panel">
+        {f.exports.map((e, i) => {
+          const Icon = EXPORT_ICONS[i];
+          return (
+            <li key={e}>
+              <Icon strokeWidth={1.7} />
+              <span>Export as {e}</span>
+            </li>
+          );
+        })}
+      </ul>
+      <div className="ft6-panel ft6-evidence">
+        <small>Attached evidence</small>
+        <span className="ft6-thumbs">
+          <span className="ft6-doc">
+            <i />
+            <i />
+            <i />
+          </span>
+          {f.evidenceThumbs.map((src) => (
+            <img key={src} src={src} alt="" loading="lazy" decoding="async" />
+          ))}
+        </span>
+      </div>
+    </div>
   );
 }

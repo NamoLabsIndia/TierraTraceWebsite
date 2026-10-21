@@ -202,25 +202,16 @@ export const PHOTO_CREDITS = [
   { text: 'Slabs of jaggery: Rohini, CC BY-SA 3.0', href: 'https://commons.wikimedia.org/wiki/File:Slabs_of_jaggery.jpg' },
   { text: 'Highway truck: Wasiul Bahar, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:Truck_at_Highway_of_Hyderabad_2.jpg' },
   { text: 'Jaggery at market: Giridhar Appaji Nag Y, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:(1)_Jaggery_Gud_Punjab_India.jpg' },
+  { text: 'Sugar mill: Janoux, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:Working_in_the_shadow_of_an_Indian_sugar_mill.jpg' },
+  { text: 'Cotton boll: Alabama Extension, CC0', href: 'https://commons.wikimedia.org/wiki/File:COTTON_open_boll_(48947824348).jpg' },
 ];
 
+/** A homepage Insights card; each opens its topic page under /insights (content lives in src/data/insights). */
 export type Insight = {
   slug: string;
   title: string;
   to: string;
-  category: string;
-  readTime: string;
-  date: string;
-  summary: string;
-  author: string;
   image: Img;
-  body?: {
-    lead?: string;
-    sections?: {
-      heading: string;
-      content: string;
-    }[];
-  };
 };
 
 export const INSIGHTS = {
@@ -232,49 +223,25 @@ export const INSIGHTS = {
     {
       slug: 'digital-product-passports-for-global-supply-chains',
       title: 'Digital Product Passports for Global Supply Chains',
-      to: '/insights/digital-product-passports-for-global-supply-chains',
-      category: 'Digital Product Passport',
-      readTime: '5 min read',
-      date: 'Coming Soon',
-      author: 'TierraTrace Editorial Team',
-      summary:
-        'How global manufacturers and exporters are adopting ESPR-ready digital product passports to unify bill-of-materials, carbon telemetry, and verified provenance into one scannable identity.',
+      to: '/insights/digital-product-passports',
       image: { src: insightTextile, alt: 'Fabric being woven on a loom' },
     },
     {
       slug: 'end-to-end-traceability-from-source-to-shelf',
       title: 'End-to-End Traceability from Source to Shelf',
-      to: '/insights/end-to-end-traceability-from-source-to-shelf',
-      category: 'Supply Chain Traceability',
-      readTime: '6 min read',
-      date: 'Coming Soon',
-      author: 'TierraTrace Editorial Team',
-      summary:
-        'Moving past disconnected spreadsheets and siloed supplier declarations to cryptographic, audit-ready chain-of-custody logging from raw material origin to final retail shelf.',
+      to: '/insights/supply-chain-traceability',
       image: { src: trustPort, alt: 'A port worker tracing containers on a tablet' },
     },
     {
       slug: 'tierratrace-studio-for-sustainability-intelligence',
       title: 'TierraTrace Studio for Sustainability Intelligence',
-      to: '/insights/tierratrace-studio-for-sustainability-intelligence',
-      category: 'ESG Compliance & AI',
-      readTime: '4 min read',
-      date: 'Coming Soon',
-      author: 'TierraTrace Editorial Team',
-      summary:
-        'Streamlining ESG disclosures across CSRD, GRI, ISSB, and BRSR with continuous live telemetry, AI narrative drafting, and automated gap detection without spreadsheets.',
+      to: '/insights/sustainability-intelligence',
       image: { src: insightSeedling, alt: 'A green seedling growing from dark soil at sunset' },
     },
     {
       slug: 'building-compliance-readiness-across-industries',
       title: 'Building Compliance Readiness Across Industries',
-      to: '/insights/building-compliance-readiness-across-industries',
-      category: 'Regulatory Standards',
-      readTime: '5 min read',
-      date: 'Coming Soon',
-      author: 'TierraTrace Editorial Team',
-      summary:
-        'Navigating the wave of EUDR deforestation diligence, ESPR mandates, and SEBI BRSR Core with automated data pipelines and tamper-proof verification frameworks.',
+      to: '/insights/compliance-readiness',
       image: { src: insightAgriculture, alt: 'Hands harvesting coffee cherries on a hillside plantation' },
     },
   ] satisfies Insight[],

@@ -3,6 +3,11 @@ import stageProcessing from '../assets/trace/stage-processing.webp';
 import stagePackaging from '../assets/trace/stage-packaging.webp';
 import stageDistribution from '../assets/trace/stage-distribution.webp';
 import stageRetail from '../assets/trace/stage-retail.webp';
+import featureSugarcane from '../assets/trace/feature-sugarcane.webp';
+import featureJaggery from '../assets/trace/feature-jaggery.webp';
+import featureMill from '../assets/trace/feature-mill.webp';
+import featureTruck from '../assets/trace/feature-truck.webp';
+import rawCotton from '../assets/trace/raw-cotton.webp';
 
 /**
  * TierraTrace Trace (End-to-End Traceability) page content.
@@ -154,4 +159,131 @@ export const TRACE_LEDGER = {
       evidence: [],
     },
   ] satisfies LedgerStage[],
+};
+
+/* ---------- "Built for real supply chains": six capability cards ---------- */
+
+/**
+ * Card visuals reuse the sample jaggery lot from the section above (LOT-JAG-2291); every figure is
+ * illustrative and internally consistent (the two sublots sum to the parent; variance = (in − out) / in).
+ */
+export const TRACE_FEATURES = {
+  eyebrow: 'Built for real supply chains',
+  headline: 'Traceability that holds up',
+  accent: 'under an audit.',
+  cards: [
+    {
+      id: 'stages',
+      title: 'Stages that match your industry',
+      body: 'Configure and map stages for your supply chain, from raw material to customer. Flexible across industries.',
+      image: { src: featureSugarcane, alt: '', position: '50% 50%' },
+    },
+    {
+      id: 'gaps',
+      title: 'Gaps you can see',
+      body: 'Identify missing data, incomplete documents and unverified stages before they become compliance risks.',
+      image: null,
+    },
+    {
+      id: 'splits',
+      title: 'Splits and merges, done right',
+      body: 'Track sublots, merged lots and batch transformations with complete quantity attribution across the supply chain.',
+      image: { src: featureJaggery, alt: '', position: '40% 50%' },
+    },
+    {
+      id: 'mass',
+      title: 'Mass balance at every node',
+      body: 'Inputs reconcile with outputs at each stage. Variances beyond tolerance are flagged for review.',
+      image: { src: featureMill, alt: '', position: '50% 30%' },
+    },
+    {
+      id: 'custody',
+      title: 'Custody past the factory gate',
+      body: 'Track ownership changes, shipment movements and location handoffs through connected supply-chain records.',
+      image: { src: featureTruck, alt: '', position: '78% 60%' },
+    },
+    {
+      id: 'exports',
+      title: 'Regulator-ready exports',
+      body: 'Export traceability records and supporting evidence in structured formats for review and audit preparation.',
+      image: null,
+    },
+  ],
+  stages: ['Raw Material', 'Processing', 'Packaging', 'Distribution', 'Retail'],
+  gaps: [
+    { stage: 'Raw Material', state: 'ok', label: 'Recorded' },
+    { stage: 'Processing', state: 'missing', label: 'Missing record' },
+    { stage: 'Packaging', state: 'pending', label: 'Pending' },
+    { stage: 'Distribution', state: 'pending', label: 'Pending' },
+  ],
+  split: { parent: { id: 'LOT-JAG-2291', qty: '8,000 kg' }, children: [{ id: 'SUB-001', qty: '3,200 kg' }, { id: 'SUB-002', qty: '4,800 kg' }] },
+  mass: { input: '8,110 kg', output: '7,800 kg', variance: '3.8%', tolerance: '5%', fill: 76 },
+  custody: [
+    { label: 'Ownership transfer', done: true },
+    { label: 'Shipment recorded', done: true },
+    { label: 'Location update', done: true },
+    { label: 'Receipt confirmed', done: false },
+  ],
+  exports: ['CSV', 'JSON', 'PDF'],
+  evidenceThumbs: [stageProcessing, stagePackaging],
+  note: 'Interface details are illustrative, using the sample lot above.',
+};
+
+/* ---------- "Recall in seconds": a flagged lot traced downstream ---------- */
+
+export type RecallNode = { id: string; qty: string; kind: 'raw' | 'yarn' | 'garment'; flag?: boolean; children?: RecallNode[] };
+
+/**
+ * Illustrative recall walk-through shown inside a laptop mockup. Quantities are consistent: the two yarn
+ * lots consume the 12,000 kg supplier lot (7,800 + 4,200) and the three garment batches total 3,830 units.
+ */
+export const TRACE_RECALL = {
+  id: 'impact',
+  eyebrow: 'Recall in seconds, not weeks',
+  headline: 'One flagged lot.',
+  accent: 'Every affected customer, instantly.',
+  body: 'When a supplier reports a problem, open the lot and see the full genealogy — through splits and merges, with quantities at every link — and identify downstream impact in seconds.',
+  features: [
+    { title: 'Full lot genealogy', body: 'Trace through splits, merges and batch transformations.' },
+    { title: 'See downstream impact', body: 'Identify affected shipments, batches and customers.' },
+    { title: 'Take action, faster', body: 'Export impact sets and open a recall dossier.' },
+  ],
+  app: {
+    nav: ['Home', 'Passport', 'Trace', 'Carbon', 'Verify', 'Insights', 'Studio', 'Connect'],
+    workspace: 'Sample workspace',
+    lot: { id: 'SUP-CT-7781', meta: 'Raw cotton · 12,000 kg · Flagged by supplier', image: rawCotton },
+    impact: { units: '3,830 units', across: 'Across 3 batches, 4 customers' },
+    tabs: ['Genealogy', 'Sublots (2)', 'Shipments (6)', 'Customers (4)', 'Documents (12)'],
+    metrics: [
+      { value: '3', label: 'Garment batches' },
+      { value: '3,830', label: 'Units affected' },
+      { value: '6', label: 'Shipments' },
+      { value: '4', label: 'Customers' },
+    ],
+    actions: ['View affected customers', 'View shipments', 'Open recall dossier'],
+  },
+  tree: {
+    id: 'SUP-CT-7781',
+    qty: '12,000 kg',
+    kind: 'raw',
+    flag: true,
+    children: [
+      {
+        id: 'LOT-YRN-2291',
+        qty: '7,800 kg',
+        kind: 'yarn',
+        children: [
+          { id: 'LOT-ARA-04-26805', qty: '1,240 tees', kind: 'garment' },
+          { id: 'LOT-ARA-04-26811', qty: '980 tees', kind: 'garment' },
+        ],
+      },
+      {
+        id: 'LOT-YRN-2304',
+        qty: '4,200 kg',
+        kind: 'yarn',
+        children: [{ id: 'LOT-ARA-05-27002', qty: '1,610 tees', kind: 'garment' }],
+      },
+    ],
+  } satisfies RecallNode,
+  note: 'Illustrative interface with sample data. Select a lot to see its path through the genealogy.',
 };
