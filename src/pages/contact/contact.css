@@ -135,6 +135,47 @@
   border-color: #161816;
   box-shadow: 0 0 0 4px rgba(22, 24, 22, 0.06);
 }
+.pc-field [aria-invalid='true'] {
+  border-color: #b6562c;
+}
+.pc-err {
+  color: #a34a24;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.pc-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.pc-alert {
+  grid-column: 1 / -1;
+  padding: 14px 16px;
+  border: 1px solid #f0d6c8;
+  border-radius: 14px;
+  background: #fff8f4;
+  color: #6d3418;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.pc-alert p {
+  margin: 0;
+}
+.pc-alert-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--color-tt-green-ink);
+  font-weight: 600;
+}
+.pc-form-foot a {
+  color: var(--color-tt-green-ink);
+}
+.pc-btn:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
 .pc-form-foot {
   display: flex;
   flex-wrap: wrap;

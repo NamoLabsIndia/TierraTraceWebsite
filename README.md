@@ -35,3 +35,36 @@ Brand: green `#31C35A`, ink `#080C0F`, Be Vietnam Pro, H1 60px / body 18px (toke
 
 Shared building blocks for product pages live in `src/components/product.tsx` (ProductHero, DemoCard, Segmented, FeatureGrid, StandardsStrip).
 `src/pages/platform/ComingSoon.tsx` is the fallback for any future product added to `src/data/products.ts` before its page exists.
+
+## Support and Trust Center
+
+Routes: `/support`, `/help`, `/help/:slug`, `/docs`, `/docs/:slug`, `/privacy`, `/terms`. Content lives in
+`src/data/support/` (help articles, documentation, legal drafts); pages in `src/pages/support/`.
+
+### Form submissions (`/api/support`)
+
+The Support and Contact forms post to `api/support.ts`, a Vercel Function. It validates input on the
+server (`api/_lib/validate.ts`, shared with the browser), rejects foreign origins, oversized bodies,
+honeypot and too-fast submissions, rate-limits per IP (best effort, per instance), and emails the request
+as plain text through [Resend](https://resend.com). The browser shows success only when the function
+returns a reference number.
+
+Set these in Vercel → Project → Settings → Environment Variables (never in frontend code):
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `RESEND_API_KEY` | yes | Resend API key |
+| `SUPPORT_EMAIL_TO` | yes | Inbox that receives requests (comma-separate several) |
+| `SUPPORT_EMAIL_FROM` | yes | Sender on a domain verified in Resend, e.g. `TierraTrace <support@your-domain>` |
+| `ALLOWED_ORIGINS` | no | Comma-separated allowed origins; defaults to `https://www.tierratrace.in,https://tierratrace.in` |
+| `VITE_SUPPORT_ENDPOINT` | no | Frontend override of the endpoint URL (public; defaults to `/api/support`) |
+
+Until the three required variables are set, the function answers `503 unavailable` and the forms tell
+the visitor nothing was sent and offer a pre-filled email to info@namolabs.in instead. For production,
+also add a Vercel Firewall rate-limit rule on `/api/support`.
+
+### Legal pages
+
+`/privacy` and `/terms` are drafts for legal review and say so on the page. Items marked “To be
+confirmed” and the checklists in `src/data/support/legal.ts` must be resolved, and an effective date set,
+before the draft banner is removed.

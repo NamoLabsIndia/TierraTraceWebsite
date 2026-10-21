@@ -272,12 +272,20 @@ export const FOOTER = {
       ],
     },
     {
-      title: 'Support',
+      title: 'Resources',
       links: [
-        { label: 'Help Center', to: '/contact' },
-        { label: 'Documentation', to: null },
-        { label: 'Privacy Policy', to: null },
-        { label: 'Terms of Use', to: null },
+        { label: 'Insights', to: '/insights' },
+        { label: 'Help Center', to: '/help' },
+        { label: 'Documentation', to: '/docs' },
+        { label: 'Support', to: '/support' },
+        { label: 'Contact', to: '/contact' },
+      ],
+    },
+    {
+      title: 'Legal',
+      links: [
+        { label: 'Privacy Policy', to: '/privacy' },
+        { label: 'Terms of Use', to: '/terms' },
       ],
     },
   ] satisfies { title: string; links: NavItem[] }[],

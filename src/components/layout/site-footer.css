@@ -67,8 +67,8 @@
 }
 .ft-cols {
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  column-gap: clamp(24.08px, 3.956vw, 60.2px);
+  grid-template-columns: repeat(4, auto);
+  column-gap: clamp(22px, 3.2vw, 52px);
   padding-top: clamp(5.16px, 1.032vw, 15.48px);
 }
 .ft-col-title {

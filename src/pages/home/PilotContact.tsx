@@ -1,6 +1,9 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleCheck } from 'lucide-react';
 import { InView, Words } from '../../lib/motion';
+import { INDUSTRIES, validate, type Enquiry, type FieldErrors } from '../../../api/_lib/validate';
+import { CONTACT_EMAIL, mailtoFor, submitEnquiry } from '../../lib/submitEnquiry';
 import { Pill } from './sections/shared';
 import './sections/sections.css';
 import '../contact/contact.css';
@@ -56,23 +59,62 @@ export function Pilot() {
   );
 }
 
-const INDUSTRY_OPTIONS = ['Steel & Aluminium', 'Textiles', 'Furniture', 'Tires', 'Chemicals', 'Paints & Lubricants', 'ICT', 'Electronics', 'Government / Regulator', 'Other'];
-
 const FIELDS = [
   ['name', 'Full name', 'text', 'name'],
   ['email', 'Work email', 'email', 'email'],
-  ['company', 'Company', 'text', 'organization'],
+  ['organisation', 'Company', 'text', 'organization'],
   ['role', 'Role', 'text', 'organization-title'],
 ] as const;
 
+type Status = { s: 'idle' } | { s: 'sending' } | { s: 'sent'; reference: string } | { s: 'error'; kind: 'rate_limited' | 'unavailable' | 'failed' };
+const EMPTY = { name: '', email: '', organisation: '', role: '', industry: '', message: '' };
+
 /** Contact: editorial heading and details on the left, the briefing form in a soft panel on the right. */
 export function Contact() {
-  const [sent, setSent] = useState(false);
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Front-end only for now — wire to the real endpoint when integrating.
-    setSent(true);
+  const [v, setV] = useState(EMPTY);
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [status, setStatus] = useState<Status>({ s: 'idle' });
+  const [honeypot, setHoneypot] = useState('');
+  const started = useRef(Date.now());
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const enquiry = (): Enquiry => ({
+    kind: 'contact',
+    name: v.name.trim(),
+    email: v.email.trim(),
+    organisation: v.organisation.trim() || undefined,
+    role: v.role.trim() || undefined,
+    industry: v.industry || undefined,
+    message: v.message.trim(),
+    website: honeypot || undefined,
+    elapsedMs: Date.now() - started.current,
+  });
+  const set = (k: keyof typeof EMPTY, value: string) => {
+    setV((p) => ({ ...p, [k]: value }));
+    if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
   };
+  const onSubmit = async (ev: FormEvent) => {
+    ev.preventDefault();
+    if (status.s === 'sending') return;
+    const e = enquiry();
+    const fieldErrors = validate(e);
+    // the company field is required on this form
+    if (!e.organisation) fieldErrors.organisation = 'Enter your company.';
+    if (Object.keys(fieldErrors).length) {
+      setErrors(fieldErrors);
+      formRef.current?.querySelector<HTMLElement>(`[name="${Object.keys(fieldErrors)[0]}"]`)?.focus();
+      return;
+    }
+    setStatus({ s: 'sending' });
+    const res = await submitEnquiry(e);
+    if (res.ok) setStatus({ s: 'sent', reference: res.reference });
+    else if (res.error === 'validation') {
+      setErrors(res.fields);
+      setStatus({ s: 'idle' });
+    } else setStatus({ s: 'error', kind: res.error });
+  };
+  const a11y = (k: keyof FieldErrors) => ({ 'aria-invalid': Boolean(errors[k]) || undefined, 'aria-describedby': errors[k] ? `cf-${k}-err` : undefined });
+  const err = (k: keyof FieldErrors) => (errors[k] ? <span className="pc-err" id={`cf-${k}-err`}>{errors[k]}</span> : null);
 
   return (
     <section id="contact" className="pc-contact sx" aria-labelledby="contact-title">
@@ -100,43 +142,73 @@ export function Contact() {
       </div>
 
       <InView className="pc-form-panel m-rise" delay={120}>
-        {sent ? (
+        {status.s === 'sent' ? (
           <div className="pc-sent tt-swap-enter" role="status">
             <CircleCheck className="h-11 w-11" aria-hidden />
-            <p className="pc-sent-title">Thanks — we'll be in touch.</p>
-            <p className="pc-lead">A specialist will reach out within one business day.</p>
+            <p className="pc-sent-title">Thanks — your request has been received.</p>
+            <p className="pc-lead">
+              Reference <b>{status.reference}</b>. A specialist will reach out within one business day.
+            </p>
           </div>
         ) : (
-          <form onSubmit={onSubmit} className="pc-form">
+          <form ref={formRef} onSubmit={onSubmit} noValidate className="pc-form" aria-busy={status.s === 'sending'}>
+            {status.s === 'error' && (
+              <div className="pc-alert" role="alert">
+                <p>
+                  {status.kind === 'rate_limited'
+                    ? 'Too many requests from your connection. Please wait ten minutes and try again — your details are still here.'
+                    : status.kind === 'unavailable'
+                      ? 'Online sending isn’t available right now, so nothing was sent. You can email your request instead — it opens with your text filled in.'
+                      : 'We couldn’t send your request, so nothing was sent. Please try again, or email it to us.'}
+                </p>
+                {status.kind !== 'rate_limited' && (
+                  <a href={mailtoFor(enquiry())} className="pc-alert-link">
+                    Email {CONTACT_EMAIL}
+                  </a>
+                )}
+              </div>
+            )}
             {FIELDS.map(([id, label, type, ac]) => (
               <label key={id} className="pc-field">
                 <span>
                   {label}
                   {id === 'role' && <em> (optional)</em>}
                 </span>
-                <input id={id} name={id} type={type} autoComplete={ac} required={id !== 'role'} />
+                <input id={id} name={id} type={type} autoComplete={ac} value={v[id]} onChange={(e) => set(id, e.target.value)} {...a11y(id)} />
+                {err(id)}
               </label>
             ))}
             <label className="pc-field pc-field--wide">
-              <span>Industry</span>
-              <select name="industry" defaultValue="">
-                <option value="" disabled>
-                  Select your industry
-                </option>
-                {INDUSTRY_OPTIONS.map((o) => (
+              <span>
+                Industry <em>(optional)</em>
+              </span>
+              <select name="industry" value={v.industry} onChange={(e) => set('industry', e.target.value)} {...a11y('industry')}>
+                <option value="">Select your industry</option>
+                {INDUSTRIES.map((o) => (
                   <option key={o}>{o}</option>
                 ))}
               </select>
+              {err('industry')}
             </label>
             <label className="pc-field pc-field--wide">
               <span>How can we help?</span>
-              <textarea name="message" rows={4} />
+              <textarea name="message" rows={4} value={v.message} onChange={(e) => set('message', e.target.value)} {...a11y('message')} />
+              {err('message')}
             </label>
+            <div className="pc-hp" aria-hidden="true">
+              <label>
+                Leave this field empty
+                <input name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+              </label>
+            </div>
             <div className="pc-form-foot">
-              <button type="submit" className="pc-btn">
-                Request a briefing <ArrowRight className="pc-btn-arrow h-5 w-5" aria-hidden />
+              <button type="submit" className="pc-btn" disabled={status.s === 'sending'}>
+                {status.s === 'sending' ? 'Sending…' : 'Request a briefing'}
+                {status.s !== 'sending' && <ArrowRight className="pc-btn-arrow h-5 w-5" aria-hidden />}
               </button>
-              <p>By submitting you agree to our privacy policy.</p>
+              <p>
+                See how we handle your information in our <Link to="/privacy">Privacy Policy</Link>.
+              </p>
             </div>
           </form>
         )}

@@ -15,6 +15,11 @@ import ContactPage from './pages/contact/ContactPage';
 import InsightPostPage from './pages/insights/InsightPostPage';
 import InsightsIndexPage from './pages/insights/InsightsIndexPage';
 import InsightArticlePage from './pages/insights/InsightArticlePage';
+import SupportPage from './pages/support/SupportPage';
+import HelpCenterPage from './pages/support/HelpCenterPage';
+import HelpArticlePage from './pages/support/HelpArticlePage';
+import DocsPage from './pages/support/DocsPage';
+import LegalPage from './pages/support/LegalPage';
 
 export default function App() {
   return (
@@ -46,6 +51,13 @@ export default function App() {
           <Route path="/insights" element={<InsightsIndexPage />} />
           <Route path="/insights/:slug" element={<InsightPostPage />} />
           <Route path="/insights/:category/:article" element={<InsightArticlePage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/help" element={<HelpCenterPage />} />
+          <Route path="/help/:slug" element={<HelpArticlePage />} />
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/docs/:slug" element={<DocsPage />} />
+          <Route path="/privacy" element={<LegalPage key="privacy" which="privacy" />} />
+          <Route path="/terms" element={<LegalPage key="terms" which="terms" />} />
           {/* Any future product not yet built falls back to a placeholder; unknown slugs go home. */}
           <Route path="/platform/:slug" element={<ComingSoon />} />
           <Route path="*" element={<Navigate to="/" replace />} />
