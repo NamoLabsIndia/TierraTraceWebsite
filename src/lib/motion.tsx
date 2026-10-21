@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEventHandler, type ReactNode } from 'react';
 import { useReveal } from './useReveal';
 
 /*
@@ -6,7 +6,7 @@ import { useReveal } from './useReveal';
  * these only flip data-visible when an element scrolls into view, or split text into maskable words.
  */
 
-type Tag = 'div' | 'p' | 'span' | 'h2' | 'h3' | 'ul' | 'li' | 'article' | 'figure' | 'dl';
+type Tag = 'div' | 'p' | 'span' | 'h2' | 'h3' | 'ul' | 'ol' | 'li' | 'article' | 'figure' | 'dl';
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,7 +24,9 @@ export function InView({
   delay?: number;
   children: ReactNode;
   id?: string;
+  role?: string;
   'aria-label'?: string;
+  onKeyDown?: KeyboardEventHandler<HTMLElement>;
 }) {
   const ref = useReveal<HTMLElement>();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

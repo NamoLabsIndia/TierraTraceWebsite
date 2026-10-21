@@ -36,6 +36,7 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/platform/studio" element={<StudioPage />} />
           <Route path="/platform/passport" element={<PassportPage />} />
+          <Route path="/solutions/digital-product-passport" element={<Navigate to="/platform/passport" replace />} />
           <Route path="/platform/trace" element={<TracePage />} />
           <Route path="/platform/carbon" element={<CarbonPage />} />
           <Route path="/platform/verify" element={<VerifyPage />} />

@@ -1,0 +1,601 @@
+/*
+ * Trace — "Open any stage": blockchain-backed event records for a sample jaggery lot.
+ * Copy and capabilities on the left; on the right the stage journey (a tablist), the event record for the
+ * selected stage, its evidence and its ledger reference. Connectors: a journey line with a marker at the
+ * selected stage, and a short link from that marker down into the record.
+ */
+
+.lg {
+  --lg-ink: #101512;
+  --lg-text: #5b615d;
+  --lg-muted: #7b827e;
+  --lg-line: #e6eae7;
+  --lg-soft: #f0f2f0;
+  --lg-gap: 12px;
+  --lg-pad: max(calc(clamp(20px, 6vw, 96px) + env(safe-area-inset-left, 0px)), calc((100% - 1320px) / 2));
+  display: grid;
+  grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+  gap: clamp(32px, 4vw, 64px);
+  align-items: center;
+  padding: clamp(64px, 7vw, 108px) var(--lg-pad);
+  background:
+    radial-gradient(40% 50% at 80% 30%, rgba(49, 195, 90, 0.05), transparent 70%),
+    linear-gradient(180deg, #fbfbf9 0%, #f6f7f4 100%);
+  color: var(--lg-ink);
+}
+
+/* ---------- copy ---------- */
+
+.lg-copy {
+  min-width: 0;
+}
+.lg-eyebrow {
+  margin: 0;
+  color: var(--lg-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.lg-title {
+  margin: clamp(16px, 1.8vw, 24px) 0 0;
+  font-size: clamp(2rem, 2.7vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+}
+.lg-title-line {
+  display: block;
+  text-wrap: balance;
+}
+.lg-title-accent {
+  color: var(--color-tt-green-ink);
+}
+.lg-body {
+  max-width: 30em;
+  margin: clamp(16px, 1.8vw, 24px) 0 0;
+  color: var(--lg-text);
+  font-size: clamp(15px, 1.08vw, 16.5px);
+  line-height: 1.55;
+}
+.lg-caps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 2vw, 30px) clamp(20px, 2.2vw, 32px);
+  margin: clamp(28px, 3vw, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lg-cap-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--color-tt-green-ink);
+}
+.lg-caps h3 {
+  margin: 10px 0 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lg-caps p {
+  margin: 5px 0 0;
+  color: var(--lg-text);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* ---------- journey ---------- */
+
+.lg-vis {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  min-width: 0;
+  justify-self: end;
+}
+.lg-journey {
+  position: relative;
+  padding-bottom: 30px;
+}
+.lg-stages {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--lg-gap);
+}
+.lg-stage {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 10px 10px;
+  border: 1px solid var(--lg-line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 24px -18px rgba(16, 21, 18, 0.28);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    translate 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lg-stage.is-on {
+  border-color: var(--color-tt-green-ink);
+  box-shadow:
+    0 0 0 1px var(--color-tt-green-ink),
+    0 18px 30px -20px rgba(16, 21, 18, 0.35);
+  translate: 0 -4px;
+}
+@media (hover: hover) {
+  .lg-stage:not(.is-on):hover {
+    border-color: #cdd6d0;
+  }
+}
+.lg-stage:focus-visible {
+  outline: 2px solid var(--color-tt-green-ink);
+  outline-offset: 3px;
+}
+.lg-stage-n {
+  color: var(--color-tt-green-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.lg-stage-name {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.lg-stage-place {
+  color: var(--lg-muted);
+  font-size: 11.5px;
+}
+.lg-stage-img {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 8px;
+  aspect-ratio: 4 / 3;
+  background: var(--lg-soft);
+}
+.lg-stage-img img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+}
+/* status on the journey line, under each stage */
+.lg-stage-dot {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid #c3cbc6;
+  border-radius: 50%;
+  background: #fff;
+  transform: translateX(-50%);
+}
+.lg-stage-dot.is-ok {
+  border-color: #fff;
+  background: var(--color-tt-green-ink);
+  box-shadow: 0 0 0 1px var(--color-tt-green-ink);
+}
+.lg-stage.is-on {
+  /* the dot moves with the lifted card; pull it back onto the line */
+  --lift: 4px;
+}
+.lg-stage.is-on .lg-stage-dot {
+  top: calc(100% + 14px + var(--lift));
+}
+
+.lg-track {
+  position: absolute;
+  right: calc((100% - 4 * var(--lg-gap)) / 10);
+  bottom: 11px;
+  left: calc((100% - 4 * var(--lg-gap)) / 10);
+  height: 1px;
+  background: #d6ddd8;
+}
+/* recorded stretch: from the first stage to the last recorded one (Distribution, 4 of 5) */
+.lg-track-fill {
+  position: absolute;
+  inset: 0 25% 0 0;
+  background: var(--color-tt-green-ink);
+  transform-origin: 0 50%;
+}
+.lg-track-marker {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--sel) / (var(--count) - 1) * 100%);
+  width: 19px;
+  height: 19px;
+  border: 1px solid var(--color-tt-green-ink);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* from the selected stage down into its record */
+.lg-link {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: calc((100% - 4 * var(--lg-gap)) / 10 + var(--sel) / (var(--count) - 1) * (100% - (100% - 4 * var(--lg-gap)) / 5));
+  width: 1px;
+  height: 26px;
+  background: linear-gradient(180deg, var(--color-tt-green-ink), rgba(23, 128, 58, 0.15));
+  transition: left 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- event record ---------- */
+
+.lg-panel {
+  margin-top: 24px;
+  padding: clamp(16px, 1.8vw, 24px);
+  border: 1px solid var(--lg-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow:
+    0 1px 3px rgba(16, 21, 18, 0.04),
+    0 36px 70px -44px rgba(16, 21, 18, 0.35);
+}
+.lg-panel-in {
+  animation: lg-fade 320ms ease-out;
+}
+@keyframes lg-fade {
+  from {
+    opacity: 0;
+  }
+}
+.lg-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.lg-kicker {
+  margin: 0;
+  color: var(--lg-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lg-lot {
+  margin: 4px 0 0;
+  font-size: clamp(17px, 1.4vw, 20px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.lg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1px solid #e3e7e4;
+  border-radius: 999px;
+  background: #f5f6f5;
+  color: var(--lg-text);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.lg-chip i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b9c1bc;
+}
+.lg-chip.is-ok {
+  border-color: #d3ecd9;
+  background: #eef8f1;
+  color: var(--color-tt-green-ink);
+}
+.lg-chip.is-ok i {
+  background: var(--color-tt-green-ink);
+}
+
+.lg-panel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 16px;
+}
+.lg-fields {
+  margin: 0;
+  border: 1px solid var(--lg-line);
+  border-radius: 12px;
+}
+.lg-field {
+  display: grid;
+  grid-template-columns: minmax(0, 7.4em) minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 14px;
+}
+.lg-field + .lg-field {
+  border-top: 1px solid var(--lg-soft);
+}
+.lg-field dt {
+  color: var(--lg-muted);
+  font-size: 12.5px;
+}
+.lg-field dd {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.lg-field dd em {
+  display: block;
+  color: var(--lg-muted);
+  font-size: 11.5px;
+  font-style: normal;
+  font-weight: 400;
+}
+.is-mono {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.93em;
+  letter-spacing: 0;
+}
+.lg-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: #c3cbc6;
+  vertical-align: 0.1em;
+}
+.lg-dot.is-ok {
+  background: var(--color-tt-green-ink);
+}
+
+.lg-evidence {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--lg-line);
+  border-radius: 12px;
+}
+.lg-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.lg-evidence ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lg-evidence button {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+.lg-evidence button.is-on {
+  border-color: #d3ecd9;
+  background: #f4faf6;
+}
+@media (hover: hover) {
+  .lg-evidence button:not(.is-on):hover {
+    background: #f7f8f7;
+  }
+}
+.lg-evidence button:focus-visible {
+  outline: 2px solid var(--color-tt-green-ink);
+  outline-offset: 1px;
+}
+.lg-ev-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: #3e4641;
+}
+.lg-evidence button span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.lg-evidence b {
+  font-size: 13px;
+  font-weight: 500;
+}
+.lg-evidence small {
+  color: var(--lg-muted);
+  font-size: 11.5px;
+}
+.lg-ev-detail {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #dfe4e0;
+  animation: lg-fade 260ms ease-out;
+}
+.lg-ev-detail p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 10px;
+  margin: 0;
+  padding: 3px 0;
+  font-size: 12.5px;
+}
+.lg-ev-detail span {
+  color: var(--lg-muted);
+}
+.lg-ev-detail code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+.lg-empty {
+  margin: 0;
+  color: var(--lg-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ledger reference, subordinate to the record */
+.lg-ledger {
+  position: relative;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--lg-line);
+  border-radius: 12px;
+  background: #fafbfa;
+}
+.lg-ledger-link {
+  position: absolute;
+  bottom: 100%;
+  left: 28px;
+  width: 1px;
+  height: 14px;
+  background: repeating-linear-gradient(180deg, var(--color-tt-green-ink) 0 3px, transparent 3px 6px);
+}
+.lg-ledger .lg-sub {
+  color: var(--lg-text);
+  font-weight: 500;
+}
+.lg-ledger dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin: 0;
+}
+.lg-ledger dt {
+  color: var(--lg-muted);
+  font-size: 11.5px;
+}
+.lg-ledger dd {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.lg-ledger dl > div:first-child {
+  grid-column: 1 / -1;
+}
+.lg-ledger dd.is-mono {
+  white-space: nowrap;
+}
+.lg-ledger dd.is-ok {
+  color: var(--color-tt-green-ink);
+}
+
+.lg-note {
+  margin: 14px 2px 0;
+  color: var(--lg-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1180px) {
+  .lg {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lg-copy,
+  .lg-vis {
+    max-width: 760px;
+  }
+  .lg-vis {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 860px) {
+  .lg-panel-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* phones: the five stages become a swipeable row (still a keyboard tablist), the status dot moves into
+   each card, and the record's fields stack label-over-value */
+@media (max-width: 640px) {
+  .lg-title {
+    font-size: clamp(1.9rem, 8.4vw, 2.2rem);
+  }
+  .lg-caps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lg-journey {
+    padding-bottom: 0;
+  }
+  .lg-stages {
+    display: flex;
+    margin: 0 calc(-1 * var(--lg-pad));
+    padding: 6px var(--lg-pad) 10px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--lg-pad);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .lg-stages::-webkit-scrollbar {
+    display: none;
+  }
+  .lg-stage {
+    flex: 0 0 136px;
+    scroll-snap-align: start;
+  }
+  .lg-stage.is-on {
+    translate: none;
+  }
+  .lg-stage-dot,
+  .lg-stage.is-on .lg-stage-dot {
+    top: 12px;
+    right: 10px;
+    left: auto;
+    transform: none;
+  }
+  .lg-track,
+  .lg-link {
+    display: none;
+  }
+  .lg-panel {
+    margin-top: 14px;
+  }
+  .lg-field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  .lg-ledger dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-stage,
+  .lg-track-marker,
+  .lg-link,
+  .lg-evidence button {
+    transition: none;
+  }
+  .lg-panel-in,
+  .lg-ev-detail {
+    animation: none;
+  }
+}

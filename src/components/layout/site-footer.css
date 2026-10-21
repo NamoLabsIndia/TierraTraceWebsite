@@ -27,6 +27,7 @@
 .ft-logo span {
   margin-top: 2px;
   padding-right: 12%;
+  white-space: nowrap;
   color: #e9ebe9;
   font-size: clamp(15px, 1.161vw, 17.2px);
   font-weight: 500;

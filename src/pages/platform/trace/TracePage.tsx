@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Hero } from './Hero';
-import { SearchStrip } from './SearchStrip';
 import { ImpactExplorer } from './ImpactExplorer';
 import { EvidencePanel } from './EvidencePanel';
 import { Features } from './Features';
@@ -13,7 +12,6 @@ export default function TracePage() {
   return (
     <>
       <Hero />
-      <SearchStrip />
       <ImpactExplorer />
       <EvidencePanel />
       <Features />

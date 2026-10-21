@@ -196,6 +196,12 @@ export const PHOTO_CREDITS = [
   { text: 'Morning mist: Western Arctic National Parklands, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Autumn_Morning_Mist_(8510188345).jpg' },
   { text: 'European Parliament: FrDr, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:European_Parliament_Brussels_100_020_01.jpg' },
   { text: 'Data centre: Carl Lender, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:Data_Center_(22370911658).jpg' },
+  { text: 'T-shirt (recoloured): Daniel Furon / Wikimedia Foundation, CC BY-SA 3.0', href: 'https://commons.wikimedia.org/wiki/File:BrownIEditShirt-plainBackground.png' },
+  { text: 'Sugarcane field: Timothy A. Gonsalves, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:Sugarcane_Field_Srirangapatna_Karnataka_Jul22_R16_06192.jpg' },
+  { text: 'Jaggery preparation: Ezhuttukari, CC BY-SA 3.0', href: 'https://commons.wikimedia.org/wiki/File:Jaggery_preparation0.jpg' },
+  { text: 'Slabs of jaggery: Rohini, CC BY-SA 3.0', href: 'https://commons.wikimedia.org/wiki/File:Slabs_of_jaggery.jpg' },
+  { text: 'Highway truck: Wasiul Bahar, CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:Truck_at_Highway_of_Hyderabad_2.jpg' },
+  { text: 'Jaggery at market: Giridhar Appaji Nag Y, CC BY 2.0', href: 'https://commons.wikimedia.org/wiki/File:(1)_Jaggery_Gud_Punjab_India.jpg' },
 ];
 
 export type Insight = {

@@ -23,7 +23,7 @@ const SOLUTIONS = [
 const SALES = { label: 'Contact sales', to: '/contact' };
 const PILOT = { label: 'Request pilot', to: '/contact?s=pilot' };
 /** Pages that open with a full-bleed hero ([data-hero]); the header floats over them. */
-const OVERLAY_ROUTES = new Set(['/', '/platform/studio']);
+const OVERLAY_ROUTES = new Set(['/', '/platform/studio', '/platform/passport', '/platform/trace']);
 
 /**
  * Translucent pill header, shared by every page. On the homepage it floats over the full-bleed hero
